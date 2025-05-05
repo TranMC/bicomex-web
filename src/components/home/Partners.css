@@ -1,0 +1,12 @@
+/* Partners Styles */
+.partners-slider {
+  padding: 20px 0;
+}
+
+.partner-item {
+  transition: transform 0.3s ease;
+}
+
+.partner-item:hover {
+  transform: scale(1.05);
+}

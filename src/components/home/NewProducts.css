@@ -1,0 +1,44 @@
+/* New Products Slider Styles */
+.new-products-slider {
+  padding-bottom: 50px;
+}
+
+.new-products-slider .swiper-pagination {
+  bottom: 0;
+}
+
+.new-products-slider .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #cbd5e0;
+  opacity: 1;
+}
+
+.new-products-slider .swiper-pagination-bullet-active {
+  background: #3b82f6;
+}
+
+.new-products-slider .swiper-button-next,
+.new-products-slider .swiper-button-prev {
+  color: #3b82f6;
+  background: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.new-products-slider .swiper-button-next:after,
+.new-products-slider .swiper-button-prev:after {
+  font-size: 18px;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
