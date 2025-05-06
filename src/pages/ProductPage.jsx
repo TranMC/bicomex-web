@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaStar, FaFilter, FaSort, FaList, FaThLarge } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useCart } from '../context/CartProvider';
+import { useToast } from '../context/ToastProvider';
 import './ProductPage.css';
 
 export const ProductPage = () => {
@@ -14,6 +16,8 @@ export const ProductPage = () => {
     sortBy: 'newest',
     brands: []
   });
+  const { addToCart } = useCart();
+  const toast = useToast();
 
   // Dummy function to format price
   const formatPrice = (price) => {
@@ -30,7 +34,7 @@ export const ProductPage = () => {
         {
           id: 1,
           name: 'Xi măng Portland PC40',
-          image: '/src/assets/images/product-cement.jpg',
+          image: 'https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2VtZW50fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
           price: 95000,
           salePrice: 85000,
           rating: 4.8,
@@ -42,7 +46,7 @@ export const ProductPage = () => {
         {
           id: 2,
           name: 'Gạch ốp tường Đồng Tâm 30x60',
-          image: '/src/assets/images/product-tile.jpg',
+          image: 'https://images.unsplash.com/photo-1584733303662-e5dcc1801cad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHRpbGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
           price: 180000,
           salePrice: null,
           rating: 4.5,
@@ -54,7 +58,7 @@ export const ProductPage = () => {
         {
           id: 3,
           name: 'Sơn nội thất Dulux',
-          image: '/src/assets/images/product-paint.jpg',
+          image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGFpbnQlMjBjYW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
           price: 650000,
           salePrice: 590000,
           rating: 4.7,
@@ -66,7 +70,7 @@ export const ProductPage = () => {
         {
           id: 4,
           name: 'Thép xây dựng Pomina Φ10',
-          image: '/src/assets/images/product-steel.jpg',
+          image: 'https://images.unsplash.com/photo-1515343480029-43cdfe6b6aae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3RlZWx8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
           price: 320000,
           salePrice: null,
           rating: 4.9,
@@ -78,7 +82,7 @@ export const ProductPage = () => {
         {
           id: 5,
           name: 'Ống nhựa uPVC Bình Minh Φ90',
-          image: '/src/assets/images/product-pipe.jpg',
+          image: 'https://images.unsplash.com/photo-1599611863977-91adabb6fd6c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGlwZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
           price: 245000,
           salePrice: 220000,
           rating: 4.6,
@@ -90,7 +94,7 @@ export const ProductPage = () => {
         {
           id: 6,
           name: 'Dây điện Cadisun 2x2.5mm',
-          image: '/src/assets/images/product-wire.jpg',
+          image: 'https://images.unsplash.com/photo-1621155346337-1d19476ba7d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGVsZWN0cmljJTIwd2lyZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
           price: 18000,
           salePrice: null,
           rating: 4.4,
@@ -137,6 +141,11 @@ export const ProductPage = () => {
   const availableBrands = [
     'Hà Tiên', 'Đồng Tâm', 'Dulux', 'Pomina', 'Bình Minh', 'Cadisun', 'TOTO', 'Viglacera'
   ];
+
+  const handleAddToCart = (product) => {
+    addToCart(product, 1);
+    toast.success(`Đã thêm ${product.name} vào giỏ hàng!`);
+  };
 
   return (
     <div className="product-page py-8">
@@ -313,7 +322,10 @@ export const ProductPage = () => {
                             )}
                           </div>
                           
-                          <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded font-medium hover:bg-blue-700">
+                          <button 
+                            className="mt-4 w-full bg-blue-600 text-white py-2 rounded font-medium hover:bg-blue-700"
+                            onClick={() => handleAddToCart(product)}
+                          >
                             Thêm vào giỏ hàng
                           </button>
                         </div>
@@ -369,7 +381,10 @@ export const ProductPage = () => {
                             )}
                           </div>
                           
-                          <button className="bg-blue-600 text-white px-6 py-2 rounded font-medium hover:bg-blue-700">
+                          <button 
+                            className="bg-blue-600 text-white px-6 py-2 rounded font-medium hover:bg-blue-700"
+                            onClick={() => handleAddToCart(product)}
+                          >
                             Thêm vào giỏ hàng
                           </button>
                         </div>

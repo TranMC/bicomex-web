@@ -1,0 +1,32 @@
+.checkout-page .form-group input:focus,
+.checkout-page .form-group select:focus,
+.checkout-page .form-group textarea:focus {
+  border-color: #3B82F6;
+}
+
+.checkout-page .order-complete-icon {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.checkout-page .sticky {
+  position: sticky;
+  top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .checkout-page .sticky {
+    position: static;
+  }
+}
