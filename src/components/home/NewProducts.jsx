@@ -3,12 +3,16 @@ import { Link } from 'react-router-dom';
 import { FaStar, FaCartPlus, FaEye } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
+import { useCart } from '../../context/CartProvider';
+import { useToast } from '../../context/ToastProvider';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './NewProducts.css';
 
 export const NewProducts = () => {
+  const { addToCart } = useCart();
+  const toast = useToast();
   const [products] = useState([
     {
       id: 1,
@@ -77,6 +81,14 @@ export const NewProducts = () => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
 
+  // Handle add to cart
+  const handleAddToCart = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product, 1);
+    toast.success(`Đã thêm ${product.name} vào giỏ hàng!`);
+  };
+
   return (
     <section className="new-products py-10">
       <div className="section-header flex justify-between items-center mb-8">
@@ -128,7 +140,10 @@ export const NewProducts = () => {
                 )}
                 
                 <div className="product-actions absolute bottom-3 right-3 flex flex-col gap-2">
-                  <button className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full">
+                  <button 
+                    className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full"
+                    onClick={(e) => handleAddToCart(e, product)}
+                  >
                     <FaCartPlus className="text-lg" />
                   </button>
                   <Link to={`/san-pham/${product.slug}`} className="bg-gray-700 hover:bg-gray-800 text-white p-2 rounded-full">
