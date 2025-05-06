@@ -8,12 +8,16 @@ import { BlogSection } from '../components/home/BlogSection';
 
 export const HomePage = () => {
   return (
-    <main className="home-page">
+    <main className="home-page w-full">
       <HeroSlider />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         <CategoryGrid />
         <FeaturedProducts />
-        <PromotionBanner />
+      </div>
+      
+      <PromotionBanner />
+      
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         <NewProducts />
         <Partners />
         <BlogSection />

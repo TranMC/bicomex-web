@@ -52,7 +52,7 @@ export const Footer = () => {
               </li>
               <li className="flex items-center">
                 <FaPhone className="mr-3 text-primary" />
-                <span>0900-000-000</span>
+                <span>-19006750</span>
               </li>
               <li className="flex items-center">
                 <FaEnvelope className="mr-3 text-primary" />

@@ -8,12 +8,14 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="App min-h-screen flex flex-col w-full">
         <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/san-pham/:category" element={<ProductPage />} />
-        </Routes>
+        <div className="flex-grow w-full">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/san-pham/:category" element={<ProductPage />} />
+          </Routes>
+        </div>
         <Footer />
       </div>
     </Router>
