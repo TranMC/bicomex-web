@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './CategoryGrid.css';
+import '../../styles/components/CategoryGrid.css';
 
 export const CategoryGrid = () => {
   const categories = [

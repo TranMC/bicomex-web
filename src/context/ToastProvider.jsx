@@ -13,19 +13,16 @@ export const useToast = () => {
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
-  // Add a new toast
   const showToast = (message, type = 'success', duration = 3000) => {
     const id = Date.now();
     setToasts(prev => [...prev, { id, message, type, duration }]);
     return id;
   };
 
-  // Remove a toast by id
   const hideToast = (id) => {
     setToasts(prev => prev.filter(toast => toast.id !== id));
   };
 
-  // Convenience methods for different toast types
   const toast = {
     success: (message, duration) => showToast(message, 'success', duration),
     error: (message, duration) => showToast(message, 'error', duration),

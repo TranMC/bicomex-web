@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaCalendarAlt, FaUser, FaArrowRight } from 'react-icons/fa';
-import './BlogSection.css';
+import '../../styles/components/BlogSection.css';
 
 export const BlogSection = () => {
   const blogPosts = [

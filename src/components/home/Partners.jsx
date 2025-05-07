@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
-import './Partners.css';
+import '../../styles/components/Partners.css';
 
 export const Partners = () => {
   const partners = [

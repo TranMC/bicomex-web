@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FaCheckCircle, FaExclamationCircle, FaTimesCircle, FaInfoCircle, FaTimes } from 'react-icons/fa';
-import './Toast.css';
+import '../../styles/components/Toast.css';
 
 export const Toast = ({ message, type = 'success', duration = 3000, onClose }) => {
   const [isVisible, setIsVisible] = useState(true);

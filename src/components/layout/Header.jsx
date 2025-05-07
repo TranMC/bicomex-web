@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaSearch, FaPhone, FaHome, FaMapMarkerAlt } from 'react-icons/fa';
 import { CartIcon } from '../cart/CartIcon';
-import './Header.css';
+import '../../styles/components/Header.css';
 
 export const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -152,7 +152,19 @@ export const Header = () => {
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="logo">
             <Link to="/">
-              <img src="/logo-bicomex.png" alt="Bicomex Logo" className="h-12" onError={(e) => {e.target.src="https://via.placeholder.com/150x50/ffffff/3b82f6?text=BICOMEX"}} />
+              <img 
+                src="/logo-bicomex.png" 
+                alt="Bicomex Logo" 
+                className="h-12" 
+                onError={(e) => {
+                  // Create a text-based logo as fallback
+                  e.target.onerror = null; // Prevent infinite loop
+                  e.target.style.display = 'none';
+                  const logoText = document.createElement('div');
+                  logoText.innerHTML = '<div style="font-size: 20px; font-weight: bold; color: white;">BICOMEX</div>';
+                  e.target.parentNode.appendChild(logoText);
+                }} 
+              />
             </Link>
           </div>
           

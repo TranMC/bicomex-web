@@ -4,7 +4,7 @@ import { FaStar, FaFilter, FaSort, FaList, FaThLarge } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartProvider';
 import { useToast } from '../context/ToastProvider';
-import './ProductPage.css';
+import '../styles/pages/ProductPage.css';
 
 export const ProductPage = () => {
   const { category } = useParams();
@@ -28,7 +28,7 @@ export const ProductPage = () => {
   useEffect(() => {
     setLoading(true);
     // Simulate API call with setTimeout
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       // Mock data - in a real app, this would come from an API
       const mockProducts = [
         {
@@ -114,6 +114,11 @@ export const ProductPage = () => {
       setProducts(filteredProducts);
       setLoading(false);
     }, 1000);
+
+    // Cleanup function to cancel the timer when component unmounts or before effect runs again
+    return () => {
+      clearTimeout(timer);
+    };
   }, [category]);
 
   // Handle filter change

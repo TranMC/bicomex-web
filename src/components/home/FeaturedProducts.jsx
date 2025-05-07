@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaStar, FaCartPlus, FaEye } from 'react-icons/fa';
 import { useCart } from '../../context/CartProvider';
 import { useToast } from '../../context/ToastProvider';
-import './FeaturedProducts.css';
+import '../../styles/components/FeaturedProducts.css';
 
 export const FeaturedProducts = () => {
   const { addToCart } = useCart();
@@ -12,7 +12,7 @@ export const FeaturedProducts = () => {
     {
       id: 1,
       name: 'Xi măng Portland PC40',
-      image: '/src/assets/images/product-cement.jpg',
+      image: '/assets/images/product-cement.jpg',
       price: 95000,
       salePrice: 85000,
       rating: 4.8,
@@ -22,7 +22,7 @@ export const FeaturedProducts = () => {
     {
       id: 2,
       name: 'Gạch ốp tường Đồng Tâm 30x60',
-      image: '/src/assets/images/product-tile.jpg',
+      image: '/assets/images/product-tile.jpg',
       price: 180000,
       salePrice: null,
       rating: 4.5,
@@ -32,7 +32,7 @@ export const FeaturedProducts = () => {
     {
       id: 3,
       name: 'Sơn nội thất Dulux',
-      image: '/src/assets/images/product-paint.jpg',
+      image: '/assets/images/product-paint.jpg',
       price: 650000,
       salePrice: 590000,
       rating: 4.7,
@@ -42,7 +42,7 @@ export const FeaturedProducts = () => {
     {
       id: 4,
       name: 'Thép xây dựng Pomina Φ10',
-      image: '/src/assets/images/product-steel.jpg',
+      image: '/assets/images/product-steel.jpg',
       price: 320000,
       salePrice: null,
       rating: 4.9,
@@ -52,7 +52,7 @@ export const FeaturedProducts = () => {
     {
       id: 5,
       name: 'Ống nhựa uPVC Bình Minh Φ90',
-      image: '/src/assets/images/product-pipe.jpg',
+      image: '/assets/images/product-pipe.jpg',
       price: 245000,
       salePrice: 220000,
       rating: 4.6,
@@ -62,7 +62,7 @@ export const FeaturedProducts = () => {
     {
       id: 6,
       name: 'Dây điện Cadisun 2x2.5mm',
-      image: '/src/assets/images/product-wire.jpg',
+      image: '/assets/images/product-wire.jpg',
       price: 18000,
       salePrice: null,
       rating: 4.4,
@@ -72,7 +72,7 @@ export const FeaturedProducts = () => {
     {
       id: 7,
       name: 'Keo dán gạch Weber',
-      image: '/src/assets/images/product-adhesive.jpg',
+      image: '/assets/images/product-adhesive.jpg',
       price: 120000,
       salePrice: 110000,
       rating: 4.7,
@@ -82,7 +82,7 @@ export const FeaturedProducts = () => {
     {
       id: 8,
       name: 'Khóa cửa chính Yale',
-      image: '/src/assets/images/product-lock.jpg',
+      image: '/assets/images/product-lock.jpg',
       price: 1200000,
       salePrice: 1050000,
       rating: 4.8,
@@ -104,6 +104,16 @@ export const FeaturedProducts = () => {
     toast.success(`Đã thêm ${product.name} vào giỏ hàng!`);
   };
 
+  // Handle image error
+  const handleImageError = (e) => {
+    e.target.onerror = null; // Prevent infinite loop
+    e.target.style.display = 'none';
+    const placeholder = document.createElement('div');
+    placeholder.className = 'w-full h-64 bg-gray-200 flex items-center justify-center';
+    placeholder.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>';
+    e.target.parentNode.appendChild(placeholder);
+  };
+
   return (
     <section className="featured-products py-10">
       <div className="section-header flex justify-between items-center mb-8">
@@ -122,6 +132,7 @@ export const FeaturedProducts = () => {
                   src={product.image} 
                   alt={product.name} 
                   className="w-full h-64 object-cover"
+                  onError={handleImageError}
                 />
               </Link>
               

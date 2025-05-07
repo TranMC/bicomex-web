@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaCheckCircle, FaCreditCard, FaMoneyBillWave, FaShieldAlt } from 'react-icons/fa';
 import { useCart } from '../context/CartProvider';
 import { useToast } from '../context/ToastProvider';
-import './CheckoutPage.css';
+import '../styles/pages/CheckoutPage.css';
 
 export const CheckoutPage = () => {
   const { cartItems, cartTotal, clearCart } = useCart();
@@ -119,7 +119,6 @@ export const CheckoutPage = () => {
     return Object.keys(newErrors).length === 0;
   };
   
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -130,29 +129,25 @@ export const CheckoutPage = () => {
     
     setIsSubmitting(true);
     
-    // Simulate API call to submit order
-    setTimeout(() => {
-      // Generate random order number
+    const timer = setTimeout(() => {
       const randomOrderNumber = 'BIC' + Math.floor(100000 + Math.random() * 900000).toString();
       setOrderNumber(randomOrderNumber);
       setOrderComplete(true);
       clearCart();
       
-      // Scroll to top
       window.scrollTo(0, 0);
       setIsSubmitting(false);
     }, 1500);
+    
+    return () => clearTimeout(timer);
   };
   
-  // Handle "Continue Shopping" button
   const handleContinueShopping = () => {
     navigate('/');
   };
   
-  // Provinces list (example data)
   const provinces = ['Hà Nội', 'TP. Hồ Chí Minh', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ'];
   
-  // Districts list (example data - would be dynamic based on selected province)
   const districts = {
     'Hà Nội': ['Ba Đình', 'Hoàn Kiếm', 'Hai Bà Trưng', 'Đống Đa', 'Cầu Giấy'],
     'TP. Hồ Chí Minh': ['Quận 1', 'Quận 2', 'Quận 3', 'Quận 7', 'Thủ Đức'],
@@ -161,7 +156,6 @@ export const CheckoutPage = () => {
     'Cần Thơ': ['Ninh Kiều', 'Bình Thủy', 'Cái Răng', 'Ô Môn', 'Thốt Nốt']
   };
   
-  // Wards list (example data - would be dynamic based on selected district)
   const wards = {
     'Ba Đình': ['Phúc Xá', 'Trúc Bạch', 'Vĩnh Phúc', 'Cống Vị', 'Liễu Giai'],
     'Quận 1': ['Bến Nghé', 'Bến Thành', 'Cầu Kho', 'Cầu Ông Lãnh', 'Phạm Ngũ Lão'],
@@ -170,17 +164,14 @@ export const CheckoutPage = () => {
     'Ninh Kiều': ['An Hòa', 'An Nghiệp', 'Cái Khế', 'Hưng Lợi', 'Tân An']
   };
   
-  // Show or hide districts based on selected province
   const getAvailableDistricts = () => {
     return formData.province ? districts[formData.province] || [] : [];
   };
   
-  // Show or hide wards based on selected district
   const getAvailableWards = () => {
     return formData.district ? wards[formData.district] || [] : [];
   };
   
-  // Order complete view
   if (orderComplete) {
     return (
       <div className="checkout-page py-10">
@@ -219,10 +210,10 @@ export const CheckoutPage = () => {
         <h1 className="text-3xl font-bold mb-8">Thanh toán</h1>
         
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Shipping and Payment Information */}
+          {}
           <div className="lg:w-2/3">
             <form onSubmit={handleSubmit}>
-              {/* Shipping Information */}
+              {}
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h2 className="text-xl font-bold mb-6">Thông tin giao hàng</h2>
                 
@@ -381,7 +372,7 @@ export const CheckoutPage = () => {
                 </div>
               </div>
               
-              {/* Shipping Methods */}
+              {}
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h2 className="text-xl font-bold mb-6">Phương thức vận chuyển</h2>
                 
@@ -436,7 +427,7 @@ export const CheckoutPage = () => {
                 </div>
               </div>
               
-              {/* Payment Methods */}
+              {}
               <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                 <h2 className="text-xl font-bold mb-6">Phương thức thanh toán</h2>
                 
@@ -521,7 +512,7 @@ export const CheckoutPage = () => {
             </form>
           </div>
           
-          {/* Order Summary */}
+          {}
           <div className="lg:w-1/3">
             <div className="bg-white rounded-lg shadow-md p-6 sticky top-6">
               <h2 className="text-xl font-bold mb-6">Đơn hàng của bạn</h2>

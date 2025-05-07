@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { FaStar, FaTruck, FaShieldAlt, FaExchangeAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { useCart } from '../context/CartProvider';
 import { useToast } from '../context/ToastProvider';
-import './ProductDetailPage.css';
+import '../styles/pages/ProductDetailPage.css';
 
 export const ProductDetailPage = () => {
   const { slug } = useParams();
@@ -15,18 +15,13 @@ export const ProductDetailPage = () => {
   const { addToCart } = useCart();
   const toast = useToast();
 
-  // Format price in VND
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
 
-  // Fetch product data
   useEffect(() => {
     setLoading(true);
-
-    // Simulate API call with setTimeout
-    setTimeout(() => {
-      // Mock product data - in a real app, this would come from an API
+    const timer = setTimeout(() => {
       const mockProducts = [
         {
           id: 1,
@@ -92,14 +87,11 @@ export const ProductDetailPage = () => {
             'https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dGlsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60'
           ]
         },
-        // More products...
       ];
 
-      // Find product by slug
       const foundProduct = mockProducts.find(p => p.slug === slug);
       setProduct(foundProduct || null);
 
-      // Set related products (products in the same category)
       if (foundProduct) {
         const related = mockProducts
           .filter(p => p.category === foundProduct.category && p.id !== foundProduct.id)
@@ -109,15 +101,17 @@ export const ProductDetailPage = () => {
 
       setLoading(false);
     }, 800);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [slug]);
 
-  // Handle quantity change
   const handleQuantityChange = (value) => {
     const newQuantity = Math.max(1, Math.min(99, quantity + value));
     setQuantity(newQuantity);
   };
 
-  // Add to cart handler
   const handleAddToCart = () => {
     if (product) {
       addToCart(product, quantity);
@@ -125,7 +119,6 @@ export const ProductDetailPage = () => {
     }
   };
 
-  // Get category name from slug
   const getCategoryName = (categorySlug) => {
     const categories = {
       'vat-lieu-xay-dung': 'Vật liệu xây dựng',
@@ -168,7 +161,7 @@ export const ProductDetailPage = () => {
   return (
     <div className="product-detail-page py-8">
       <div className="container mx-auto px-4">
-        {/* Breadcrumb */}
+        {}
         <div className="breadcrumb mb-6">
           <nav className="flex text-sm">
             <Link to="/" className="text-gray-500 hover:text-blue-600">Trang chủ</Link>
@@ -186,10 +179,10 @@ export const ProductDetailPage = () => {
           </nav>
         </div>
 
-        {/* Product main section */}
+        {}
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-10">
           <div className="flex flex-col md:flex-row">
-            {/* Product images */}
+            {}
             <div className="md:w-1/2 p-6">
               <div className="product-image mb-4">
                 <img 
@@ -214,7 +207,7 @@ export const ProductDetailPage = () => {
               </div>
             </div>
             
-            {/* Product info */}
+            {}
             <div className="md:w-1/2 p-6 border-l">
               <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
               
@@ -321,7 +314,7 @@ export const ProductDetailPage = () => {
           </div>
         </div>
         
-        {/* Product details tabs */}
+        {}
         <div className="product-details mb-10">
           <div className="border-b mb-6">
             <div className="flex flex-wrap -mb-px">

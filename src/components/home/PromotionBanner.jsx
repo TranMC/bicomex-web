@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './PromotionBanner.css';
+import '../../styles/components/PromotionBanner.css';
 
 export const PromotionBanner = () => {
   return (

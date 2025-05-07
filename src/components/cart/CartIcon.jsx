@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaTrash } from 'react-icons/fa';
 import { useCart } from '../../context/CartProvider';
-import './CartIcon.css';
+import '../../styles/components/CartIcon.css';
 
 export const CartIcon = () => {
   const { cartItems, cartTotal, removeFromCart } = useCart();

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaTrash, FaMinus, FaPlus, FaArrowLeft, FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '../context/CartProvider';
 import { useToast } from '../context/ToastProvider';
-import './CartPage.css';
+import '../styles/pages/CartPage.css';
 
 export const CartPage = () => {
   const { cartItems, cartTotal, updateQuantity, removeFromCart, clearCart } = useCart();
@@ -89,9 +89,9 @@ export const CartPage = () => {
     setIsApplyingCoupon(true);
     
     // Simulate API call with timeout
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if (couponCode.toUpperCase() === 'BICOMEX10') {
-        const discountAmount = Math.round(cartTotal * 0.1); // 10% discount
+        const discountAmount = Math.round(cartTotal * 0.5); // 10% discount
         setDiscount(discountAmount);
         toast.success(`Đã áp dụng mã giảm giá: Giảm ${formatPrice(discountAmount)}`);
       } else if (couponCode.toUpperCase() === 'WELCOME50K') {
@@ -102,6 +102,9 @@ export const CartPage = () => {
       }
       setIsApplyingCoupon(false);
     }, 800);
+    
+    // Cleanup timer if component unmounts during the timeout
+    return () => clearTimeout(timer);
   };
 
   // Handle proceed to checkout
@@ -109,7 +112,7 @@ export const CartPage = () => {
     navigate('/thanh-toan');
   };
 
-  // If cart is empty, show empty cart message
+
   if (cartItems.length === 0) {
     return (
       <div className="cart-page py-10">
@@ -149,7 +152,7 @@ export const CartPage = () => {
         </div>
         
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Cart items */}
+          {}
           <div className="lg:w-2/3">
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <table className="w-full">
@@ -245,7 +248,7 @@ export const CartPage = () => {
             </div>
           </div>
           
-          {/* Order summary */}
+          {}
           <div className="lg:w-1/3">
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-bold mb-6">Tóm tắt đơn hàng</h2>

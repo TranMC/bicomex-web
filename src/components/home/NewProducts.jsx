@@ -8,7 +8,7 @@ import { useToast } from '../../context/ToastProvider';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import './NewProducts.css';
+import '../../styles/components/NewProducts.css';
 
 export const NewProducts = () => {
   const { addToCart } = useCart();
@@ -17,7 +17,7 @@ export const NewProducts = () => {
     {
       id: 1,
       name: 'Cáp điện Cadivi 4x2.5mm²',
-      image: '/src/assets/images/new-product1.jpg',
+      image: '/assets/images/new-product1.jpg',
       price: 45000,
       salePrice: null,
       rating: 4.7,
@@ -27,7 +27,7 @@ export const NewProducts = () => {
     {
       id: 2,
       name: 'Sơn ngoại thất Jotun Jotashield',
-      image: '/src/assets/images/new-product2.jpg',
+      image: '/assets/images/new-product2.jpg',
       price: 850000,
       salePrice: 799000,
       rating: 4.8,
@@ -37,7 +37,7 @@ export const NewProducts = () => {
     {
       id: 3,
       name: 'Gạch granite Viglacera 800x800',
-      image: '/src/assets/images/new-product3.jpg',
+      image: '/assets/images/new-product3.jpg',
       price: 320000,
       salePrice: null,
       rating: 4.6,
@@ -47,7 +47,7 @@ export const NewProducts = () => {
     {
       id: 4,
       name: 'Bồn cầu TOTO C108',
-      image: '/src/assets/images/new-product4.jpg',
+      image: '/assets/images/new-product4.jpg',
       price: 3500000,
       salePrice: 3200000,
       rating: 4.9,
@@ -57,7 +57,7 @@ export const NewProducts = () => {
     {
       id: 5,
       name: 'Máy khoan Bosch GSB 550',
-      image: '/src/assets/images/new-product5.jpg',
+      image: '/assets/images/new-product5.jpg',
       price: 1450000,
       salePrice: 1299000,
       rating: 4.7,
@@ -67,7 +67,7 @@ export const NewProducts = () => {
     {
       id: 6,
       name: 'Keo chống thấm Weber Seal',
-      image: '/src/assets/images/new-product6.jpg',
+      image: '/assets/images/new-product6.jpg',
       price: 185000,
       salePrice: null,
       rating: 4.5,
@@ -76,17 +76,24 @@ export const NewProducts = () => {
     },
   ]);
 
-  // Format currency
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
 
-  // Handle add to cart
   const handleAddToCart = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product, 1);
     toast.success(`Đã thêm ${product.name} vào giỏ hàng!`);
+  };
+  
+  const handleImageError = (e) => {
+    e.target.onerror = null; 
+    e.target.style.display = 'none';
+    const placeholder = document.createElement('div');
+    placeholder.className = 'w-full h-64 bg-gray-200 flex items-center justify-center';
+    placeholder.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>';
+    e.target.parentNode.appendChild(placeholder);
   };
 
   return (
@@ -126,6 +133,7 @@ export const NewProducts = () => {
                     src={product.image} 
                     alt={product.name} 
                     className="w-full h-64 object-cover"
+                    onError={handleImageError}
                   />
                 </Link>
                 
