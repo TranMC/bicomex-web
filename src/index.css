@@ -12,7 +12,13 @@ body {
   background-color: #f5f7fa;
   color: #333333;
 }
+.shadow-samm {
+  background: #3e81ec;
+}
 
+.bloccker, .text-xs, .text-gray-500{
+  color: white;
+}
 html {
   scroll-behavior: smooth;
 }

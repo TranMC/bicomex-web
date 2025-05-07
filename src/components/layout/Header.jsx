@@ -179,7 +179,7 @@ export const Header = () => {
         </div>
 
         {/* Header chính với logo, tìm kiếm, giỏ hàng */}
-        <div className="mid-header wid_100 bg-white py-4 shadow-sm">
+        <div className="mid-header wid_100 bg-white py-4 shadow-samm">
           <div className="container">
             <div className="flex flex-wrap items-center">
               <div className="logo lg:w-1/4 md:w-1/4 w-full flex justify-center lg:justify-start md:justify-start mb-4 lg:mb-0 md:mb-0">

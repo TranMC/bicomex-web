@@ -219,7 +219,7 @@ export const CheckoutPage = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="form-group">
-                    <label className="block text-gray-700 font-medium mb-2" htmlFor="fullName">
+                    <label className="bloccker text-gray-700 font-medium mb-2" htmlFor="fullName">
                       Họ và tên <span className="text-red-500">*</span>
                     </label>
                     <input 
