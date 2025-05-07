@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { FaStar, FaCartPlus, FaEye } from 'react-icons/fa';
+import { FaStar, FaCartPlus, FaEye, FaRegHeart } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import useCart from '../../hooks/useCart';
 import useToast from '../../hooks/useToast';
 import { newProducts } from '../../data/newProducts';
@@ -26,107 +26,145 @@ export const NewProducts = () => {
   };
   
   const handleImageError = (e) => {
-    e.target.onerror = null; 
-    e.target.style.display = 'none';
-    const placeholder = document.createElement('div');
-    placeholder.className = 'w-full h-64 bg-gray-200 flex items-center justify-center';
-    placeholder.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>';
-    e.target.parentNode.appendChild(placeholder);
+    e.target.onerror = null;
+    e.target.src = "https://bizweb.dktcdn.net/thumb/large/100/330/753/products/gach-lat-nen-1.jpg?v=1553259461737";
   };
 
   return (
-    <section className="new-products py-10">
-      <div className="section-header flex justify-between items-center mb-8">
-        <h2 className="text-3xl font-bold">Sản phẩm mới</h2>
-        <Link to="/san-pham-moi" className="text-blue-600 hover:underline font-medium">
-          Xem tất cả
-        </Link>
-      </div>
+    <section className="section_new_prd py-10">
+      <div className="container mx-auto px-4">
+        <div className="section-title mb-8">
+          <h2 className="title-head text-center text-3xl font-bold">
+            Sản phẩm <span className="text-blue-600">mới về</span>
+          </h2>
+          <p className="text-center text-gray-600 mt-2">Cập nhật những sản phẩm mới nhất từ các thương hiệu hàng đầu</p>
+        </div>
 
-      <Swiper
-        modules={[Navigation, Pagination]}
-        spaceBetween={20}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: true }}
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-          },
-          768: {
-            slidesPerView: 3,
-          },
-          1024: {
-            slidesPerView: 4,
-          },
-        }}
-        className="new-products-slider"
-      >
-        {newProducts.map((product) => (
-          <SwiperSlide key={product.id}>
-            <div className="product-card bg-white rounded-lg shadow-md overflow-hidden h-full">
-              <div className="relative">
-                <Link to={`/san-pham/${product.slug}`} className="block">
-                  <img 
-                    src={product.image} 
-                    alt={product.name} 
-                    className="w-full h-64 object-cover"
-                    onError={handleImageError}
-                  />
-                </Link>
-                
-                <span className="absolute top-3 left-3 bg-green-500 text-white text-sm font-bold py-1 px-2 rounded">
-                  Mới
-                </span>
-                
-                {product.salePrice && (
-                  <span className="absolute top-3 right-3 bg-red-500 text-white text-sm font-bold py-1 px-2 rounded">
-                    {Math.round((1 - product.salePrice / product.price) * 100)}% Giảm
-                  </span>
-                )}
-                
-                <div className="product-actions absolute bottom-3 right-3 flex flex-col gap-2">
-                  <button 
-                    className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full"
-                    onClick={(e) => handleAddToCart(e, product)}
-                  >
-                    <FaCartPlus className="text-lg" />
-                  </button>
-                  <Link to={`/san-pham/${product.slug}`} className="bg-gray-700 hover:bg-gray-800 text-white p-2 rounded-full">
-                    <FaEye className="text-lg" />
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          spaceBetween={20}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 5000 }}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 4,
+            },
+            1280: {
+              slidesPerView: 5,
+            },
+          }}
+          className="swiper-new-products"
+        >
+          {newProducts.map((product) => (
+            <SwiperSlide key={product.id}>
+              <div className="item_product_main bg-white rounded-lg shadow-sm hover:shadow-md transition-all overflow-hidden h-full">
+                <div className="product-thumbnail relative">
+                  <Link to={`/san-pham/${product.slug}`} className="image_thumb block relative pb-[100%] overflow-hidden">
+                    <img 
+                      src={product.image} 
+                      alt={product.name} 
+                      className="w-full h-full object-cover absolute top-0 left-0 transition-transform duration-500 hover:scale-110"
+                      onError={handleImageError}
+                    />
                   </Link>
-                </div>
-              </div>
-              
-              <div className="p-4">
-                <Link to={`/san-pham/${product.slug}`} className="block">
-                  <h3 className="font-medium text-lg mb-2 hover:text-blue-600 line-clamp-2">{product.name}</h3>
-                </Link>
-                
-                <div className="flex items-center mb-2">
-                  <div className="flex text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                      <FaStar key={i} className={i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'} />
-                    ))}
+                  
+                  {/* Labels */}
+                  <div className="product-labels absolute top-2 left-2 flex flex-col gap-1">
+                    <span className="new-label bg-green-500 text-white text-xs font-bold py-1 px-2 rounded">Mới</span>
+                    
+                    {product.salePrice && (
+                      <span className="sale-label bg-red-500 text-white text-xs font-bold py-1 px-2 rounded">
+                        -{Math.round((1 - product.salePrice / product.price) * 100)}%
+                      </span>
+                    )}
                   </div>
-                  <span className="text-sm text-gray-600 ml-2">({product.reviewCount})</span>
+                  
+                  {/* Quick actions */}
+                  <div className="product-actions absolute bottom-2 right-2 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button 
+                      className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full transition-colors"
+                      onClick={(e) => handleAddToCart(e, product)}
+                      title="Thêm vào giỏ hàng"
+                    >
+                      <FaCartPlus className="text-sm" />
+                    </button>
+                    <Link 
+                      to={`/san-pham/${product.slug}`} 
+                      className="bg-gray-600 hover:bg-gray-700 text-white p-2 rounded-full transition-colors"
+                      title="Xem nhanh"
+                    >
+                      <FaEye className="text-sm" />
+                    </Link>
+                    <button 
+                      className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full transition-colors"
+                      title="Thêm vào yêu thích"
+                    >
+                      <FaRegHeart className="text-sm" />
+                    </button>
+                  </div>
                 </div>
                 
-                <div className="flex items-center gap-2">
-                  {product.salePrice ? (
-                    <>
-                      <span className="font-bold text-lg text-red-600">{formatPrice(product.salePrice)}</span>
-                      <span className="text-gray-500 line-through text-sm">{formatPrice(product.price)}</span>
-                    </>
-                  ) : (
-                    <span className="font-bold text-lg">{formatPrice(product.price)}</span>
-                  )}
+                <div className="product-info p-3">
+                  <h3 className="product-name">
+                    <Link to={`/san-pham/${product.slug}`} className="block font-medium text-base mb-1 hover:text-blue-600 transition-colors line-clamp-2">
+                      {product.name}
+                    </Link>
+                  </h3>
+                  
+                  {/* Stars */}
+                  <div className="product-review flex items-center mb-2">
+                    <div className="flex text-yellow-400">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar key={i} className={`text-xs ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}`} />
+                      ))}
+                    </div>
+                    <span className="text-xs text-gray-500 ml-1">({product.reviewCount})</span>
+                  </div>
+                  
+                  {/* Price */}
+                  <div className="price-box">
+                    {product.salePrice ? (
+                      <div className="flex items-center">
+                        <span className="special-price text-red-600 font-bold text-base mr-2">{formatPrice(product.salePrice)}</span>
+                        <span className="old-price text-gray-500 line-through text-xs">{formatPrice(product.price)}</span>
+                      </div>
+                    ) : (
+                      <span className="regular-price font-bold text-base">{formatPrice(product.price)}</span>
+                    )}
+                  </div>
+
+                  {/* Add to cart button - Mobile only */}
+                  <div className="mt-3 sm:hidden">
+                    <button 
+                      onClick={(e) => handleAddToCart(e, product)}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center"
+                    >
+                      <FaCartPlus className="mr-1" /> Thêm vào giỏ
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        <div className="text-center mt-6">
+          <Link 
+            to="/san-pham-moi" 
+            className="view-more border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-6 py-2 rounded inline-block transition-colors font-medium"
+          >
+            Xem tất cả sản phẩm mới
+          </Link>
+        </div>
+      </div>
     </section>
   );
 };

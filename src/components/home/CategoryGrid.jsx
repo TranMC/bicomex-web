@@ -1,70 +1,95 @@
 import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { FaTruck, FaTools, FaCogs, FaHeadset, FaCertificate, FaThumbsUp } from 'react-icons/fa';
 import '../../styles/components/CategoryGrid.css';
 
 export const CategoryGrid = () => {
-  const categories = [
+  const services = [
     {
       id: 1,
-      name: 'Vật liệu xây dựng',
-      image: '/src/assets/images/category-building.jpg',
-      slug: 'vat-lieu-xay-dung',
+      name: 'Vận chuyển nhanh',
+      description: 'Giao hàng tận nơi trên toàn quốc',
+      icon: <FaTruck className="text-4xl text-blue-600" />,
+      link: '/dich-vu/van-chuyen'
     },
     {
       id: 2,
-      name: 'Sơn & Phụ kiện',
-      image: '/src/assets/images/category-paint.jpg',
-      slug: 'son-phu-kien',
+      name: 'Tư vấn kỹ thuật',
+      description: 'Đội ngũ kỹ sư với kinh nghiệm lâu năm',
+      icon: <FaTools className="text-4xl text-blue-600" />,
+      link: '/dich-vu/tu-van-ky-thuat'
     },
     {
       id: 3,
-      name: 'Thiết bị điện',
-      image: '/src/assets/images/category-electrical.jpg',
-      slug: 'thiet-bi-dien',
+      name: 'Lắp đặt chuyên nghiệp',
+      description: 'Đội ngũ thợ tay nghề cao, chuyên nghiệp',
+      icon: <FaCogs className="text-4xl text-blue-600" />,
+      link: '/dich-vu/lap-dat'
     },
     {
       id: 4,
-      name: 'Dụng cụ xây dựng',
-      image: '/src/assets/images/category-tools.jpg',
-      slug: 'dung-cu-xay-dung',
+      name: 'Tư vấn 24/7',
+      description: 'Hỗ trợ tư vấn mọi lúc mọi nơi',
+      icon: <FaHeadset className="text-4xl text-blue-600" />,
+      link: '/lien-he'
     },
     {
       id: 5,
-      name: 'Vật liệu nội thất',
-      image: '/src/assets/images/category-interior.jpg',
-      slug: 'vat-lieu-noi-that',
+      name: 'Sản phẩm chính hãng',
+      description: 'Cam kết 100% hàng chính hãng',
+      icon: <FaCertificate className="text-4xl text-blue-600" />,
+      link: '/chinh-sach/ban-hang'
     },
     {
       id: 6,
-      name: 'Vật tư cấp thoát nước',
-      image: '/src/assets/images/category-plumbing.jpg',
-      slug: 'vat-tu-cap-thoat-nuoc',
-    },
+      name: 'Chất lượng cao',
+      description: 'Chất lượng sản phẩm hàng đầu',
+      icon: <FaThumbsUp className="text-4xl text-blue-600" />,
+      link: '/ve-chung-toi'
+    }
   ];
 
   return (
-    <section className="category-grid py-10">
-      <h2 className="text-3xl font-bold text-center mb-8">Danh mục sản phẩm</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {categories.map((category) => (
-          <Link 
-            key={category.id} 
-            to={`/san-pham/${category.slug}`}
-            className="category-card"
+    <section className="section_service_end py-10">
+      <div className="container mx-auto px-4">
+        <div className="hidden md:block">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {services.map((service) => (
+              <div key={service.id} className="service-item">
+                <Link to={service.link} className="block p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-center h-full">
+                  <div className="mb-3 flex justify-center">{service.icon}</div>
+                  <h3 className="text-lg font-bold mb-2">{service.name}</h3>
+                  <p className="text-gray-600 text-sm">{service.description}</p>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile Slider */}
+        <div className="md:hidden">
+          <Swiper
+            modules={[Pagination, Autoplay]}
+            spaceBetween={20}
+            slidesPerView={1.2}
+            centeredSlides={true}
+            loop={true}
+            autoplay={{ delay: 3000 }}
+            pagination={{ clickable: true }}
+            className="swiper-service"
           >
-            <div className="overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-              <div className="relative pb-[100%]">
-                <img 
-                  src={category.image} 
-                  alt={category.name}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-3 bg-white text-center">
-                <h3 className="font-medium">{category.name}</h3>
-              </div>
-            </div>
-          </Link>
-        ))}
+            {services.map((service) => (
+              <SwiperSlide key={service.id}>
+                <Link to={service.link} className="block p-4 bg-white rounded-lg shadow-md text-center">
+                  <div className="mb-3 flex justify-center">{service.icon}</div>
+                  <h3 className="text-lg font-bold mb-2">{service.name}</h3>
+                  <p className="text-gray-600 text-sm">{service.description}</p>
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </div>
     </section>
   );

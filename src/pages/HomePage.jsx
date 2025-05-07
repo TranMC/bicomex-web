@@ -9,19 +9,26 @@ import { BlogSection } from '../components/home/BlogSection';
 export const HomePage = () => {
   return (
     <main className="home-page w-full">
+      {/* Hero Slider Section */}
       <HeroSlider />
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <CategoryGrid />
-        <FeaturedProducts />
-      </div>
       
+      {/* Dịch vụ Section */}
+      <CategoryGrid />
+      
+      {/* Sản phẩm nổi bật Section */}
+      <FeaturedProducts />
+      
+      {/* Flash Sale Section */}
       <PromotionBanner />
       
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <NewProducts />
-        <Partners />
-        <BlogSection />
-      </div>
+      {/* Sản phẩm mới Section */}
+      <NewProducts />
+      
+      {/* Blog Section */}
+      <BlogSection />
+      
+      {/* Thương hiệu Section */}
+      <Partners />
     </main>
   );
 };

@@ -115,6 +115,12 @@ button.bg-green-500:hover {
   position: relative;
 }
 
+/* Cart icon animation */
+.cart-wrapper:hover {
+  transform: translateY(-3px);
+  transition: transform 0.3s ease;
+}
+
 /* Responsive styles */
 @media (max-width: 1024px) {
   .contact-info span {
@@ -197,4 +203,131 @@ button.bg-green-500:hover {
 
 .category-group a:hover {
   transition: all 0.2s ease;
+}
+
+/* Category hover effects */
+.header-nav .group .absolute {
+  transition: all 0.3s ease;
+}
+
+/* Search bar styling */
+.header_search input:focus {
+  border-color: #2563eb;
+}
+
+/* Mobile menu styles */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidenav.active {
+  width: 80%;
+  max-width: 300px;
+}
+
+.top_menu_mobile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 15px;
+}
+
+.close_menu {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.close_menu:before, .close_menu:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  top: 50%;
+  left: 0;
+}
+
+.close_menu:before {
+  transform: rotate(45deg);
+}
+
+.close_menu:after {
+  transform: rotate(-45deg);
+}
+
+.content_memu_mb {
+  padding: 15px;
+}
+
+.link_list_mobile ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link_list_mobile li {
+  border-bottom: 1px solid #eee;
+}
+
+.link_list_mobile li a {
+  color: #333;
+  display: block;
+  padding: 10px 0;
+}
+
+.level0 {
+  display: none;
+  padding-left: 15px !important;
+}
+
+.link_list_mobile li.active .level0 {
+  display: block;
+}
+
+.opacity_menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  display: none;
+}
+
+.opacity_menu.active {
+  display: block;
+}
+
+#menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 997;
+  display: none;
+}
+
+#menu-overlay.active {
+  display: block;
 }
