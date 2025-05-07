@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaCheckCircle, FaCreditCard, FaMoneyBillWave, FaShieldAlt } from 'react-icons/fa';
-import { useCart } from '../context/CartProvider';
-import { useToast } from '../context/ToastProvider';
+import useCart from '../hooks/useCart';
+import useToast from '../hooks/useToast';
 import '../styles/pages/CheckoutPage.css';
 
 export const CheckoutPage = () => {

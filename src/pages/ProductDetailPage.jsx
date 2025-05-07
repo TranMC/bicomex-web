@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaStar, FaTruck, FaShieldAlt, FaExchangeAlt, FaMinus, FaPlus } from 'react-icons/fa';
-import { useCart } from '../context/CartProvider';
-import { useToast } from '../context/ToastProvider';
+import useCart from '../hooks/useCart';
+import useToast from '../hooks/useToast';
+import { getProductBySlug, getRelatedProducts } from '../data/products';
+import { getCategoryNameBySlug } from '../data/categories';
 import '../styles/pages/ProductDetailPage.css';
 
 export const ProductDetailPage = () => {
@@ -22,80 +24,13 @@ export const ProductDetailPage = () => {
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => {
-      const mockProducts = [
-        {
-          id: 1,
-          name: 'Xi măng Portland PC40',
-          image: 'https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2VtZW50fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
-          price: 95000,
-          salePrice: 85000,
-          rating: 4.8,
-          reviewCount: 124,
-          slug: 'xi-mang-portland-pc40',
-          category: 'vat-lieu-xay-dung',
-          brand: 'Hà Tiên',
-          description: 'Xi măng Portland PC40 Hà Tiên là loại xi măng chất lượng cao, đáp ứng tiêu chuẩn TCVN 2682:2009 và ASTM C150. Sản phẩm phù hợp cho các công trình dân dụng, công nghiệp, thủy lợi và cầu đường.',
-          features: [
-            'Cường độ nén cao sau 28 ngày',
-            'Khả năng chống thấm tốt',
-            'Độ bền cao trong môi trường khắc nghiệt',
-            'Thời gian đông kết phù hợp cho thi công'
-          ],
-          specifications: {
-            'Khối lượng': '50kg/bao',
-            'Màu sắc': 'Xám',
-            'Cường độ nén sau 28 ngày': '≥ 40 MPa',
-            'Thời gian đông kết ban đầu': '≥ 45 phút',
-            'Độ mịn (Blaine)': '≥ 2800 cm²/g'
-          },
-          stock: 500,
-          images: [
-            'https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2VtZW50fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1577490441774-691eff7263c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGNlbWVudHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1621410163841-61c76effd36e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Y2VtZW50fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60'
-          ]
-        },
-        {
-          id: 2,
-          name: 'Gạch ốp tường Đồng Tâm 30x60',
-          image: 'https://images.unsplash.com/photo-1584733303662-e5dcc1801cad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHRpbGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
-          price: 180000,
-          salePrice: null,
-          rating: 4.5,
-          reviewCount: 98,
-          slug: 'gach-op-tuong-dong-tam-30x60',
-          category: 'vat-lieu-xay-dung',
-          brand: 'Đồng Tâm',
-          description: 'Gạch ốp tường Đồng Tâm kích thước 30x60cm với họa tiết sang trọng, phù hợp cho phòng khách, phòng ngủ và các không gian nội thất khác.',
-          features: [
-            'Bề mặt phẳng, họa tiết sắc nét',
-            'Chống thấm, chống trầy xước',
-            'Dễ lau chùi, vệ sinh',
-            'Khả năng chịu nhiệt tốt'
-          ],
-          specifications: {
-            'Kích thước': '30x60cm',
-            'Độ dày': '8mm',
-            'Số viên/hộp': '8 viên',
-            'Diện tích/hộp': '1.44m²',
-            'Màu sắc': 'Trắng vân đá'
-          },
-          stock: 1200,
-          images: [
-            'https://images.unsplash.com/photo-1584733303662-e5dcc1801cad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHRpbGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1565706199018-1bbfe59adfa8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dGlsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
-            'https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dGlsZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60'
-          ]
-        },
-      ];
-
-      const foundProduct = mockProducts.find(p => p.slug === slug);
+      // Lấy thông tin sản phẩm theo slug từ data
+      const foundProduct = getProductBySlug(slug);
       setProduct(foundProduct || null);
 
       if (foundProduct) {
-        const related = mockProducts
-          .filter(p => p.category === foundProduct.category && p.id !== foundProduct.id)
-          .slice(0, 4);
+        // Lấy danh sách sản phẩm liên quan
+        const related = getRelatedProducts(foundProduct.id, foundProduct.category);
         setRelatedProducts(related);
       }
 
@@ -119,16 +54,9 @@ export const ProductDetailPage = () => {
     }
   };
 
+  // Get category name from slug
   const getCategoryName = (categorySlug) => {
-    const categories = {
-      'vat-lieu-xay-dung': 'Vật liệu xây dựng',
-      'son-phu-kien': 'Sơn & Phụ kiện',
-      'thiet-bi-dien': 'Thiết bị điện',
-      'dung-cu-xay-dung': 'Dụng cụ xây dựng',
-      'vat-lieu-noi-that': 'Vật liệu nội thất',
-      'vat-tu-cap-thoat-nuoc': 'Vật tư cấp thoát nước',
-    };
-    return categories[categorySlug] || 'Danh mục sản phẩm';
+    return getCategoryNameBySlug(categorySlug);
   };
 
   if (loading) {

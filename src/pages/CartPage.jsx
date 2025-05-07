@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaTrash, FaMinus, FaPlus, FaArrowLeft, FaShoppingCart } from 'react-icons/fa';
-import { useCart } from '../context/CartProvider';
-import { useToast } from '../context/ToastProvider';
+import useCart from '../hooks/useCart';
+import useToast from '../hooks/useToast';
 import '../styles/pages/CartPage.css';
 
 export const CartPage = () => {

@@ -1,95 +1,13 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaStar, FaCartPlus, FaEye } from 'react-icons/fa';
-import { useCart } from '../../context/CartProvider';
-import { useToast } from '../../context/ToastProvider';
+import useCart from '../../hooks/useCart';
+import useToast from '../../hooks/useToast';
+import { featuredProducts } from '../../data/featuredProducts';
 import '../../styles/components/FeaturedProducts.css';
 
 export const FeaturedProducts = () => {
   const { addToCart } = useCart();
   const toast = useToast();
-  const [products] = useState([
-    {
-      id: 1,
-      name: 'Xi măng Portland PC40',
-      image: '/assets/images/product-cement.jpg',
-      price: 95000,
-      salePrice: 85000,
-      rating: 4.8,
-      reviewCount: 124,
-      slug: 'xi-mang-portland-pc40',
-    },
-    {
-      id: 2,
-      name: 'Gạch ốp tường Đồng Tâm 30x60',
-      image: '/assets/images/product-tile.jpg',
-      price: 180000,
-      salePrice: null,
-      rating: 4.5,
-      reviewCount: 98,
-      slug: 'gach-op-tuong-dong-tam-30x60',
-    },
-    {
-      id: 3,
-      name: 'Sơn nội thất Dulux',
-      image: '/assets/images/product-paint.jpg',
-      price: 650000,
-      salePrice: 590000,
-      rating: 4.7,
-      reviewCount: 156,
-      slug: 'son-noi-that-dulux',
-    },
-    {
-      id: 4,
-      name: 'Thép xây dựng Pomina Φ10',
-      image: '/assets/images/product-steel.jpg',
-      price: 320000,
-      salePrice: null,
-      rating: 4.9,
-      reviewCount: 210,
-      slug: 'thep-xay-dung-pomina-phi10',
-    },
-    {
-      id: 5,
-      name: 'Ống nhựa uPVC Bình Minh Φ90',
-      image: '/assets/images/product-pipe.jpg',
-      price: 245000,
-      salePrice: 220000,
-      rating: 4.6,
-      reviewCount: 87,
-      slug: 'ong-nhua-upvc-binh-minh-phi90',
-    },
-    {
-      id: 6,
-      name: 'Dây điện Cadisun 2x2.5mm',
-      image: '/assets/images/product-wire.jpg',
-      price: 18000,
-      salePrice: null,
-      rating: 4.4,
-      reviewCount: 65,
-      slug: 'day-dien-cadisun-2x2-5mm',
-    },
-    {
-      id: 7,
-      name: 'Keo dán gạch Weber',
-      image: '/assets/images/product-adhesive.jpg',
-      price: 120000,
-      salePrice: 110000,
-      rating: 4.7,
-      reviewCount: 92,
-      slug: 'keo-dan-gach-weber',
-    },
-    {
-      id: 8,
-      name: 'Khóa cửa chính Yale',
-      image: '/assets/images/product-lock.jpg',
-      price: 1200000,
-      salePrice: 1050000,
-      rating: 4.8,
-      reviewCount: 113,
-      slug: 'khoa-cua-chinh-yale',
-    },
-  ]);
 
   // Format currency
   const formatPrice = (price) => {
@@ -124,7 +42,7 @@ export const FeaturedProducts = () => {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
+        {featuredProducts.map((product) => (
           <div key={product.id} className="product-card bg-white rounded-lg shadow-md overflow-hidden">
             <div className="relative">
               <Link to={`/san-pham/${product.slug}`} className="block">

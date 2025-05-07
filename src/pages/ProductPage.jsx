@@ -2,13 +2,16 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FaStar, FaFilter, FaSort, FaList, FaThLarge } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useCart } from '../context/CartProvider';
-import { useToast } from '../context/ToastProvider';
+import useCart from '../hooks/useCart';
+import useToast from '../hooks/useToast';
+import { getProductsByCategory } from '../data/products';
+import { getCategoryNameBySlug } from '../data/categories';
+import { getBrandNames } from '../data/brands';
 import '../styles/pages/ProductPage.css';
 
 export const ProductPage = () => {
   const { category } = useParams();
-  const [products, setProducts] = useState([]);
+  const [displayProducts, setDisplayProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   const [filters, setFilters] = useState({
@@ -29,89 +32,9 @@ export const ProductPage = () => {
     setLoading(true);
     // Simulate API call with setTimeout
     const timer = setTimeout(() => {
-      // Mock data - in a real app, this would come from an API
-      const mockProducts = [
-        {
-          id: 1,
-          name: 'Xi măng Portland PC40',
-          image: 'https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y2VtZW50fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
-          price: 95000,
-          salePrice: 85000,
-          rating: 4.8,
-          reviewCount: 124,
-          slug: 'xi-mang-portland-pc40',
-          category: 'vat-lieu-xay-dung',
-          brand: 'Hà Tiên',
-        },
-        {
-          id: 2,
-          name: 'Gạch ốp tường Đồng Tâm 30x60',
-          image: 'https://images.unsplash.com/photo-1584733303662-e5dcc1801cad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHRpbGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
-          price: 180000,
-          salePrice: null,
-          rating: 4.5,
-          reviewCount: 98,
-          slug: 'gach-op-tuong-dong-tam-30x60',
-          category: 'vat-lieu-xay-dung',
-          brand: 'Đồng Tâm',
-        },
-        {
-          id: 3,
-          name: 'Sơn nội thất Dulux',
-          image: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGFpbnQlMjBjYW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
-          price: 650000,
-          salePrice: 590000,
-          rating: 4.7,
-          reviewCount: 156,
-          slug: 'son-noi-that-dulux',
-          category: 'son-phu-kien',
-          brand: 'Dulux',
-        },
-        {
-          id: 4,
-          name: 'Thép xây dựng Pomina Φ10',
-          image: 'https://images.unsplash.com/photo-1515343480029-43cdfe6b6aae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3RlZWx8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
-          price: 320000,
-          salePrice: null,
-          rating: 4.9,
-          reviewCount: 210,
-          slug: 'thep-xay-dung-pomina-phi10',
-          category: 'vat-lieu-xay-dung',
-          brand: 'Pomina',
-        },
-        {
-          id: 5,
-          name: 'Ống nhựa uPVC Bình Minh Φ90',
-          image: 'https://images.unsplash.com/photo-1599611863977-91adabb6fd6c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cGlwZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
-          price: 245000,
-          salePrice: 220000,
-          rating: 4.6,
-          reviewCount: 87,
-          slug: 'ong-nhua-upvc-binh-minh-phi90',
-          category: 'vat-tu-cap-thoat-nuoc',
-          brand: 'Bình Minh',
-        },
-        {
-          id: 6,
-          name: 'Dây điện Cadisun 2x2.5mm',
-          image: 'https://images.unsplash.com/photo-1621155346337-1d19476ba7d6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGVsZWN0cmljJTIwd2lyZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
-          price: 18000,
-          salePrice: null,
-          rating: 4.4,
-          reviewCount: 65,
-          slug: 'day-dien-cadisun-2x2-5mm',
-          category: 'thiet-bi-dien',
-          brand: 'Cadisun',
-        },
-      ];
-
-      // Filter products by category if a category is provided
-      let filteredProducts = mockProducts;
-      if (category) {
-        filteredProducts = mockProducts.filter(product => product.category === category);
-      }
-
-      setProducts(filteredProducts);
+      // Lấy sản phẩm từ dữ liệu
+      const filteredProducts = getProductsByCategory(category);
+      setDisplayProducts(filteredProducts);
       setLoading(false);
     }, 1000);
 
@@ -129,23 +52,8 @@ export const ProductPage = () => {
     }));
   };
 
-  // Get category name from slug
-  const getCategoryName = (categorySlug) => {
-    const categories = {
-      'vat-lieu-xay-dung': 'Vật liệu xây dựng',
-      'son-phu-kien': 'Sơn & Phụ kiện',
-      'thiet-bi-dien': 'Thiết bị điện',
-      'dung-cu-xay-dung': 'Dụng cụ xây dựng',
-      'vat-lieu-noi-that': 'Vật liệu nội thất',
-      'vat-tu-cap-thoat-nuoc': 'Vật tư cấp thoát nước',
-    };
-    return categories[categorySlug] || 'Tất cả sản phẩm';
-  };
-
   // Available brands for filter
-  const availableBrands = [
-    'Hà Tiên', 'Đồng Tâm', 'Dulux', 'Pomina', 'Bình Minh', 'Cadisun', 'TOTO', 'Viglacera'
-  ];
+  const availableBrands = getBrandNames();
 
   const handleAddToCart = (product) => {
     addToCart(product, 1);
@@ -163,13 +71,13 @@ export const ProductPage = () => {
             {category && (
               <>
                 <span className="mx-2 text-gray-500">/</span>
-                <span className="text-blue-600">{getCategoryName(category)}</span>
+                <span className="text-blue-600">{getCategoryNameBySlug(category)}</span>
               </>
             )}
           </nav>
         </div>
 
-        <h1 className="text-3xl font-bold mb-8">{category ? getCategoryName(category) : 'Tất cả sản phẩm'}</h1>
+        <h1 className="text-3xl font-bold mb-8">{category ? getCategoryNameBySlug(category) : 'Tất cả sản phẩm'}</h1>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters sidebar */}
@@ -269,7 +177,7 @@ export const ProductPage = () => {
               <div className="flex justify-center items-center h-64">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
               </div>
-            ) : products.length === 0 ? (
+            ) : displayProducts.length === 0 ? (
               <div className="bg-white rounded-lg shadow-md p-8 text-center">
                 <h3 className="text-xl font-medium mb-4">Không tìm thấy sản phẩm nào</h3>
                 <p className="text-gray-600 mb-6">Không có sản phẩm nào phù hợp với tiêu chí tìm kiếm của bạn.</p>
@@ -284,7 +192,7 @@ export const ProductPage = () => {
               <>
                 {viewMode === 'grid' ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {products.map((product) => (
+                    {displayProducts.map((product) => (
                       <div key={product.id} className="product-card bg-white rounded-lg shadow-md overflow-hidden">
                         <div className="relative">
                           <Link to={`/san-pham/${product.slug}`} className="block">
@@ -339,7 +247,7 @@ export const ProductPage = () => {
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    {products.map((product) => (
+                    {displayProducts.map((product) => (
                       <div key={product.id} className="product-card-list bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row">
                         <div className="relative md:w-1/3">
                           <Link to={`/san-pham/${product.slug}`} className="block">

@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaStar, FaCartPlus, FaEye } from 'react-icons/fa';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-import { useCart } from '../../context/CartProvider';
-import { useToast } from '../../context/ToastProvider';
+import useCart from '../../hooks/useCart';
+import useToast from '../../hooks/useToast';
+import { newProducts } from '../../data/newProducts';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -13,69 +13,7 @@ import '../../styles/components/NewProducts.css';
 export const NewProducts = () => {
   const { addToCart } = useCart();
   const toast = useToast();
-  const [products] = useState([
-    {
-      id: 1,
-      name: 'Cáp điện Cadivi 4x2.5mm²',
-      image: '/assets/images/new-product1.jpg',
-      price: 45000,
-      salePrice: null,
-      rating: 4.7,
-      reviewCount: 32,
-      slug: 'cap-dien-cadivi-4x2-5mm',
-    },
-    {
-      id: 2,
-      name: 'Sơn ngoại thất Jotun Jotashield',
-      image: '/assets/images/new-product2.jpg',
-      price: 850000,
-      salePrice: 799000,
-      rating: 4.8,
-      reviewCount: 18,
-      slug: 'son-ngoai-that-jotun-jotashield',
-    },
-    {
-      id: 3,
-      name: 'Gạch granite Viglacera 800x800',
-      image: '/assets/images/new-product3.jpg',
-      price: 320000,
-      salePrice: null,
-      rating: 4.6,
-      reviewCount: 24,
-      slug: 'gach-granite-viglacera-800x800',
-    },
-    {
-      id: 4,
-      name: 'Bồn cầu TOTO C108',
-      image: '/assets/images/new-product4.jpg',
-      price: 3500000,
-      salePrice: 3200000,
-      rating: 4.9,
-      reviewCount: 42,
-      slug: 'bon-cau-toto-c108',
-    },
-    {
-      id: 5,
-      name: 'Máy khoan Bosch GSB 550',
-      image: '/assets/images/new-product5.jpg',
-      price: 1450000,
-      salePrice: 1299000,
-      rating: 4.7,
-      reviewCount: 56,
-      slug: 'may-khoan-bosch-gsb-550',
-    },
-    {
-      id: 6,
-      name: 'Keo chống thấm Weber Seal',
-      image: '/assets/images/new-product6.jpg',
-      price: 185000,
-      salePrice: null,
-      rating: 4.5,
-      reviewCount: 28,
-      slug: 'keo-chong-tham-weber-seal',
-    },
-  ]);
-
+  
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
@@ -124,7 +62,7 @@ export const NewProducts = () => {
         }}
         className="new-products-slider"
       >
-        {products.map((product) => (
+        {newProducts.map((product) => (
           <SwiperSlide key={product.id}>
             <div className="product-card bg-white rounded-lg shadow-md overflow-hidden h-full">
               <div className="relative">
