@@ -185,7 +185,7 @@ export const Footer = () => {
 
           <div className="footer-bottom">
             <p className="copyright">&copy; {new Date().getFullYear()} BICOMEX. Tất cả quyền được bảo lưu.</p>
-            <p className="credits">Thiết kế bởi <a href="#" className="credits-link">Team Bicomex</a></p>
+            <p className="credits">Thiết kế bởi <a href="#" className="credits-link">Team Lmao</a></p>
           </div>
         </div>
       </div>
