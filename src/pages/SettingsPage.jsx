@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaUser, FaAddressCard, FaShoppingBag, FaCog, FaLock, FaBell, FaTrash } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
+import useConfirmDialog from '../hooks/useConfirmDialog';
 import '../styles/pages/SettingsPage.css';
 
 export const SettingsPage = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated, updateUserSettings, logout } = useAuth();
+  const { alert, confirm } = useConfirmDialog();
   const [activeSection, setActiveSection] = useState('password');
   const [formData, setFormData] = useState({
     currentPassword: '',
@@ -81,7 +83,11 @@ export const SettingsPage = () => {
     
     if (validatePasswordForm()) {
       // Gửi yêu cầu thay đổi mật khẩu
-      alert('Mật khẩu đã được thay đổi thành công!');
+      alert({
+        title: 'Thành công',
+        message: 'Mật khẩu đã được thay đổi thành công!',
+        type: 'success'
+      });
       setFormData({
         currentPassword: '',
         newPassword: '',
@@ -95,16 +101,28 @@ export const SettingsPage = () => {
     
     // Cập nhật cài đặt thông báo
     updateUserSettings({ notifications: notificationSettings });
-    alert('Cài đặt thông báo đã được cập nhật!');
+    alert({
+      title: 'Thành công',
+      message: 'Cài đặt thông báo đã được cập nhật!',
+      type: 'success'
+    });
   };
 
   const handleDeleteAccount = () => {
-    // Xác nhận xóa tài khoản
-    if (window.confirm('Bạn có chắc chắn muốn xóa tài khoản? Hành động này không thể hoàn tác.')) {
-      // Xóa tài khoản
-      logout();
-      navigate('/');
-    }
+    // Xác nhận xóa tài khoản bằng popup thay vì window.confirm
+    confirm({
+      title: 'Xóa tài khoản',
+      message: 'Bạn có chắc chắn muốn xóa tài khoản? Hành động này không thể hoàn tác.',
+      type: 'error',
+      confirmText: 'Xóa tài khoản',
+      cancelText: 'Hủy'
+    }).then(confirmed => {
+      if (confirmed) {
+        // Xóa tài khoản
+        logout();
+        navigate('/');
+      }
+    });
   };
 
   // Các menu tab

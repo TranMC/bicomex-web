@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { FaUser, FaAddressCard, FaShoppingBag, FaCog, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
+import useConfirmDialog from '../hooks/useConfirmDialog';
 import '../styles/pages/ProfilePage.css';
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuthenticated, updateUserProfile } = useAuth();
+  const { alert } = useConfirmDialog();
   const [activeTab, setActiveTab] = useState('info');
   const [formData, setFormData] = useState({
     name: '',
@@ -59,8 +61,12 @@ export const ProfilePage = () => {
     // Cập nhật thông tin người dùng
     updateUserProfile(formData);
     setIsEditing(false);
-    // Hiển thị thông báo thành công
-    alert('Thông tin tài khoản đã được cập nhật!');
+    // Hiển thị thông báo thành công bằng popup thay vì alert
+    alert({
+      title: 'Thành công',
+      message: 'Thông tin tài khoản đã được cập nhật!',
+      type: 'success'
+    });
   };
 
   // Các menu tab

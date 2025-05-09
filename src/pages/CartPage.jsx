@@ -3,12 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaTrash, FaMinus, FaPlus, FaArrowLeft, FaShoppingCart } from 'react-icons/fa';
 import useCart from '../hooks/useCart';
 import useToast from '../hooks/useToast';
+import useConfirmDialog from '../hooks/useConfirmDialog';
 import '../styles/pages/CartPage.css';
 
 export const CartPage = () => {
   const { cartItems, cartTotal, updateQuantity, removeFromCart, clearCart } = useCart();
   const toast = useToast();
   const navigate = useNavigate();
+  const { confirm } = useConfirmDialog();
   const [couponCode, setCouponCode] = useState('');
   const [discount, setDiscount] = useState(0);
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
@@ -43,11 +45,17 @@ export const CartPage = () => {
   const handleQuantityChange = (item, change) => {
     const newQuantity = item.quantity + change;
     if (newQuantity <= 0) {
-      // Show confirmation before removing item
-      if (window.confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?')) {
-        removeFromCart(item.id);
-        toast.success(`Đã xóa ${item.name} khỏi giỏ hàng!`);
-      }
+      // Show confirmation using dialog instead of window.confirm
+      confirm({
+        title: 'Xóa sản phẩm',
+        message: 'Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?',
+        type: 'warning'
+      }).then(confirmed => {
+        if (confirmed) {
+          removeFromCart(item.id);
+          toast.success(`Đã xóa ${item.name} khỏi giỏ hàng!`);
+        }
+      });
     } else {
       updateQuantity(item.id, newQuantity);
     }
@@ -58,10 +66,16 @@ export const CartPage = () => {
     const value = parseInt(e.target.value);
     if (!isNaN(value)) {
       if (value <= 0) {
-        if (window.confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?')) {
-          removeFromCart(item.id);
-          toast.success(`Đã xóa ${item.name} khỏi giỏ hàng!`);
-        }
+        confirm({
+          title: 'Xóa sản phẩm',
+          message: 'Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?',
+          type: 'warning'
+        }).then(confirmed => {
+          if (confirmed) {
+            removeFromCart(item.id);
+            toast.success(`Đã xóa ${item.name} khỏi giỏ hàng!`);
+          }
+        });
       } else {
         updateQuantity(item.id, value);
       }
@@ -70,18 +84,30 @@ export const CartPage = () => {
 
   // Handle remove item
   const handleRemoveItem = (item) => {
-    if (window.confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?')) {
-      removeFromCart(item.id);
-      toast.success(`Đã xóa ${item.name} khỏi giỏ hàng!`);
-    }
+    confirm({
+      title: 'Xóa sản phẩm',
+      message: 'Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?',
+      type: 'warning'
+    }).then(confirmed => {
+      if (confirmed) {
+        removeFromCart(item.id);
+        toast.success(`Đã xóa ${item.name} khỏi giỏ hàng!`);
+      }
+    });
   };
 
   // Handle clear cart
   const handleClearCart = () => {
-    if (window.confirm('Bạn có chắc muốn xóa tất cả sản phẩm khỏi giỏ hàng?')) {
-      clearCart();
-      toast.success('Đã xóa tất cả sản phẩm khỏi giỏ hàng!');
-    }
+    confirm({
+      title: 'Xóa tất cả sản phẩm',
+      message: 'Bạn có chắc muốn xóa tất cả sản phẩm khỏi giỏ hàng?',
+      type: 'warning'
+    }).then(confirmed => {
+      if (confirmed) {
+        clearCart();
+        toast.success('Đã xóa tất cả sản phẩm khỏi giỏ hàng!');
+      }
+    });
   };
 
   // Handle apply coupon
