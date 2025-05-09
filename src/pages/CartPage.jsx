@@ -95,8 +95,8 @@ export const CartPage = () => {
         setDiscount(discountAmount);
         toast.success(`Đã áp dụng mã giảm giá: Giảm ${formatPrice(discountAmount)}`);
       } else if (couponCode.toUpperCase() === 'WELCOME50K') {
-        setDiscount(50000);
-        toast.success('Đã áp dụng mã giảm giá: Giảm 50.000₫');
+        setDiscount(500000);
+        toast.success('Đã áp dụng mã giảm giá: Giảm 500.000₫');
       } else {
         toast.error('Mã giảm giá không hợp lệ hoặc đã hết hạn!');
       }
@@ -346,7 +346,7 @@ export const CartPage = () => {
                   </button>
                 </div>
                 <div className="text-xs text-gray-500 mt-2">
-                  * Nhập mã "BICOMEX10" để được giảm 10%, "WELCOME50K" để giảm 50.000₫
+                  * Nhập mã "BICOMEX10" để được giảm 50%, "WELCOME50K" để giảm 500.000₫
                 </div>
               </div>
               

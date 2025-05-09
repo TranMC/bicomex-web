@@ -44,16 +44,16 @@ export const Partners = () => {
   };
 
   return (
-    <section className="section_brand py-10 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="section-title mb-8">
-          <h2 className="title-head text-center text-3xl font-bold">
-            Thương hiệu <span className="text-blue-600">nổi bật</span>
+    <section className="partners-section">
+      <div className="partners-container">
+        <div className="section-title-container">
+          <h2 className="section-title">
+            Thương hiệu <span className="section-title-highlight">nổi bật</span>
           </h2>
-          <p className="text-center text-gray-600 mt-2">Bicomex tự hào là đại lý phân phối chính thức của nhiều thương hiệu nổi tiếng</p>
+          <p className="section-subtitle">Bicomex tự hào là đại lý phân phối chính thức của nhiều thương hiệu nổi tiếng</p>
         </div>
 
-        <div className="brand-wrapper">
+        <div className="partners-slider-wrapper">
           <Swiper
             modules={[Autoplay]}
             spaceBetween={30}
@@ -71,15 +71,15 @@ export const Partners = () => {
                 slidesPerView: 6,
               },
             }}
-            className="swiper-brand"
+            className="partners-swiper"
           >
             {brands.map((brand) => (
               <SwiperSlide key={brand.id}>
-                <div className="item-brand bg-white p-4 rounded shadow-sm border border-gray-100 h-24 flex items-center justify-center hover:shadow-md transition-all">
+                <div className="brand-item">
                   <img 
                     src={brand.logo} 
                     alt={brand.name} 
-                    className="max-h-16 max-w-full object-contain opacity-70 hover:opacity-100 transition-opacity"
+                    className="brand-logo"
                     onError={handleImageError}
                   />
                 </div>

@@ -109,38 +109,38 @@ export const PromotionBanner = () => {
     }, [endDate]);
 
     return (
-      <div className="wrap_time flex space-x-2 mt-2">
-        <div className="time-item bg-blue-600 text-white px-2 py-1 rounded">
-          <span className="font-bold">{timeRemaining.days}</span>
-          <p className="text-xs">Ngày</p>
+      <div className="countdown-container">
+        <div className="time-block">
+          <span className="time-value">{timeRemaining.days}</span>
+          <p className="time-label">Ngày</p>
         </div>
-        <div className="time-item bg-blue-600 text-white px-2 py-1 rounded">
-          <span className="font-bold">{timeRemaining.hours}</span>
-          <p className="text-xs">Giờ</p>
+        <div className="time-block">
+          <span className="time-value">{timeRemaining.hours}</span>
+          <p className="time-label">Giờ</p>
         </div>
-        <div className="time-item bg-blue-600 text-white px-2 py-1 rounded">
-          <span className="font-bold">{timeRemaining.minutes}</span>
-          <p className="text-xs">Phút</p>
+        <div className="time-block">
+          <span className="time-value">{timeRemaining.minutes}</span>
+          <p className="time-label">Phút</p>
         </div>
-        <div className="time-item bg-blue-600 text-white px-2 py-1 rounded">
-          <span className="font-bold">{timeRemaining.seconds}</span>
-          <p className="text-xs">Giây</p>
+        <div className="time-block">
+          <span className="time-value">{timeRemaining.seconds}</span>
+          <p className="time-label">Giây</p>
         </div>
       </div>
     );
   };
 
   return (
-    <section className="section_sale_shock py-10 bg-gray-100">
-      <div className="container mx-auto px-4">
-        <div className="section-title mb-8">
-          <h2 className="title-head text-center text-3xl font-bold">
-            <span className="text-blue-600">Flash Sale</span> - Giảm giá sốc
+    <section className="promotion-section">
+      <div className="promotion-container">
+        <div className="section-title-container">
+          <h2 className="section-title">
+            <span className="section-title-highlight">Flash Sale</span> - Giảm giá sốc
           </h2>
-          <p className="text-center text-gray-600 mt-2">Chương trình khuyến mãi có giới hạn, hãy nhanh tay mua ngay!</p>
+          <p className="section-subtitle">Chương trình khuyến mãi có giới hạn, hãy nhanh tay mua ngay!</p>
         </div>
 
-        <div className="swiper_sale_shock_wrapper">
+        <div className="promotion-slider-wrapper">
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
             spaceBetween={30}
@@ -153,49 +153,47 @@ export const PromotionBanner = () => {
             pagination={{ clickable: true }}
             autoplay={{ delay: 5000 }}
             loop={true}
-            className="swiper_sale_shock"
+            className="swiper-promotion"
           >
             {promotionProducts.map((product) => (
               <SwiperSlide key={product.id}>
-                <div className="saler_item">
-                  <div className="product-box-h product-box-big bg-white shadow-md rounded-lg overflow-hidden">
-                    <div className="flex flex-col md:flex-row">
-                      <div className="md:w-1/2">
-                        <Link to={`/san-pham/${product.slug}`} className="block p-4">
-                          <img 
-                            src={product.image} 
-                            alt={product.name} 
-                            className="w-full h-48 md:h-60 object-cover rounded-lg"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src = "https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-nuoc-jotun-majestic-dep-hoan-hao-2-1.jpg?v=1553090388617";
-                            }}
-                          />
-                        </Link>
+                <div className="promotion-item">
+                  <div className="promotion-card">
+                    <div className="promotion-image-container">
+                      <Link to={`/san-pham/${product.slug}`}>
+                        <img 
+                          src={product.image} 
+                          alt={product.name} 
+                          className="promotion-image"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = "https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-nuoc-jotun-majestic-dep-hoan-hao-2-1.jpg?v=1553090388617";
+                          }}
+                        />
+                      </Link>
+                    </div>
+                    <div className="promotion-content">
+                      <div className="discount-tag">Giảm {product.discount}%</div>
+                      <Link to={`/san-pham/${product.slug}`}>
+                        <h3 className="product-title">{product.name}</h3>
+                      </Link>
+                      <div className="price-container">
+                        <span className="price-current">{formatPrice(product.salePrice)}</span>
+                        <span className="price-original">{formatPrice(product.price)}</span>
                       </div>
-                      <div className="md:w-1/2 p-4">
-                        <div className="sale-flash-tag bg-red-600 text-white px-2 py-1 rounded inline-block mb-2 text-sm">Giảm {product.discount}%</div>
-                        <Link to={`/san-pham/${product.slug}`}>
-                          <h3 className="font-bold text-xl mb-2 hover:text-blue-600 transition-colors">{product.name}</h3>
-                        </Link>
-                        <div className="price-box mb-3 flex items-center">
-                          <span className="price text-red-600 text-lg font-bold mr-2">{formatPrice(product.salePrice)}</span>
-                          <span className="price-old text-gray-500 line-through text-sm">{formatPrice(product.price)}</span>
-                        </div>
-                        <div className="product-summary mb-4">
-                          <span className="text-gray-600 line-clamp-3">{product.description}</span>
-                        </div>
+                      <div className="product-description line-clamp-3">
+                        {product.description}
+                      </div>
 
-                        {/* Countdown timer */}
-                        <CountdownTimer endDate={product.endDate} />
-                        
-                        <Link 
-                          to={`/san-pham/${product.slug}`} 
-                          className="mt-4 inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded font-medium transition-colors"
-                        >
-                          Mua ngay
-                        </Link>
-                      </div>
+                      {/* Countdown timer */}
+                      <CountdownTimer endDate={product.endDate} />
+                      
+                      <Link 
+                        to={`/san-pham/${product.slug}`} 
+                        className="buy-now-btn"
+                      >
+                        Mua ngay
+                      </Link>
                     </div>
                   </div>
                 </div>

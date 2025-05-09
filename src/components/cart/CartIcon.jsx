@@ -7,19 +7,27 @@ import '../../styles/components/CartIcon.css';
 export const CartIcon = () => {
   const { cartItems, cartTotal, removeFromCart } = useCart();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isHoveringCartIcon, setIsHoveringCartIcon] = useState(false);
+  const [isHoveringDropdown, setIsHoveringDropdown] = useState(false);
+  const [dropdownManuallyOpened, setDropdownManuallyOpened] = useState(false);
+
   const dropdownRef = useRef(null);
+  const cartIconContainerRef = useRef(null); 
+  const hideDropdownTimeoutRef = useRef(null);
   const navigate = useNavigate();
 
-  // Format price in VND
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
 
-  // Handle outside click to close dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (
+        cartIconContainerRef.current &&
+        !cartIconContainerRef.current.contains(event.target)
+      ) {
         setShowDropdown(false);
+        setDropdownManuallyOpened(false);
       }
     };
 
@@ -29,29 +37,110 @@ export const CartIcon = () => {
     };
   }, []);
 
-  // Handle view cart button click
-  const handleViewCart = () => {
-    setShowDropdown(false);
-    navigate('/gio-hang');
+  useEffect(() => {
+    const handleScroll = () => {
+      if (showDropdown) {
+        setShowDropdown(false);
+        setDropdownManuallyOpened(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [showDropdown]);
+
+  useEffect(() => {
+    // Clear any existing timeout when dependencies change
+    if (hideDropdownTimeoutRef.current) {
+      clearTimeout(hideDropdownTimeoutRef.current);
+    }
+
+    if (isHoveringCartIcon || isHoveringDropdown) {
+      setShowDropdown(true);
+    } else if (!dropdownManuallyOpened) {
+      // Only set timeout to hide if not manually opened and not hovering
+      hideDropdownTimeoutRef.current = setTimeout(() => {
+        setShowDropdown(false);
+      }, 300); // Delay before hiding
+    }
+
+    // Cleanup timeout on unmount or when dependencies change
+    return () => {
+      if (hideDropdownTimeoutRef.current) {
+        clearTimeout(hideDropdownTimeoutRef.current);
+      }
+    };
+  }, [isHoveringCartIcon, isHoveringDropdown, dropdownManuallyOpened]);
+
+
+  const handleCartIconMouseEnter = () => {
+    setIsHoveringCartIcon(true);
   };
 
-  // Handle checkout button click
-  const handleCheckout = () => {
-    setShowDropdown(false);
-    navigate('/thanh-toan');
+  const handleCartIconMouseLeave = () => {
+    setIsHoveringCartIcon(false);
   };
 
-  // Handle remove item
+  const handleDropdownMouseEnter = () => {
+    setIsHoveringDropdown(true);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    setIsHoveringDropdown(false);
+  };
+
+  const toggleDropdown = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const newShowState = !showDropdown;
+    setShowDropdown(newShowState);
+    setDropdownManuallyOpened(newShowState); // If we toggle it on, it's manually opened
+  };
+
+  const handleNavigate = (path) => {
+    setShowDropdown(false);
+    setDropdownManuallyOpened(false);
+    navigate(path);
+  };
+  
+  const handleViewCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleNavigate('/gio-hang');
+  };
+
+  const handleCheckout = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleNavigate('/thanh-toan');
+  };
+
   const handleRemoveItem = (e, itemId) => {
+    e.preventDefault();
     e.stopPropagation();
     removeFromCart(itemId);
+    // Keep dropdown open after removing an item if it was manually opened or still hovering
+    if (dropdownManuallyOpened || isHoveringCartIcon || isHoveringDropdown) {
+        setShowDropdown(true);
+    }
   };
 
   return (
-    <div className="cart-icon relative" ref={dropdownRef}>
-          <div 
-        className="flex items-center text-white cursor-pointer"
-        onClick={() => setShowDropdown(!showDropdown)}
+    <div
+      className="cart-icon-container relative" // Changed class name for clarity
+      ref={cartIconContainerRef}
+      onMouseEnter={handleCartIconMouseEnter}
+      onMouseLeave={handleCartIconMouseLeave}
+      style={{ zIndex: 99998 }} 
+    >
+      <div
+        className="cart-icon flex items-center text-white cursor-pointer"
+        onClick={toggleDropdown}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleDropdown(e);}}
       >
         <div className="cart-count relative p-2">
           <FaShoppingCart className="text-2xl" />
@@ -72,7 +161,14 @@ export const CartIcon = () => {
       </div>
 
       {showDropdown && (
-        <div className="cart-dropdown absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl z-50">
+        <div
+          className="cart-dropdown absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl"
+          ref={dropdownRef}
+          onMouseEnter={handleDropdownMouseEnter}
+          onMouseLeave={handleDropdownMouseLeave}
+          onClick={(e) => e.stopPropagation()} // Prevent clicks inside dropdown from closing it via handleClickOutside
+          style={{ zIndex: 99999, animation: 'none', transition: 'none' }} // Increased z-index
+        >
           <div className="cart-header border-b p-3">
             <h3 className="text-lg font-medium">Giỏ hàng ({cartItems.length})</h3>
           </div>
@@ -95,7 +191,7 @@ export const CartIcon = () => {
                       <Link 
                         to={`/san-pham/${item.slug}`} 
                         className="text-sm font-medium hover:text-blue-600 line-clamp-2"
-                        onClick={() => setShowDropdown(false)}
+                        onClick={() => handleNavigate(`/san-pham/${item.slug}`)}
                       >
                         {item.name}
                       </Link>
@@ -109,6 +205,7 @@ export const CartIcon = () => {
                         <button 
                           className="text-red-500 hover:text-red-700"
                           onClick={(e) => handleRemoveItem(e, item.id)}
+                          aria-label={`Xóa ${item.name} khỏi giỏ hàng`}
                         >
                           <FaTrash size={14} />
                         </button>

@@ -1,0 +1,274 @@
+/* Footer Styles */
+.footer {
+  width: 100%;
+}
+
+/* Newsletter Section */
+.newsletter {
+  background-color: #2563eb;
+  padding: 2.5rem 0;
+}
+
+.newsletter-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.newsletter-content {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .newsletter-content {
+    width: 50%;
+    margin-bottom: 0;
+  }
+}
+
+.newsletter-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.newsletter-description {
+  color: white;
+  opacity: 0.9;
+}
+
+.newsletter-form-container {
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .newsletter-form-container {
+    width: 50%;
+  }
+}
+
+.newsletter-form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+  .newsletter-form {
+    flex-wrap: nowrap;
+  }
+}
+
+.newsletter-input {
+  width: 100%;
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+  outline: none;
+}
+
+.newsletter-button {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #1e40af;
+  color: white;
+  font-weight: 500;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.newsletter-button:hover {
+  background-color: #1e3a8a;
+}
+
+@media (min-width: 768px) {
+  .newsletter-button {
+    width: auto;
+    margin-top: 0;
+  }
+}
+
+/* Main Footer */
+.site-footer {
+  background-color: #1f2937;
+  color: white;
+  padding-top: 2.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+/* Footer Title */
+.footer-title {
+  position: relative;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #4b5563;
+}
+
+/* Footer Content */
+.footer-content {
+  margin-top: 1rem;
+}
+
+/* Logo Footer */
+.logo-footer {
+  margin-bottom: 1rem;
+}
+
+.logo-image {
+  max-height: 100%;
+}
+
+.footer-description {
+  margin-bottom: 1rem;
+  color: #d1d5db;
+}
+
+/* Social Icons */
+.social-icons {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #4b5563;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.social-icon-facebook:hover {
+  background-color: #2563eb;
+}
+
+.social-icon-twitter:hover {
+  background-color: #38bdf8;
+}
+
+.social-icon-instagram:hover {
+  background-color: #db2777;
+}
+
+.social-icon-youtube:hover {
+  background-color: #dc2626;
+}
+
+/* Footer Links */
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-link {
+  color: #d1d5db;
+  display: flex;
+  align-items: center;
+}
+
+.footer-link:hover {
+  color: white;
+}
+
+.footer-link-icon {
+  margin-right: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Contact Info */
+.contact-company {
+  margin-bottom: 1rem;
+}
+
+.company-name {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.company-registration {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.contact-icon {
+  margin-top: 0.25rem;
+  margin-right: 0.75rem;
+  color: #60a5fa;
+}
+
+.contact-text {
+  display: inline-block;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  border-top: 1px solid #4b5563;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  text-align: center;
+  color: #9ca3af;
+}
+
+.copyright {
+  margin-bottom: 0.5rem;
+}
+
+.credits {
+  font-size: 0.875rem;
+}
+
+.credits-link {
+  color: #60a5fa;
+}
+
+.credits-link:hover {
+  text-decoration: underline;
+}

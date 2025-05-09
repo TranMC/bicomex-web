@@ -15,3 +15,223 @@
 .promo-item:hover img {
   transform: scale(1.05);
 }
+
+/* Promotion Banner Swiper styles */
+.swiper_sale_shock {
+  position: relative;
+  z-index: 0 !important;
+}
+
+/* Hide navigation and pagination */
+.swiper_sale_shock .swiper-button-next,
+.swiper_sale_shock .swiper-button-prev,
+.swiper_sale_shock .swiper-pagination {
+  display: none !important;
+}
+
+/* Make sure promotion items are clickable */
+.swiper_sale_shock .saler_item,
+.swiper_sale_shock a,
+.swiper_sale_shock .product-box-h {
+  pointer-events: auto !important;
+}
+
+/* Ensure slider container doesn't rise above other elements */
+.section_sale_shock .swiper,
+.section_sale_shock .swiper-container,
+.section_sale_shock .swiper-initialized,
+.section_sale_shock .swiper-horizontal,
+.section_sale_shock .swiper-backface-hidden {
+  position: relative !important;
+  z-index: 0 !important;
+}
+
+/* Promotion Banner Styles */
+.promotion-section {
+  padding: 2.5rem 0;
+  background-color: #f3f4f6;
+}
+
+.promotion-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.section-title-container {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.section-title-highlight {
+  color: #2563eb;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: #4b5563;
+  margin-top: 0.5rem;
+}
+
+/* Promotion Card */
+.promotion-item {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.promotion-card {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .promotion-card {
+    flex-direction: row;
+  }
+}
+
+.promotion-image-container {
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .promotion-image-container {
+    width: 50%;
+  }
+}
+
+.promotion-image {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .promotion-image {
+    height: 15rem;
+  }
+}
+
+.promotion-content {
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .promotion-content {
+    width: 50%;
+  }
+}
+
+/* Discount Tag */
+.discount-tag {
+  display: inline-block;
+  background-color: #dc2626;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Product Info */
+.product-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s;
+}
+
+.product-title:hover {
+  color: #2563eb;
+}
+
+.price-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.price-current {
+  color: #dc2626;
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+.price-original {
+  color: #6b7280;
+  text-decoration: line-through;
+  font-size: 0.875rem;
+}
+
+.product-description {
+  color: #4b5563;
+  margin-bottom: 1rem;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Countdown Timer */
+.countdown-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.time-block {
+  background-color: #2563eb;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.time-value {
+  font-weight: 700;
+}
+
+.time-label {
+  font-size: 0.75rem;
+}
+
+/* Buy Now Button */
+.buy-now-btn {
+  display: inline-block;
+  margin-top: 1rem;
+  background-color: #2563eb;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.buy-now-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* Swiper Customization */
+.swiper-promotion {
+  padding-bottom: 3rem !important;
+}
+
+.swiper-promotion .swiper-button-next,
+.swiper-promotion .swiper-button-prev {
+  color: #2563eb;
+}
+
+.swiper-promotion .swiper-pagination-bullet-active {
+  background-color: #2563eb;
+}

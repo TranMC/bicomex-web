@@ -1,15 +1,35 @@
 .cart-icon-container {
   position: relative;
+  /* Add these for the "nhô lên" (jut out) effect and stability */
+  transition: transform 0.15s ease-out;
+  backface-visibility: hidden; /* May help with rendering artifacts during transform */
+  will-change: transform; /* Hint to the browser about upcoming transform changes */
+  /* z-index is primarily controlled by inline styles in the JSX (e.g., 99998) */
+}
+
+.cart-icon-container:hover {
+  transform: translateY(-3px); /* "nhô lên" (jut out) effect - adjust px as needed */
+  /* The high z-index from inline style should ensure it stays on top */
+}
+
+.cart-icon {
+  position: relative;
+  z-index: 1000;
+  pointer-events: auto !important;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cart-icon > div {
+  pointer-events: auto !important;
 }
 
 .cart-dropdown {
-  animation: fadeIn 0.2s ease-in-out;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  z-index: 1001;
+  pointer-events: auto !important;
+  animation: none !important;
+  transition: none !important;
 }
 
 .cart-item {
@@ -18,4 +38,16 @@
 
 .cart-count {
   transition: all 0.3s ease;
+}
+
+/* Giải quyết vấn đề overlap với các phần tử khác */
+.cart-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  width: 20px;
+  height: 10px;
+  background-color: transparent;
+  z-index: 999;
 }

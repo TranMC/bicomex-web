@@ -12,13 +12,51 @@ body {
   background-color: #f5f7fa;
   color: #333333;
 }
+
+/* Fix Swiper elements to behave like background only */
+.swiper,
+.swiper-container,
+.swiper-initialized,
+.swiper-horizontal,
+.swiper-backface-hidden {
+  position: relative !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}
+
+/* Allow clicking on content inside swiper */
+.swiper-slide a,
+.swiper-slide button,
+.swiper-slide .product-box-h,
+.swiper-slide .item_product_main,
+.swiper-slide .blog_index,
+.swiper-slide .item-brand {
+  pointer-events: auto !important;
+}
+
+/* Fix navigation buttons */
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}
+
+/* Fix pagination */
+.swiper-pagination {
+  display: none !important;
+}
+
 .shadow-samm {
   background: #3e81ec;
 }
-
+.hover\:bg-blue-700:hover {
+  background-color: #1ecca9 !important;
+}
+/* Problematic rule causing color issues - commented out
 .bloccker, .text-xs, .text-gray-500{
   color: white;
 }
+*/
 html {
   scroll-behavior: smooth;
 }

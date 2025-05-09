@@ -5,10 +5,11 @@ import { PromotionBanner } from '../components/home/PromotionBanner';
 import { NewProducts } from '../components/home/NewProducts';
 import { Partners } from '../components/home/Partners';
 import { BlogSection } from '../components/home/BlogSection';
+import '../styles/pages/HomePage.css';
 
 export const HomePage = () => {
   return (
-    <main className="home-page w-full">
+    <main className="home-page">
       {/* Hero Slider Section */}
       <HeroSlider />
       

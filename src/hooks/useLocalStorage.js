@@ -1,18 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 /**
- * Custom hook để lưu trữ và đồng bộ state với localStorage
- * @param {string} key - Khóa để lưu trong localStorage
- * @param {any} initialValue - Giá trị ban đầu nếu không có dữ liệu trong localStorage
- * @returns {Array} - [storedValue, setValue] tương tự useState
+ * Optimized custom hook for localStorage to prevent memory leaks and excessive renders
+ * @param {string} key - The key to store in localStorage
+ * @param {any} initialValue - Initial value if no data exists in localStorage
+ * @returns {Array} - [storedValue, setValue] similar to useState
  */
 const useLocalStorage = (key, initialValue) => {
-  // Khởi tạo state
+  // Use a ref to track if this is the first render
+  const isFirstRender = useRef(true);
+  
+  // Initialize state only once
   const [storedValue, setStoredValue] = useState(() => {
     try {
-      // Lấy từ localStorage theo key
       const item = localStorage.getItem(key);
-      // Parse dữ liệu JSON hoặc trả về initialValue
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.error(`Error reading localStorage key "${key}":`, error);
@@ -20,17 +21,38 @@ const useLocalStorage = (key, initialValue) => {
     }
   });
 
-  // Cập nhật localStorage khi state thay đổi
-  useEffect(() => {
+  // Memoized setValue function to prevent unnecessary rerenders
+  const setValue = useCallback((value) => {
     try {
-      // Lưu state vào localStorage
+      // Allow value to be a function for same API as useState
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      
+      // Set state
+      setStoredValue(valueToStore);
+      
+      // Update localStorage without triggering another render
+      localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      console.error(`Error setting localStorage key "${key}":`, error);
+    }
+  }, [key, storedValue]);
+
+  // Update localStorage only when storedValue changes and not on first render
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    
+    try {
       localStorage.setItem(key, JSON.stringify(storedValue));
     } catch (error) {
       console.error(`Error setting localStorage key "${key}":`, error);
     }
   }, [key, storedValue]);
 
-  return [storedValue, setStoredValue];
+  return [storedValue, setValue];
 };
 
 export default useLocalStorage;

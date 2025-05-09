@@ -1,9 +1,128 @@
 /* Category Grid Styles */
-.category-card:hover img {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
+.section-service {
+  padding: 2.5rem 0;
 }
 
-.category-card img {
-  transition: transform 0.3s ease;
+.service-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .service-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.service-item a {
+  display: block;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  text-align: center;
+  height: 100%;
+}
+
+.service-item a:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.service-link {
+  display: block;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  text-align: center;
+  height: 100%;
+}
+
+.service-link:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.service-icon {
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.service-icon-svg {
+  font-size: 2.25rem;
+  color: #2563eb;
+}
+
+.service-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.service-description {
+  color: #4b5563;
+  font-size: 0.875rem;
+}
+
+/* Responsive utilities */
+.hide-on-mobile {
+  display: none;
+}
+
+.hide-on-desktop {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .hide-on-mobile {
+    display: block;
+  }
+  
+  .hide-on-desktop {
+    display: none;
+  }
+}
+
+/* Category Grid Swiper styles */
+.swiper-service {
+  position: relative;
+  z-index: 0 !important;
+}
+
+/* Hide navigation and pagination */
+.swiper-service .swiper-button-next,
+.swiper-service .swiper-button-prev,
+.swiper-service .swiper-pagination {
+  display: none !important;
+}
+
+/* Make sure service items are clickable */
+.swiper-service .service-item,
+.swiper-service a {
+  pointer-events: auto !important;
+}
+
+/* Ensure slider container doesn't rise above other elements */
+.section-service .swiper,
+.section-service .swiper-container,
+.section-service .swiper-initialized,
+.section-service .swiper-horizontal,
+.section-service .swiper-backface-hidden {
+  position: relative !important;
+  z-index: 0 !important;
 }
