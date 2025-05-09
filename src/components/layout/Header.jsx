@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch, FaPhone, FaHome, FaMapMarkerAlt, FaUser, FaEnvelope, FaClock, FaShoppingCart, FaBars, FaAngleDown, FaTruck, FaSignOutAlt } from 'react-icons/fa';
+import { FaSearch, FaPhone, FaHome, FaMapMarkerAlt, FaUser, FaEnvelope, FaClock, FaShoppingCart, FaBars, FaAngleDown, FaTruck, FaSignOutAlt, FaCog } from 'react-icons/fa';
 import { CartIcon } from '../cart/CartIcon';
 import '../../styles/components/Header.css';
 import useAuth from '../../hooks/useAuth';
@@ -9,13 +9,11 @@ export const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showCategories, setShowCategories] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [setUserMenuOpen] = useState(false);
   const categoriesRef = useRef(null);
-  const userMenuRef = useRef(null);
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
 
-  const categories = [
+  const categories = useMemo(() => [
     {
       id: 1,
       name: 'Gạch ốp lát',
@@ -81,19 +79,31 @@ export const Header = () => {
         { id: 604, name: 'Máy phát điện Honda', slug: 'may-phat-dien-honda' }
       ]
     }
-  ];
+  ], []);
 
-  const handleSearch = (e) => {
+  const handleSearch = useCallback((e) => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
     navigate(`/san-pham?q=${encodeURIComponent(searchTerm)}`);
-  };
+  }, [searchTerm, navigate]);
+
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+  }, []);
+
+  const handleLogout = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (e.target.tagName.toLowerCase() === 'button') {
+      e.target.classList.add('logout-active');
+    }
+    
+    logout();
+  }, [logout]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-        setUserMenuOpen(false);
-      }
       if (categoriesRef.current && !categoriesRef.current.contains(event.target)) {
         setShowCategories(false);
       }
@@ -104,22 +114,54 @@ export const Header = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [setUserMenuOpen]);
+  }, []);
 
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
+  const displayName = useMemo(() => {
+    if (!user?.name) return '';
+    return user.name.length > 15 ? `${user.name.substring(0, 12)}...` : user.name;
+  }, [user]);
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (e.target.tagName.toLowerCase() === 'button') {
-      e.target.classList.add('logout-active');
+  const handleCategoryClick = useCallback((e, category) => {
+    // Kiểm tra nếu thiết bị là mobile (dưới 768px)
+    if (window.innerWidth < 768) {
+      // Nếu có submenu, ngăn chặn hành vi mặc định (chuyển trang)
+      if (category.subCategories.length > 0) {
+        e.preventDefault();
+        
+        // Toggle class để hiển thị/ẩn submenu
+        const categoryItem = e.currentTarget.parentNode;
+        const submenuContainer = categoryItem.querySelector('.subcategories-container');
+        
+        if (submenuContainer) {
+          const isVisible = submenuContainer.classList.contains('visible');
+          
+          // Ẩn tất cả submenu trước
+          document.querySelectorAll('.subcategories-container.visible').forEach(el => {
+            el.classList.remove('visible');
+          });
+          
+          // Hiển thị submenu hiện tại nếu chưa hiển thị
+          if (!isVisible) {
+            submenuContainer.classList.add('visible');
+          }
+        }
+      } else {
+        // Đóng mobile menu nếu không có submenu
+        closeMobileMenu();
+      }
+    } else {
+      // Trên desktop, luôn đóng mobile menu khi click
+      closeMobileMenu();
     }
-    
-    logout();
-    setUserMenuOpen(false);
+  }, [closeMobileMenu]);
+
+  // Hàm xử lý chuyển hướng đến các trang hồ sơ
+  const handleProfileNavigation = (path) => (e) => {
+    e.preventDefault();
+    navigate(path);
+    if (mobileMenuOpen) {
+      closeMobileMenu();
+    }
   };
 
   return (
@@ -132,31 +174,31 @@ export const Header = () => {
           <div className="link_list_mobile">
             <ul className="ct-mobile">
               <li className="level0 level-top parent">
-                <Link to="/">Trang chủ</Link>
+                <Link to="/" onClick={closeMobileMenu}>Trang chủ</Link>
               </li>
               <li className="level0 level-top parent">
-                <Link to="/khuyen-mai-hot">Khuyến mãi hot</Link>
+                <Link to="/khuyen-mai-hot" onClick={closeMobileMenu}>Khuyến mãi hot</Link>
               </li>
               {categories.map(category => (
                 <li key={category.id} className="level0 level-top parent">
-                  <Link to={`/san-pham/${category.slug}`}>{category.name}</Link>
+                  <Link to={`/san-pham/${category.slug}`} onClick={closeMobileMenu}>{category.name}</Link>
                   <ul className="level0">
                     {category.subCategories.map(subCat => (
                       <li key={subCat.id} className="level1">
-                        <Link to={`/san-pham/${subCat.slug}`}>{subCat.name}</Link>
+                        <Link to={`/san-pham/${subCat.slug}`} onClick={closeMobileMenu}>{subCat.name}</Link>
                       </li>
                     ))}
                   </ul>
                 </li>
               ))}
               <li className="level0 level-top parent">
-                <Link to="/gioi-thieu">Về chúng tôi</Link>
+                <Link to="/gioi-thieu" onClick={closeMobileMenu}>Về chúng tôi</Link>
               </li>
               <li className="level0 level-top parent">
-                <Link to="/tin-tuc">Tin tức</Link>
+                <Link to="/tin-tuc" onClick={closeMobileMenu}>Tin tức</Link>
               </li>
               <li className="level0 level-top parent">
-                <Link to="/lien-he">Liên hệ</Link>
+                <Link to="/lien-he" onClick={closeMobileMenu}>Liên hệ</Link>
               </li>
             </ul>
           </div>
@@ -177,23 +219,35 @@ export const Header = () => {
                 <FaMapMarkerAlt className="contact-icon" />
                 <span>Địa chỉ: Tầng 6 Ladeco, 266 Đội Cấn, Hà Nội</span>
               </div>
-              <div className="contact-item contact-email">
-                <FaEnvelope className="contact-icon" />
-                <span>Email: support@bicomex.com</span>
-              </div>
-            </div>
+            </div>            
             <div className="user-actions">
               {isAuthenticated ? (
-                <div className="greeting-text">
-                  <span>Xin chào, {user.name}</span>
-                  <span className="divider">|</span>
-                  <button 
-                    onClick={handleLogout} 
-                    className="logout-btn"
-                  >
-                    <FaSignOutAlt className="logout-icon" />
-                    <span>Đăng xuất</span>
-                  </button>
+                <div className="user-dropdown">
+                  <div className="greeting-text">
+                    <span>Xin chào, {user.name}<FaAngleDown className="user-dropdown-arrow" /></span>
+                  </div>
+                  <div className="user-dropdown-content">
+                    <Link to="/ho-so" className="user-dropdown-item" onClick={handleProfileNavigation('/ho-so')}>
+                      <FaUser className="user-dropdown-icon" />
+                      <span>Tài khoản của tôi</span>
+                    </Link>
+                    <Link to="/don-hang" className="user-dropdown-item" onClick={handleProfileNavigation('/don-hang')}>
+                      <FaTruck className="user-dropdown-icon" />
+                      <span>Đơn hàng của tôi</span>
+                    </Link>
+                    <Link to="/cai-dat" className="user-dropdown-item" onClick={handleProfileNavigation('/cai-dat')}>
+                      <FaCog className="user-dropdown-icon" />
+                      <span>Cài đặt tài khoản</span>
+                    </Link>
+                    <div className="user-dropdown-divider"></div>
+                    <button 
+                      onClick={handleLogout} 
+                      className="user-dropdown-item logout-btn"
+                    >
+                      <FaSignOutAlt className="user-dropdown-icon" />
+                      <span>Đăng xuất</span>
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <>
@@ -261,7 +315,6 @@ export const Header = () => {
             
             <div className="cart-container">
               <div className="cart-actions">
-                                
                 <div className="cart-wrapper">
                   <CartIcon />
                 </div>
@@ -298,6 +351,7 @@ export const Header = () => {
                         <Link 
                           to={`/san-pham/${category.slug}`}
                           className="category-link"
+                          onClick={(e) => handleCategoryClick(e, category)}
                         >
                           <span>{category.name}</span>
                           {category.subCategories.length > 0 && (
@@ -315,6 +369,7 @@ export const Header = () => {
                                   <Link 
                                     to={`/san-pham/${subCat.slug}`}
                                     className="subcategory-item"
+                                    onClick={closeMobileMenu}
                                   >
                                     {subCat.name}
                                   </Link>
@@ -333,28 +388,28 @@ export const Header = () => {
             <nav className="main-nav">
               <ul className="main-nav-list">
                 <li className="nav-item">
-                  <Link to="/" className="nav-link">
+                  <Link to="/" className="nav-link" onClick={closeMobileMenu}>
                     <FaHome className="home-icon" />
                     <span>Trang chủ</span>
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/khuyen-mai-hot" className="nav-link">
+                  <Link to="/khuyen-mai-hot" className="nav-link" onClick={closeMobileMenu}>
                     <span>Khuyến mãi hot</span>
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/gioi-thieu" className="nav-link">
+                  <Link to="/gioi-thieu" className="nav-link" onClick={closeMobileMenu}>
                     <span>Về chúng tôi</span>
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/tin-tuc" className="nav-link">
+                  <Link to="/tin-tuc" className="nav-link" onClick={closeMobileMenu}>
                     <span>Tin tức</span>
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/lien-he" className="nav-link">
+                  <Link to="/lien-he" className="nav-link" onClick={closeMobileMenu}>
                     <span>Liên hệ</span>
                   </Link>
                 </li>

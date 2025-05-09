@@ -48,9 +48,8 @@ export const NewProducts = () => {
       isMounted = false;
     };
   }, [products]);
-  
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+    const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + 'đ';
   };
 
   const handleAddToCart = (e, product) => {
@@ -62,17 +61,20 @@ export const NewProducts = () => {
   
   const handleImageError = (e) => {
     e.target.onerror = null;
-    e.target.src = getSafeImageUrl("bizweb.dktcdn.net/thumb/large/100/330/753/products/gach-lat-nen-1.jpg?v=1553259461737");
+    e.target.src = getSafeImageUrl("https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-nuoc-jotun-majestic-dep-hoan-hao-2-1.jpg");
   };
-
   return (
     <section className="section-new-products">
-      <div className="new-products-container">
-        <div className="section-title-container">
-          <h2 className="section-title">
-            Sản phẩm <span className="section-title-highlight">mới về</span>
-          </h2>
-          <p className="section-subtitle">Cập nhật những sản phẩm mới nhất từ các thương hiệu hàng đầu</p>
+      <div className="new-products-container">        <div className="section-title-container">
+          <div className="section-title-wrapper">
+            <div className="title-line left"></div>
+            <h2 className="section-title">SẢN PHẨM MỚI VỀ</h2>
+            <div className="title-line right"></div>
+          </div>
+        </div>
+        
+        <div className="section-subtitle">
+          <p>Cập nhật những sản phẩm mới nhất từ các thương hiệu hàng đầu với chất lượng đảm bảo</p>
         </div>
 
         {imagesLoaded ? (
@@ -82,54 +84,52 @@ export const NewProducts = () => {
             slidesPerView={1}
             navigation
             pagination={{ clickable: true }}
-            autoplay={{ delay: 5000 }}
+            autoplay={{ delay: 5000, disableOnInteraction: false }}
             breakpoints={{
-              640: {
+              576: {
                 slidesPerView: 2,
+                spaceBetween: 20
               },
               768: {
                 slidesPerView: 3,
+                spaceBetween: 20
               },
-              1024: {
+              992: {
                 slidesPerView: 4,
-              },
+                spaceBetween: 20
+              }
             }}
-            className="new-products-swiper"
-          >
+            className="new-products-swiper"          >
             {products.map((product) => (
               <SwiperSlide key={product.id}>
                 <div className="product-card">
                   <div className="product-badges">
                     {product.isNew && <span className="badge-new">Mới</span>}
                     {product.discount > 0 && <span className="badge-sale">-{product.discount}%</span>}
-                  </div>
-                  <div className="product-image-container">
-                    <Link to={`/san-pham/${product.slug}`}>
-                      <img 
-                        src={getSafeImageUrl(product.image)} 
-                        alt={product.name} 
-                        className="product-image"
-                        onError={handleImageError}
-                        loading="lazy"
-                      />
-                    </Link>
-                    <div className="product-actions">
+                  </div>                  <div className="product-image-container">
+                    <img 
+                      src={getSafeImageUrl(product.image)} 
+                      alt={product.name} 
+                      className="product-image"
+                      onError={handleImageError}
+                      loading="lazy"
+                    />                    <div className="product-actions">
                       <button 
-                        className="action-button add-to-cart" 
+                        className="action-button buy-button" 
                         onClick={(e) => handleAddToCart(e, product)}
-                        aria-label="Thêm vào giỏ hàng"
                       >
-                        <FaCartPlus />
+                        <FaCartPlus className="button-icon" />
+                        <span>Mua ngay</span>
                       </button>
-                      <Link to={`/san-pham/${product.slug}`} className="action-button view-details" aria-label="Xem chi tiết">
+                      <Link to={`/san-pham/${product.slug}`} className="action-button view-button">
                         <FaEye />
                       </Link>
-                      <button className="action-button add-to-wishlist" aria-label="Thêm vào yêu thích">
-                        <FaRegHeart />
-                      </button>
                     </div>
                   </div>
                   <div className="product-info">
+                    <h3 className="product-name">
+                      <Link to={`/san-pham/${product.slug}`}>{product.name}</Link>
+                    </h3>
                     <div className="product-rating">
                       {[...Array(5)].map((_, index) => (
                         <FaStar 
@@ -137,11 +137,8 @@ export const NewProducts = () => {
                           className={index < product.rating ? "star-rated" : "star-unrated"} 
                         />
                       ))}
-                      <span className="rating-count">({product.ratingCount})</span>
+                      <span className="rating-count">({product.reviewCount || 0})</span>
                     </div>
-                    <h3 className="product-name">
-                      <Link to={`/san-pham/${product.slug}`}>{product.name}</Link>
-                    </h3>
                     <div className="product-price">
                       {product.salePrice ? (
                         <>
@@ -158,7 +155,7 @@ export const NewProducts = () => {
             ))}
           </Swiper>
         ) : (
-          <div className="loading-placeholder text-center py-20">
+          <div className="loading-placeholder">
             <p>Đang tải sản phẩm mới...</p>
           </div>
         )}

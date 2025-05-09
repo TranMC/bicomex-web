@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { FaEye } from 'react-icons/fa';
+import { FaEye, FaShoppingCart, FaArrowUp } from 'react-icons/fa';
 import { getSafeImageUrl, preloadImage } from '../../utils/imageUtils';
 import useCart from '../../hooks/useCart';
 import useToast from '../../hooks/useToast';
@@ -12,6 +12,7 @@ export const FeaturedProducts = () => {
   const { addToCart } = useCart();
   const toast = useToast();
   const [activeTab, setActiveTab] = useState('son');
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   // Dữ liệu tab sản phẩm
   const tabs = useMemo(() => [
@@ -32,6 +33,38 @@ export const FeaturedProducts = () => {
     [products, activeTab]
   );
 
+  // Lấy 4 sản phẩm để hiển thị
+  const displayProducts = useMemo(() => 
+    filteredProducts.slice(0, 4),
+    [filteredProducts]
+  );
+
+  // Xử lý hiển thị nút Back to Top
+  const handleScroll = useCallback(() => {
+    if (window.scrollY > 300) {
+      setShowBackToTop(true);
+    } else {
+      setShowBackToTop(false);
+    }
+  }, []);
+
+  // Xử lý click nút Back to Top
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, []);
+
+  // Thêm event listener để theo dõi cuộn trang
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
+
   // Preload images to prevent CORB issues
   useEffect(() => {
     let isMounted = true;
@@ -39,7 +72,7 @@ export const FeaturedProducts = () => {
     const loadImages = async () => {
       try {
         // Only preload images for the active tab to improve performance
-        const imagePromises = filteredProducts.map(product => 
+        const imagePromises = displayProducts.map(product => 
           preloadImage(getSafeImageUrl(product.image))
         );
         
@@ -62,7 +95,7 @@ export const FeaturedProducts = () => {
     return () => {
       isMounted = false;
     };
-  }, [filteredProducts]);
+  }, [displayProducts]);
 
   // Format price with dot separator (e.g., 3.100.000đ)
   const formatPrice = (price) => {
@@ -83,9 +116,20 @@ export const FeaturedProducts = () => {
     e.target.src = getSafeImageUrl("https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-nuoc-jotun-majestic-dep-hoan-hao-2-1.jpg?v=1553090388617");
   };
 
+  // Xác định loại nút mua hàng dựa vào index
+  const getButtonType = (product) => {
+    // Dựa vào id của sản phẩm để xác định kiểu nút (Mua ngay hoặc Tùy chọn)
+    const isBuyNow = product.id % 2 === 0;
+    
+    return {
+      text: isBuyNow ? 'Mua ngay' : 'Tùy chọn',
+      className: isBuyNow ? 'buy-button buy-now' : 'buy-button options'
+    };
+  };
+
   return (
     <section className="featured-products-section">
-      <div className="container mx-auto px-4">
+      <div className="container">
         <div className="featured-header">
           <h2 className="featured-title">
             Sản phẩm <span className="featured-title-highlight">nổi bật</span>
@@ -105,65 +149,76 @@ export const FeaturedProducts = () => {
         </div>
 
         {imagesLoaded ? (
-          <div className="featured-products-grid">
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product) => (
-                <div key={product.id} className="featured-product-card">
-                  {/* Badge */}
-                  {product.isNew && <div className="product-badge new">Mới</div>}
-                  {product.isHot && <div className="product-badge hot">Hot</div>}
-                  
-                  {/* Product Image */}
-                  <div className="product-image-wrapper">
-                    <img 
-                      src={getSafeImageUrl(product.image)} 
-                      alt={product.name} 
-                      className="product-image"
-                      onError={handleImageError}
-                      loading="lazy"
-                    />
-                  </div>
-                  
-                  {/* Product Info */}
-                  <div className="product-info">
-                    <h3 className="product-name">
+          <div className="featured-grid">
+            {displayProducts.length > 0 ? (
+              displayProducts.map((product) => {
+                const buttonType = getButtonType(product);
+                
+                return (
+                  <div key={product.id} className="featured-product-card">
+                    {/* Badge */}
+                    {product.isNew && <div className="product-badge new">Mới</div>}
+                    {product.isHot && <div className="product-badge hot">Hot</div>}
+                    
+                    {/* Product Image */}
+                    <div className="product-image-wrapper">
                       <Link to={`/san-pham/${product.slug}`}>
-                        {product.name}
+                        <img 
+                          src={getSafeImageUrl(product.image)} 
+                          alt={product.name} 
+                          className="product-image"
+                          onError={handleImageError}
+                          loading="lazy"
+                        />
                       </Link>
-                    </h3>
-                    
-                    <div className="product-description">
-                      {product.shortDescription && (
-                        <p className="description-text">{product.shortDescription}</p>
-                      )}
                     </div>
                     
-                    <div className="product-price-container">
-                      {product.salePrice ? (
-                        <>
-                          <span className="product-sale-price">{formatPrice(product.salePrice)}</span>
-                          <span className="product-original-price">{formatPrice(product.price)}</span>
-                        </>
-                      ) : (
-                        <span className="product-regular-price">{formatPrice(product.price)}</span>
-                      )}
-                    </div>
-                    
-                    <div className="product-actions">
-                      <button 
-                        onClick={(e) => handleAddToCart(e, product)} 
-                        className="buy-button"
-                      >
-                        {product.isInStock === false ? 'Hết hàng' : 'Tùy chọn'}
-                      </button>
+                    {/* Product Info */}
+                    <div className="product-info">
+                      <h3 className="product-name">
+                        <Link to={`/san-pham/${product.slug}`}>
+                          {product.name}
+                        </Link>
+                      </h3>
                       
-                      <Link to={`/san-pham/${product.slug}`} className="view-button">
-                        <FaEye />
-                      </Link>
+                      {product.shortDescription && (
+                        <div className="product-description">
+                          {product.shortDescription}
+                        </div>
+                      )}
+                      
+                      <div className="product-price-container">
+                        {product.salePrice ? (
+                          <>
+                            <span className="product-sale-price">{formatPrice(product.salePrice)}</span>
+                            <span className="product-original-price">{formatPrice(product.price)}</span>
+                          </>
+                        ) : (
+                          <span className="product-regular-price">{formatPrice(product.price)}</span>
+                        )}
+                      </div>
+                      
+                      <div className="product-actions-bottom">
+                        <button 
+                          onClick={(e) => handleAddToCart(e, product)} 
+                          className={buttonType.className}
+                          disabled={product.isInStock === false}
+                        >
+                          {product.isInStock === false ? 'Hết hàng' : buttonType.text}
+                        </button>
+                        
+                        <Link 
+                          to={`/san-pham/${product.slug}`}
+                          className="view-button"
+                          title="Xem chi tiết"
+                        >
+                          <FaEye />
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <div className="no-products">
                 <p>Không có sản phẩm nào trong danh mục này.</p>
@@ -175,6 +230,21 @@ export const FeaturedProducts = () => {
             <p>Đang tải sản phẩm...</p>
           </div>
         )}
+
+        <div className="view-all-container">
+          <Link to={`/san-pham/${tabs.find(tab => tab.id === activeTab)?.slug || ''}`} className="view-all-button">
+            Xem tất cả
+          </Link>
+        </div>
+      </div>
+      
+      {/* Nút Back to Top */}
+      <div 
+        className={`back-to-top ${showBackToTop ? 'visible' : ''}`}
+        onClick={scrollToTop}
+        title="Lên đầu trang"
+      >
+        <FaArrowUp />
       </div>
     </section>
   );

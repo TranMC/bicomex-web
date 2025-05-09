@@ -32,7 +32,7 @@ export const Footer = () => {
         <div className="footer-container">
           <div className="footer-grid">
             {/* Company Info */}
-            <div>
+            <div className="footer-column">
               <h3 className="footer-title">
                 Về BICOMEX
               </h3>
@@ -70,7 +70,7 @@ export const Footer = () => {
             </div>
 
             {/* Policies */}
-            <div>
+            <div className="footer-column">
               <h3 className="footer-title">
                 Chính sách
               </h3>
@@ -109,7 +109,7 @@ export const Footer = () => {
             </div>
 
             {/* Categories */}
-            <div>
+            <div className="footer-column">
               <h3 className="footer-title">
                 Danh mục sản phẩm
               </h3>
@@ -148,26 +148,32 @@ export const Footer = () => {
             </div>
 
             {/* Contact */}
-            <div>
+            <div className="footer-column">
               <h3 className="footer-title">
                 Liên hệ với chúng tôi
               </h3>
               <div className="footer-content">
                 <div className="contact-company">
                   <p className="company-name">CÔNG TY TNHH BICOMEX</p>
-                  <p className="company-registration">MSDN: 0123456789 do Sở KHĐT TP.HCM cấp ngày 01/01/2022</p>
+                  <p className="company-registration">MST: 0123456789 do Sở KHĐT TP.HCM cấp ngày 01/01/2022</p>
                 </div>
                 <ul className="contact-list">
                   <li className="contact-item">
-                    <FaMapMarkerAlt className="contact-icon" />
+                    <div className="contact-icon-wrapper">
+                      <FaMapMarkerAlt className="contact-icon" />
+                    </div>
                     <span className="contact-text">Tầng 6 Ladeco, 266 Đội Cấn, Ba Đình, Hà Nội</span>
                   </li>
                   <li className="contact-item">
-                    <FaPhone className="contact-icon" />
+                    <div className="contact-icon-wrapper">
+                      <FaPhone className="contact-icon" />
+                    </div>
                     <span className="contact-text">19006750</span>
                   </li>
                   <li className="contact-item">
-                    <FaEnvelope className="contact-icon" />
+                    <div className="contact-icon-wrapper">
+                      <FaEnvelope className="contact-icon" />
+                    </div>
                     <span className="contact-text">support@bicomex.com</span>
                   </li>
                 </ul>

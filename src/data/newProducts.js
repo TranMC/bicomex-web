@@ -5,7 +5,7 @@ export const newProducts = [
   {
     id: 9,
     name: 'Cáp điện Cadivi 4x2.5mm²',
-    image: '/assets/images/new-product1.jpg',
+    image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/dulux-trade-pure-briiliant-white-gloss-1lt-1-copy.jpg',
     price: 45000,
     salePrice: null,
     rating: 4.7,
@@ -14,11 +14,10 @@ export const newProducts = [
     category: 'thiet-bi-dien',
     brand: 'Cadivi',
     isNew: true,
-  },
-  {
+  },  {
     id: 10,
     name: 'Sơn ngoại thất Jotun Jotashield',
-    image: '/assets/images/new-product2.jpg',
+    image: 'https://bizweb.dktcdn.net/thumb/medium/100/330/753/products/jotun-true-beauty-sheen-5l.jpg',
     price: 850000,
     salePrice: 799000,
     rating: 4.8,
@@ -27,11 +26,10 @@ export const newProducts = [
     category: 'son-phu-kien',
     brand: 'Jotun',
     isNew: true,
-  },
-  {
+  },  {
     id: 11,
     name: 'Gạch granite Viglacera 800x800',
-    image: '/assets/images/new-product3.jpg',
+    image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/17342-gach-lat-nen-toko-tk-811.jpg',
     price: 320000,
     salePrice: null,
     rating: 4.6,
@@ -40,11 +38,10 @@ export const newProducts = [
     category: 'vat-lieu-xay-dung',
     brand: 'Viglacera',
     isNew: true,
-  },
-  {
+  },  {
     id: 12,
     name: 'Bồn cầu TOTO C108',
-    image: '/assets/images/new-product4.jpg',
+    image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/16-eac3ec33-44fc-4bb8-9eac-cf2b988db085.jpg',
     price: 3500000,
     salePrice: 3200000,
     rating: 4.9,
@@ -53,11 +50,10 @@ export const newProducts = [
     category: 'vat-tu-cap-thoat-nuoc',
     brand: 'TOTO',
     isNew: true,
-  },
-  {
+  },  {
     id: 13,
     name: 'Máy khoan Bosch GSB 550',
-    image: '/assets/images/new-product5.jpg',
+    image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-nuoc-jotun-majestic-dep-hoan-hao-2-1.jpg',
     price: 1450000,
     salePrice: 1299000,
     rating: 4.7,
@@ -66,11 +62,10 @@ export const newProducts = [
     category: 'dung-cu-xay-dung',
     brand: 'Bosch',
     isNew: true,
-  },
-  {
+  },  {
     id: 14,
     name: 'Keo chống thấm Weber Seal',
-    image: '/assets/images/new-product6.jpg',
+    image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-dulux-ambiance-5-in-1-sheen.jpg',
     price: 185000,
     salePrice: null,
     rating: 4.5,

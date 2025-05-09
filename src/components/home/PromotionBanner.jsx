@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import { FaEye, FaShoppingCart } from 'react-icons/fa';
 import { getSafeImageUrl, preloadImage } from '../../utils/imageUtils';
 import '../../styles/components/PromotionBanner.css';
 
@@ -11,47 +12,43 @@ export const PromotionBanner = () => {
   const promotionProducts = useMemo(() => [
     {
       id: 1,
-      name: 'Sơn nước DULUX',
-      description: 'Sơn Nước Trong Nhà Dulux sử dụng công nghệ chống nấm mốc, giữ cho màu sắc tươi mới lâu dài',
-      image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/dulux-trade-pure-briiliant-white-gloss-1lt-1-copy.jpg?v=1537516026273',
-      price: 850000,
-      salePrice: 680000,
-      discount: 20,
-      slug: 'son-nuoc-dulux-hight-gloss',
-      endDate: new Date('2023-12-31') // Ngày kết thúc khuyến mãi
+      name: 'Sơn nước Dulux Hight Gloss',
+      description: 'Là sơn nước trong nhà chất lượng cao, có màu đẹp và lâu phai nhờ tính năng chống bong tróc hiệu quả.',
+      image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/dulux-trade-pure-briiliant-white-gloss-1lt-1-copy.jpg',
+      price: 2300000,
+      originalPrice: null,
+      hot: true,
+      slug: 'son-nuoc-dulux-hight-gloss'
     },
     {
       id: 2,
-      name: 'Sơn nước JOTUN',
-      description: 'Sơn Nước Trong Nhà sử dụng công nghệ chống bám bẩn, có khả năng chùi rửa vượt trội',
-      image: 'https://bizweb.dktcdn.net/thumb/medium/100/330/753/products/jotun-true-beauty-sheen-5l.jpg?v=1537515328247',
-      price: 950000,
-      salePrice: 760000,
-      discount: 20,
-      slug: 'son-nuoc-jotun-majestic',
-      endDate: new Date('2023-12-25')
+      name: 'Sơn nước Dulux Stain Block',
+      description: 'Là sơn nước trong nhà chất lượng cao, có màu đẹp và lâu phai nhờ tính năng chống bong tróc hiệu quả.',
+      image: 'https://bizweb.dktcdn.net/thumb/medium/100/330/753/products/jotun-true-beauty-sheen-5l.jpg',
+      price: 2100000,
+      originalPrice: 2450000,
+      hot: true,
+      slug: 'son-nuoc-dulux-stain-block'
     },
     {
       id: 3,
-      name: 'Sàn gỗ Ruby Floor',
-      description: 'RUBY Foor có khả năng chịu nước tốt, cấp độ mài mòn AC4, phù hợp cho mọi không gian',
-      image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/17342-gach-lat-nen-toko-tk-811.jpg?v=1537513889877',
-      price: 450000,
-      salePrice: 380000,
-      discount: 16,
-      slug: 'san-go-op-lat-ruby-floor-02',
-      endDate: new Date('2023-11-30')
+      name: 'Sơn Dulux Weathershield',
+      description: 'Là sơn nước trong nhà chất lượng cao, có màu đẹp và lâu phai nhờ tính năng chống bong tróc hiệu quả.',
+      image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/17342-gach-lat-nen-toko-tk-811.jpg',
+      price: 1900000,
+      originalPrice: 2350000,
+      hot: false,
+      slug: 'son-dulux-weathershield'
     },
     {
       id: 4,
       name: 'Gạch lát nền Viglacera',
-      description: 'Gạch granite cao cấp với đa dạng mẫu mã, kích thước và họa tiết',
-      image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/16-eac3ec33-44fc-4bb8-9eac-cf2b988db085.jpg?v=1537500385490',
-      price: 320000,
-      salePrice: 280000,
-      discount: 12,
-      slug: 'gach-lat-nen-viglacera-001',
-      endDate: new Date('2023-12-15')
+      description: 'Là sơn nước trong nhà chất lượng cao, có màu đẹp và lâu phai nhờ tính năng chống bong tróc hiệu quả.',
+      image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/16-eac3ec33-44fc-4bb8-9eac-cf2b988db085.jpg',
+      price: 2050000,
+      originalPrice: 2650000,
+      hot: false,
+      slug: 'gach-lat-nen-viglacera'
     }
   ], []);
 
@@ -84,94 +81,106 @@ export const PromotionBanner = () => {
     };
   }, [promotionProducts]);
 
-  // Format price with comma separators
+  // Format price with dot separators (e.g., 2.300.000đ)
   const formatPrice = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + 'đ';
   };
 
   // Handle image loading errors
   const handleImageError = (e) => {
     e.target.onerror = null;
-    e.target.src = getSafeImageUrl("https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-nuoc-jotun-majestic-dep-hoan-hao-2-1.jpg?v=1553090388617");
+    e.target.src = getSafeImageUrl("https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-nuoc-jotun-majestic-dep-hoan-hao-2-1.jpg");
   };
 
   return (
     <section className="promotion-section">
-      <div className="container mx-auto px-4 py-12">
-        <div className="section-title-container text-center mb-10">
-          <h2 className="section-title text-3xl font-semibold">
-            Sản phẩm <span className="section-title-highlight text-primary">khuyến mãi</span>
-          </h2>
-          <p className="section-subtitle text-gray-600 mt-2">
-            Chúng tôi cung cấp đa dạng sản phẩm với mức giá ưu đãi nhất
-          </p>
+      <div className="promotion-container">
+        <div className="promotion-header">
+          <div className="promotion-title-wrapper">
+            <img 
+              src={getSafeImageUrl("//bizweb.dktcdn.net/100/330/753/themes/894755/assets/i_title_sale.png?1676258071193")}
+              alt="Sale"
+              className="promotion-icon"
+            />
+            <h2 className="promotion-title">KHUYẾN MÃI GIÁ SỐC</h2>
+          </div>
+        </div>
+        
+        <div className="promotion-subtitle">
+          <p>Cập nhật hàng giờ tất cả những deal giảm giá đặc biệt trên Bicomex. Hãy bookmark trang này và quay lại thường xuyên để không bỏ lỡ bạn nhé!</p>
         </div>
 
         {imagesLoaded ? (
-          <div className="promotion-grid">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {promotionProducts.map((product) => (
-                <div key={product.id} className="promotion-card group relative bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-                  <div className="promotion-badge absolute top-3 left-3 bg-red-500 text-white py-1 px-2 rounded z-10">
-                    -{product.discount}%
-                  </div>
-                  <div className="promotion-image-container relative overflow-hidden aspect-w-1 aspect-h-1">
-                    <Link to={`/san-pham/${product.slug}`}>
-                      <img
+          <div className="promotion-products">
+            <Swiper
+              modules={[Navigation, Pagination, Autoplay]}
+              spaceBetween={20}
+              slidesPerView={2}
+              navigation={true}
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 5000, disableOnInteraction: false }}
+              breakpoints={{
+                0: {
+                  slidesPerView: 1,
+                  spaceBetween: 10
+                },
+                576: {
+                  slidesPerView: 2,
+                  spaceBetween: 20
+                },
+                992: {
+                  slidesPerView: 4,
+                  spaceBetween: 20
+                }
+              }}
+              className="promotion-swiper"
+            >
+              {promotionProducts.map(product => (
+                <SwiperSlide key={product.id}>
+                  <div className="product-card">
+                    {product.hot && <div className="hot-label">Hot</div>}
+                    <div className="product-image-container">
+                      <img 
                         src={getSafeImageUrl(product.image)}
                         alt={product.name}
-                        className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="product-image"
                         onError={handleImageError}
-                        loading="lazy"
                       />
-                    </Link>
-                    <div className="promotion-overlay absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="promotion-actions flex space-x-2">
-                        <button className="action-button bg-white p-2 rounded-full shadow hover:bg-primary hover:text-white transition">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                          </svg>
-                        </button>
-                        <button className="action-button bg-white p-2 rounded-full shadow hover:bg-primary hover:text-white transition">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                          </svg>
-                        </button>
-                        <button className="action-button bg-white p-2 rounded-full shadow hover:bg-primary hover:text-white transition">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                          </svg>
+                      <div className="product-action-overlay">
+                        <button className="action-button buy-button">Mua ngay</button>
+                        <button className="action-button view-button">
+                          <FaEye />
                         </button>
                       </div>
                     </div>
-                  </div>
-                  <div className="promotion-content p-4">
-                    <h3 className="promotion-title font-medium text-lg mb-2">
-                      <Link to={`/san-pham/${product.slug}`} className="hover:text-primary transition-colors">
-                        {product.name}
-                      </Link>
-                    </h3>
-                    <p className="promotion-description text-gray-600 text-sm mb-3 line-clamp-2">
-                      {product.description}
-                    </p>
-                    <div className="promotion-price-container flex items-baseline space-x-2">
-                      <span className="promotion-sale-price text-primary font-semibold">{formatPrice(product.salePrice)}đ</span>
-                      <span className="promotion-original-price text-gray-500 line-through text-sm">{formatPrice(product.price)}đ</span>
+                    <div className="product-info">
+                      <h3 className="product-title">{product.name}</h3>
+                      <div className="product-price-container">
+                        <span className="product-price">{formatPrice(product.price)}</span>
+                        {product.originalPrice && (
+                          <span className="product-original-price">{formatPrice(product.originalPrice)}</span>
+                        )}
+                      </div>
+                      <p className="product-description">{product.description}</p>
                     </div>
-                    <button className="promotion-add-button w-full mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition">
-                      Thêm vào giỏ hàng
-                    </button>
                   </div>
-                </div>
+                </SwiperSlide>
               ))}
-            </div>
+            </Swiper>
           </div>
         ) : (
-          <div className="loading-placeholder text-center py-20">
+          <div className="loading">
             <p>Đang tải sản phẩm khuyến mãi...</p>
           </div>
         )}
+        
+        <div className="promotion-pagination">
+          <span className="active"></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
     </section>
   );

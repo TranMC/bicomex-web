@@ -35,7 +35,7 @@ export const products = [
   {
     id: 3,
     name: 'Sơn nước OEXPO',
-    image: 'https://bizweb.dktcdn.net/thumb/compact/100/330/753/products/148696797-733627444225128-7706280598761030498-n-b7f5af52-a3df-4d13-88df-6b34995edd67.png',
+    image: '//bizweb.dktcdn.net/thumb/medium/100/330/753/products/oexpo-easywipe.jpg?v=1537516190110',
     price: 350000,
     salePrice: 310000,
     rating: 4.7,

@@ -98,7 +98,7 @@
 
 /* Main Footer */
 .site-footer {
-  background-color: #1f2937;
+  background-color: #1a1e27;
   color: white;
   padding-top: 2.5rem;
   padding-bottom: 1.5rem;
@@ -126,6 +126,10 @@
   .footer-grid {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
+}
+
+.footer-column {
+  padding: 0 0.5rem;
 }
 
 /* Footer Title */
@@ -174,20 +178,24 @@
   transition: background-color 0.2s;
 }
 
-.social-icon-facebook:hover {
+.social-icon-facebook {
   background-color: #2563eb;
 }
 
-.social-icon-twitter:hover {
+.social-icon-twitter {
   background-color: #38bdf8;
 }
 
-.social-icon-instagram:hover {
+.social-icon-instagram {
   background-color: #db2777;
 }
 
-.social-icon-youtube:hover {
+.social-icon-youtube {
   background-color: #dc2626;
+}
+
+.social-icon:hover {
+  opacity: 0.9;
 }
 
 /* Footer Links */
@@ -214,38 +222,56 @@
 
 /* Contact Info */
 .contact-company {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .company-name {
   font-weight: 700;
   font-size: 1.125rem;
+  color: white;
+  margin-bottom: 0.25rem;
 }
 
 .company-registration {
   font-size: 0.875rem;
   color: #9ca3af;
+  line-height: 1.5;
 }
 
 .contact-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .contact-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+}
+
+.contact-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #3177f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .contact-icon {
-  margin-top: 0.25rem;
-  margin-right: 0.75rem;
-  color: #60a5fa;
+  font-size: 1.25rem;
+  color: white;
 }
 
 .contact-text {
   display: inline-block;
+  font-size: 1rem;
+  color: #f3f4f6;
+  line-height: 1.4;
 }
 
 /* Footer Bottom */

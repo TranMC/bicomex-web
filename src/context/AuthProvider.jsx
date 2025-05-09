@@ -104,6 +104,104 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Hàm cập nhật thông tin hồ sơ người dùng
+  const handleUpdateUserProfile = (profileData) => {
+    try {
+      if (!auth.user || !auth.user.id) {
+        toast.error('Bạn chưa đăng nhập!');
+        return false;
+      }
+      
+      // Lấy danh sách người dùng từ localStorage
+      const users = JSON.parse(localStorage.getItem('bicomex_users') || '[]');
+      
+      // Tìm người dùng hiện tại
+      const userIndex = users.findIndex(u => u.id === auth.user.id);
+      
+      if (userIndex === -1) {
+        toast.error('Không tìm thấy thông tin người dùng!');
+        return false;
+      }
+      
+      // Cập nhật thông tin người dùng
+      const updatedUser = {
+        ...users[userIndex],
+        ...profileData,
+        updatedAt: new Date().toISOString()
+      };
+      
+      // Giữ lại mật khẩu hiện tại
+      if (!updatedUser.password && users[userIndex].password) {
+        updatedUser.password = users[userIndex].password;
+      }
+      
+      // Cập nhật người dùng trong mảng
+      users[userIndex] = updatedUser;
+      
+      // Lưu lại vào localStorage
+      localStorage.setItem('bicomex_users', JSON.stringify(users));
+      
+      // Cập nhật state (không bao gồm password)
+      const { password: _password, ...userWithoutPassword } = updatedUser;
+      auth.update(userWithoutPassword);
+      
+      toast.success('Cập nhật thông tin thành công!');
+      return true;
+    } catch (error) {
+      console.error("Lỗi cập nhật hồ sơ:", error);
+      toast.error('Đã xảy ra lỗi khi cập nhật thông tin');
+      return false;
+    }
+  };
+  
+  // Hàm cập nhật cài đặt người dùng
+  const handleUpdateUserSettings = (settingsData) => {
+    try {
+      if (!auth.user || !auth.user.id) {
+        toast.error('Bạn chưa đăng nhập!');
+        return false;
+      }
+      
+      // Lấy danh sách người dùng từ localStorage
+      const users = JSON.parse(localStorage.getItem('bicomex_users') || '[]');
+      
+      // Tìm người dùng hiện tại
+      const userIndex = users.findIndex(u => u.id === auth.user.id);
+      
+      if (userIndex === -1) {
+        toast.error('Không tìm thấy thông tin người dùng!');
+        return false;
+      }
+      
+      // Cập nhật cài đặt người dùng
+      const updatedUser = {
+        ...users[userIndex],
+        settings: {
+          ...(users[userIndex].settings || {}),
+          ...settingsData
+        },
+        updatedAt: new Date().toISOString()
+      };
+      
+      // Cập nhật người dùng trong mảng
+      users[userIndex] = updatedUser;
+      
+      // Lưu lại vào localStorage
+      localStorage.setItem('bicomex_users', JSON.stringify(users));
+      
+      // Cập nhật state (không bao gồm password)
+      const { password: _password, ...userWithoutPassword } = updatedUser;
+      auth.update(userWithoutPassword);
+      
+      toast.success('Cập nhật cài đặt thành công!');
+      return true;
+    } catch (error) {
+      console.error("Lỗi cập nhật cài đặt:", error);
+      toast.error('Đã xảy ra lỗi khi cập nhật cài đặt');
+      return false;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -111,7 +209,9 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: auth.isAuthenticated,
         login: handleLogin,
         register: handleRegister,
-        logout: handleLogout
+        logout: handleLogout,
+        updateUserProfile: handleUpdateUserProfile,
+        updateUserSettings: handleUpdateUserSettings
       }}
     >
       {children}

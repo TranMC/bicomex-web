@@ -59,12 +59,24 @@ export const useAuthStorage = () => {
     return true;
   };
 
+  // Hàm cập nhật thông tin người dùng
+  const update = (userData) => {
+    // Cập nhật thông tin người dùng trong state
+    setUser(userData);
+    
+    // Cập nhật trực tiếp vào localStorage
+    localStorage.setItem('bicomex_user', JSON.stringify(userData));
+    
+    return true;
+  };
+
   return {
     user,
     isAuthenticated,
     login,
     register,
-    logout
+    logout,
+    update
   };
 };
 
