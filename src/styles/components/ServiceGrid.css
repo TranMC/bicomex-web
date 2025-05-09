@@ -1,0 +1,114 @@
+/* Service Grid Styles - Based on the new design */
+.service-grid-section {
+  padding: 20px 0;
+  background-color: #ffffff;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.service-grid-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+@media (min-width: 768px) {
+  .service-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+/* Service Card */
+.service-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  transition: transform 0.3s ease;
+}
+
+.service-card:not(:last-child) {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+@media (min-width: 768px) {
+  .service-card:not(:last-child) {
+    border-bottom: none;
+  }
+  
+  .service-card:not(:last-child) {
+    border-right: 1px solid #f0f0f0;
+  }
+}
+
+.service-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Service Icon */
+.service-icon-wrapper {
+  flex-shrink: 0;
+  margin-right: 20px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.service-icon {
+  font-size: 2rem;
+  color: #1a73e8;
+}
+
+/* Blue truck icon */
+.service-card:nth-child(1) .service-icon {
+  color: #4285f4;
+}
+
+/* Credit card icon */
+.service-card:nth-child(2) .service-icon {
+  color: #4285f4;
+}
+
+/* Shopping basket icon */
+.service-card:nth-child(3) .service-icon {
+  color: #4285f4;
+}
+
+/* Service Content */
+.service-content {
+  flex-grow: 1;
+}
+
+.service-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 5px 0;
+}
+
+.service-description {
+  font-size: 0.875rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .service-card {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 15px 0;
+  }
+
+  .service-card:last-child {
+    border-bottom: none;
+  }
+}

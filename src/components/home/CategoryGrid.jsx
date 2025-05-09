@@ -8,45 +8,24 @@ export const CategoryGrid = () => {
   const services = [
     {
       id: 1,
-      name: 'Vận chuyển nhanh',
-      description: 'Giao hàng tận nơi trên toàn quốc',
+      name: 'Miễn phí vận chuyển',
+      description: 'Với giá trị đơn hàng trên 300.000đ trở lên',
       icon: <FaTruck className="service-icon-svg" />,
       link: '/dich-vu/van-chuyen'
     },
     {
       id: 2,
-      name: 'Tư vấn kỹ thuật',
-      description: 'Đội ngũ kỹ sư với kinh nghiệm lâu năm',
+      name: 'Thanh toán cực kỳ dễ dàng',
+      description: 'Phương thức thanh toán dễ dàng, tiện lợi',
       icon: <FaTools className="service-icon-svg" />,
       link: '/dich-vu/tu-van-ky-thuat'
     },
     {
       id: 3,
-      name: 'Lắp đặt chuyên nghiệp',
-      description: 'Đội ngũ thợ tay nghề cao, chuyên nghiệp',
+      name: 'Mua hàng siêu tiết kiệm',
+      description: 'Tiết kiệm tới 10% so với thị trường',
       icon: <FaCogs className="service-icon-svg" />,
       link: '/dich-vu/lap-dat'
-    },
-    {
-      id: 4,
-      name: 'Tư vấn 24/7',
-      description: 'Hỗ trợ tư vấn mọi lúc mọi nơi',
-      icon: <FaHeadset className="service-icon-svg" />,
-      link: '/lien-he'
-    },
-    {
-      id: 5,
-      name: 'Sản phẩm chính hãng',
-      description: 'Cam kết 100% hàng chính hãng',
-      icon: <FaCertificate className="service-icon-svg" />,
-      link: '/chinh-sach/ban-hang'
-    },
-    {
-      id: 6,
-      name: 'Chất lượng cao',
-      description: 'Chất lượng sản phẩm hàng đầu',
-      icon: <FaThumbsUp className="service-icon-svg" />,
-      link: '/ve-chung-toi'
     }
   ];
 

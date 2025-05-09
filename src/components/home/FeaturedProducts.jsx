@@ -1,33 +1,72 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { FaStar, FaCartPlus, FaEye, FaRegHeart } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
+import { getSafeImageUrl, preloadImage } from '../../utils/imageUtils';
 import useCart from '../../hooks/useCart';
 import useToast from '../../hooks/useToast';
 import { featuredProducts } from '../../data/featuredProducts';
 import '../../styles/components/FeaturedProducts.css';
 
 export const FeaturedProducts = () => {
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const { addToCart } = useCart();
   const toast = useToast();
-  const [activeTab, setActiveTab] = useState('gach-op-lat');
+  const [activeTab, setActiveTab] = useState('son');
 
   // Dữ liệu tab sản phẩm
-  const tabs = [
+  const tabs = useMemo(() => [
+    { id: 'son', name: 'Sơn nội thất', slug: 'son-noi-that' },
     { id: 'gach-op-lat', name: 'Gạch ốp lát', slug: 'gach-op-lat' },
-    { id: 'son', name: 'Sơn nội ngoại thất', slug: 'son-noi-ngoai-that' },
-    { id: 'san-go', name: 'Sàn gỗ ốp lát', slug: 'san-go-op-lat' },
-    { id: 'xi-mang', name: 'Xi măng & vật liệu thô', slug: 'xi-mang-vat-lieu-tho' },
-    { id: 'den-trang-tri', name: 'Đèn trang trí', slug: 'den-trang-tri' }
-  ];
+    { id: 'vat-lieu-tho', name: 'Vật liệu thô', slug: 'vat-lieu-tho' },
+    { id: 'trang-tri-nha-cua', name: 'Trang trí nhà cửa', slug: 'trang-tri-nha-cua' },
+    { id: 'may-moc-xay-dung', name: 'Máy móc xây dựng', slug: 'may-moc-xay-dung' }
+  ], []);
+
+  // Memoize products to prevent unnecessary re-renders
+  const products = useMemo(() => featuredProducts, []);
 
   // Lọc sản phẩm theo danh mục
-  const filteredProducts = featuredProducts.filter(
-    product => product.categories?.includes(activeTab)
-  ) || [];
+  const filteredProducts = useMemo(() => 
+    products.filter(product => product.category?.includes(activeTab) || 
+                              (product.categories && product.categories.includes(activeTab))) || [],
+    [products, activeTab]
+  );
 
-  // Format currency
+  // Preload images to prevent CORB issues
+  useEffect(() => {
+    let isMounted = true;
+    
+    const loadImages = async () => {
+      try {
+        // Only preload images for the active tab to improve performance
+        const imagePromises = filteredProducts.map(product => 
+          preloadImage(getSafeImageUrl(product.image))
+        );
+        
+        await Promise.all(imagePromises);
+        if (isMounted) {
+          setImagesLoaded(true);
+        }
+      } catch (error) {
+        console.error('Error preloading featured product images:', error);
+        if (isMounted) {
+          setImagesLoaded(true);
+        }
+      }
+    };
+    
+    // Reset loading state when tab changes
+    setImagesLoaded(false);
+    loadImages();
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [filteredProducts]);
+
+  // Format price with dot separator (e.g., 3.100.000đ)
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + 'đ';
   };
 
   // Handle add to cart
@@ -41,191 +80,101 @@ export const FeaturedProducts = () => {
   // Handle image error
   const handleImageError = (e) => {
     e.target.onerror = null;
-    e.target.src = "https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-nuoc-jotun-majestic-dep-hoan-hao-2-1.jpg?v=1553090388617";
+    e.target.src = getSafeImageUrl("https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-nuoc-jotun-majestic-dep-hoan-hao-2-1.jpg?v=1553090388617");
   };
 
   return (
-    <section className="section-products">
-      <div className="products-container">
-        <div className="section-title-container">
-          <h2 className="section-title">
-            <span className="section-title-highlight">Sản phẩm</span> nổi bật
+    <section className="featured-products-section">
+      <div className="container mx-auto px-4">
+        <div className="featured-header">
+          <h2 className="featured-title">
+            Sản phẩm <span className="featured-title-highlight">nổi bật</span>
           </h2>
-          <p className="section-subtitle">Các sản phẩm được khách hàng tin dùng nhất</p>
-        </div>
-
-        {/* Tabs */}
-        <div className="products-tabs">
-          <ul className="tabs-list">
-            {tabs.map(tab => (
-              <li key={tab.id} className="tab-item">
-                <button
-                  className={`tab-button ${activeTab === tab.id ? 'tab-active' : 'tab-inactive'}`}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  {tab.name}
-                </button>
-              </li>
+          
+          <div className="featured-tabs">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                className={`featured-tab-button ${activeTab === tab.id ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                {tab.name}
+              </button>
             ))}
-          </ul>
-        </div>
-
-        {/* Products grid */}
-        <div className="products-content">
-          <div className="products-content-inner">
-            {filteredProducts.length > 0 ? (
-              <div className="products-grid">
-                <div className="featured-product-large">
-                  <div className="product-card">
-                    <div className="product-thumbnail">
-                      <Link to={`/san-pham/${filteredProducts[0].slug}`} className="product-link">
-                        <img 
-                          src={filteredProducts[0].image} 
-                          alt={filteredProducts[0].name} 
-                          className="product-image-large"
-                          onError={handleImageError}
-                        />
-                      </Link>
-                      
-                      {filteredProducts[0].isNew && (
-                        <div className="product-badge badge-new">Mới</div>
-                      )}
-                      
-                      {filteredProducts[0].isHot && (
-                        <div className="product-badge badge-hot">Hot</div>
-                      )}
-                    </div>
-                    
-                    <div className="product-info-large">
-                      <h3 className="product-name-large">
-                        <Link to={`/san-pham/${filteredProducts[0].slug}`} className="product-name-link line-clamp-2">
-                          {filteredProducts[0].name}
-                        </Link>
-                      </h3>
-                      
-                      <div className="product-ratings">
-                        <div className="rating-stars">
-                          {[...Array(5)].map((_, i) => (
-                            <FaStar key={i} className={`star-icon ${i < Math.floor(filteredProducts[0].rating) ? '' : 'text-gray-300'}`} />
-                          ))}
-                        </div>
-                        <span className="rating-count">({filteredProducts[0].reviewCount})</span>
-                      </div>
-                      
-                      <div className="product-description line-clamp-3">
-                        {filteredProducts[0].description || 'Sản phẩm chất lượng cao, được ưa chuộng trên thị trường'}
-                      </div>
-                      
-                      <div className="product-actions">
-                        <div className="price-container">
-                          {filteredProducts[0].salePrice ? (
-                            <div className="price-sale-container">
-                              <span className="price-sale">{formatPrice(filteredProducts[0].salePrice)}</span>
-                              <span className="price-original">{formatPrice(filteredProducts[0].price)}</span>
-                            </div>
-                          ) : (
-                            <span className="price-current">{formatPrice(filteredProducts[0].price)}</span>
-                          )}
-                        </div>
-                        
-                        <div>
-                          <button
-                            className="add-to-cart-btn"
-                            onClick={(e) => handleAddToCart(e, filteredProducts[0])}
-                          >
-                            <FaCartPlus className="cart-icon" />
-                            Thêm vào giỏ
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="small-products-grid">
-                    {filteredProducts.slice(1, 5).map(product => (
-                      <div key={product.id} className="product-card">
-                        <div className="product-thumbnail">
-                          <Link to={`/san-pham/${product.slug}`} className="product-link">
-                            <img 
-                              src={product.image} 
-                              alt={product.name} 
-                              className="product-image-small"
-                              onError={handleImageError}
-                            />
-                          </Link>
-                          
-                          {product.isNew && (
-                            <div className="product-badge badge-new">Mới</div>
-                          )}
-                          
-                          {product.isHot && (
-                            <div className="product-badge badge-hot">Hot</div>
-                          )}
-                        </div>
-                        
-                        <div className="product-info-small">
-                          <h3 className="product-name-small">
-                            <Link to={`/san-pham/${product.slug}`} className="product-name-link line-clamp-2">
-                              {product.name}
-                            </Link>
-                          </h3>
-                          
-                          <div className="product-ratings ratings-small">
-                            <div className="rating-stars">
-                              {[...Array(5)].map((_, i) => (
-                                <FaStar key={i} className={`star-icon-small ${i < Math.floor(product.rating) ? '' : 'text-gray-300'}`} />
-                              ))}
-                            </div>
-                            <span className="rating-count rating-count-small">({product.reviewCount})</span>
-                          </div>
-                          
-                          <div className="product-actions">
-                            <div className="price-container">
-                              {product.salePrice ? (
-                                <div>
-                                  <span className="price-sale price-sale-small">{formatPrice(product.salePrice)}</span>
-                                  <span className="price-original price-original-small">{formatPrice(product.price)}</span>
-                                </div>
-                              ) : (
-                                <span className="price-current price-current-small">{formatPrice(product.price)}</span>
-                              )}
-                            </div>
-                            
-                            <button
-                              className="cart-icon-small"
-                              onClick={(e) => handleAddToCart(e, product)}
-                            >
-                              <FaCartPlus />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="no-products">
-                <div className="no-products-icon">
-                  <FaRegHeart />
-                </div>
-                <h3 className="no-products-title">Không có sản phẩm nào</h3>
-                <p className="no-products-text">Không tìm thấy sản phẩm nào trong danh mục này.</p>
-                <Link to="/san-pham" className="view-all-btn">
-                  Xem tất cả sản phẩm
-                </Link>
-              </div>
-            )}
           </div>
         </div>
 
-        <div className="view-more-container">
-          <Link to={`/san-pham/${tabs.find(tab => tab.id === activeTab)?.slug || 'san-pham'}`} className="view-more-link">
-            Xem tất cả sản phẩm
-          </Link>
-        </div>
+        {imagesLoaded ? (
+          <div className="featured-products-grid">
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <div key={product.id} className="featured-product-card">
+                  {/* Badge */}
+                  {product.isNew && <div className="product-badge new">Mới</div>}
+                  {product.isHot && <div className="product-badge hot">Hot</div>}
+                  
+                  {/* Product Image */}
+                  <div className="product-image-wrapper">
+                    <img 
+                      src={getSafeImageUrl(product.image)} 
+                      alt={product.name} 
+                      className="product-image"
+                      onError={handleImageError}
+                      loading="lazy"
+                    />
+                  </div>
+                  
+                  {/* Product Info */}
+                  <div className="product-info">
+                    <h3 className="product-name">
+                      <Link to={`/san-pham/${product.slug}`}>
+                        {product.name}
+                      </Link>
+                    </h3>
+                    
+                    <div className="product-description">
+                      {product.shortDescription && (
+                        <p className="description-text">{product.shortDescription}</p>
+                      )}
+                    </div>
+                    
+                    <div className="product-price-container">
+                      {product.salePrice ? (
+                        <>
+                          <span className="product-sale-price">{formatPrice(product.salePrice)}</span>
+                          <span className="product-original-price">{formatPrice(product.price)}</span>
+                        </>
+                      ) : (
+                        <span className="product-regular-price">{formatPrice(product.price)}</span>
+                      )}
+                    </div>
+                    
+                    <div className="product-actions">
+                      <button 
+                        onClick={(e) => handleAddToCart(e, product)} 
+                        className="buy-button"
+                      >
+                        {product.isInStock === false ? 'Hết hàng' : 'Tùy chọn'}
+                      </button>
+                      
+                      <Link to={`/san-pham/${product.slug}`} className="view-button">
+                        <FaEye />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="no-products">
+                <p>Không có sản phẩm nào trong danh mục này.</p>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="loading-placeholder">
+            <p>Đang tải sản phẩm...</p>
+          </div>
+        )}
       </div>
     </section>
   );

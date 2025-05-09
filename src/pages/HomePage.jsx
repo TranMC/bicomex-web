@@ -1,5 +1,5 @@
 import { HeroSlider } from '../components/home/HeroSlider';
-import { CategoryGrid } from '../components/home/CategoryGrid';
+import { ServiceGrid } from '../components/home/ServiceGrid';
 import { FeaturedProducts } from '../components/home/FeaturedProducts';
 import { PromotionBanner } from '../components/home/PromotionBanner';
 import { NewProducts } from '../components/home/NewProducts';
@@ -14,7 +14,7 @@ export const HomePage = () => {
       <HeroSlider />
       
       {/* Dịch vụ Section */}
-      <CategoryGrid />
+      <ServiceGrid />
       
       {/* Sản phẩm nổi bật Section */}
       <FeaturedProducts />
