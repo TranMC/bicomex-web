@@ -246,7 +246,7 @@ export const Header = () => {
               {isAuthenticated ? (
                 <div className="user-dropdown">
                   <div className="greeting-text">
-                    <span>Xin chào, {user.name}<FaAngleDown className="user-dropdown-arrow" /></span>
+                    <span>Xin chào, {displayName}<FaAngleDown className="user-dropdown-arrow" /></span>
                   </div>
                   <div className="user-dropdown-content">
                     <Link to="/ho-so" className="user-dropdown-item" onClick={handleProfileNavigation('/ho-so')}>
