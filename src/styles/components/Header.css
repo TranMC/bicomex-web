@@ -7,7 +7,7 @@
 .topbar {
   background-color: #3177f9;
   color: white;
-  padding: 8px 0;
+  padding: 10px 0;
 }
 
 .topbar-container {
@@ -22,26 +22,153 @@
 .contact-info {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 20px;
 }
 
 .contact-item {
+  position: relative;
   display: flex;
   align-items: center;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  transition: all 0.3s ease;
 }
 
 .contact-icon {
-  margin-right: 0.5rem;
-  font-size: 0.875rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.contact-phone {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+}
+
+.contact-phone:hover .contact-icon {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.contact-phone .hai01 {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: color 0.3s;
+  font-size: 0.95rem;
+}
+
+.contact-phone .hai01:hover {
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.contact-phone:after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 42px;
+  width: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.7);
+  transition: width 0.3s ease;
+}
+
+.contact-phone:hover:after {
+  width: calc(100% - 42px);
 }
 
 .contact-address {
   display: flex;
+  color: rgba(255, 255, 255, 0.9);
+  align-items: center;
+  max-width: 280px;
+}
+
+.contact-address:hover .contact-icon {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.contact-address .contact-icon {
+  flex-shrink: 0;
+}
+
+.contact-address .dia-chi {
+  font-weight: normal;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.contact-address:hover .dia-chi {
+  opacity: 1;
+}
+
+.contact-address:after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 42px;
+  width: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.7);
+  transition: width 0.3s ease;
+}
+
+.contact-address:hover:after {
+  width: calc(100% - 42px);
 }
 
 @media (max-width: 767px) {
+  .topbar {
+    padding: 8px 0;
+  }
+  
+  .contact-info {
+    justify-content: center;
+    width: 100%;
+  }
+  
   .contact-address {
     display: none;
+  }
+  
+  .contact-phone {
+    margin: 0 auto;
+  }
+  
+  .contact-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+  }
+  
+  .contact-phone .hai01 {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .contact-address {
+    max-width: 200px;
   }
 }
 

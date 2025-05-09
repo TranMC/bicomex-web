@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaMapMarkerAlt, FaPhone, FaEnvelope, FaUser, FaCreditCard, FaTruck, FaQuestionCircle } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaMapMarkerAlt, FaPhone, FaEnvelope, FaUser, FaCreditCard, FaTruck, FaQuestionCircle, FaExchangeAlt } from 'react-icons/fa';
 import '../../styles/components/Footer.css';
 
 export const Footer = () => {
@@ -39,7 +39,7 @@ export const Footer = () => {
               <div className="footer-content">
                 <div className="logo-footer">
                   <img 
-                    src="src\assets\images\logo_footer.png" 
+                    src="/src/assets/images/logo_footer.png" 
                     alt="Bicomex" 
                     className="logo-image"
                     onError={(e) => {
@@ -51,18 +51,20 @@ export const Footer = () => {
                     }} 
                   />
                 </div>
-                <p className="footer-description">Bicomex là đơn vị phân phối vật liệu xây dựng chính hãng cho các công trình dân dụng và nhà ở. Chúng tôi cam kết mang đến những sản phẩm chất lượng với giá cả cạnh tranh nhất.</p>
+                <p className="footer-description">
+                  Bicomex là đơn vị phân phối vật liệu xây dựng chính hãng cho các công trình dân dụng và nhà ở. Chúng tôi cam kết mang đến những sản phẩm chất lượng với giá cả cạnh tranh nhất.
+                </p>
                 <div className="social-icons">
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-icon social-icon-facebook">
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-icon social-icon-facebook" aria-label="Facebook">
                     <FaFacebook />
                   </a>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon social-icon-twitter">
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon social-icon-twitter" aria-label="Twitter">
                     <FaTwitter />
                   </a>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-icon social-icon-instagram">
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-icon social-icon-instagram" aria-label="Instagram">
                     <FaInstagram />
                   </a>
-                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="social-icon social-icon-youtube">
+                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="social-icon social-icon-youtube" aria-label="Youtube">
                     <FaYoutube />
                   </a>
                 </div>
@@ -95,7 +97,7 @@ export const Footer = () => {
                 </li>
                 <li>
                   <Link to="/chinh-sach/doi-tra" className="footer-link">
-                    <FaTruck className="footer-link-icon" style={{ transform: 'rotate(180deg)' }} />
+                    <FaExchangeAlt className="footer-link-icon" />
                     <span>Chính sách đổi trả</span>
                   </Link>
                 </li>
@@ -113,34 +115,34 @@ export const Footer = () => {
               <h3 className="footer-title">
                 Danh mục sản phẩm
               </h3>
-              <ul className="footer-content footer-links">
+              <ul className="footer-content footer-links footer-links-simple">
                 <li>
-                  <Link to="/san-pham/gach-op-lat" className="footer-link">
+                  <Link to="/san-pham/gach-op-lat" className="footer-link-simple">
                     Gạch ốp lát
                   </Link>
                 </li>
                 <li>
-                  <Link to="/san-pham/son-noi-ngoai-that" className="footer-link">
+                  <Link to="/san-pham/son-noi-ngoai-that" className="footer-link-simple">
                     Sơn nội ngoại thất
                   </Link>
                 </li>
                 <li>
-                  <Link to="/san-pham/san-go-op-lat" className="footer-link">
+                  <Link to="/san-pham/san-go-op-lat" className="footer-link-simple">
                     Sàn gỗ ốp lát
                   </Link>
                 </li>
                 <li>
-                  <Link to="/san-pham/xi-mang-vat-lieu-tho" className="footer-link">
+                  <Link to="/san-pham/xi-mang-vat-lieu-tho" className="footer-link-simple">
                     Xi măng & vật liệu thô
                   </Link>
                 </li>
                 <li>
-                  <Link to="/san-pham/den-trang-tri" className="footer-link">
+                  <Link to="/san-pham/den-trang-tri" className="footer-link-simple">
                     Đèn trang trí
                   </Link>
                 </li>
                 <li>
-                  <Link to="/san-pham/may-moc-xay-dung" className="footer-link">
+                  <Link to="/san-pham/may-moc-xay-dung" className="footer-link-simple">
                     Máy móc xây dựng
                   </Link>
                 </li>
@@ -159,22 +161,22 @@ export const Footer = () => {
                 </div>
                 <ul className="contact-list">
                   <li className="contact-item">
-                    <div className="contact-icon-wrapper">
+                    <div className="contact-icon-wrapper contact-icon-location">
                       <FaMapMarkerAlt className="contact-icon" />
                     </div>
                     <span className="contact-text">Tầng 6 Ladeco, 266 Đội Cấn, Ba Đình, Hà Nội</span>
                   </li>
                   <li className="contact-item">
-                    <div className="contact-icon-wrapper">
+                    <div className="contact-icon-wrapper contact-icon-phone">
                       <FaPhone className="contact-icon" />
                     </div>
-                    <span className="contact-text">19006750</span>
+                    <a href="tel:19006750" className="contact-text contact-link-tel">19006750</a>
                   </li>
                   <li className="contact-item">
-                    <div className="contact-icon-wrapper">
+                    <div className="contact-icon-wrapper contact-icon-email">
                       <FaEnvelope className="contact-icon" />
                     </div>
-                    <span className="contact-text">support@bicomex.com</span>
+                    <a href="mailto:support@bicomex.com" className="contact-text contact-link-email">support@bicomex.com</a>
                   </li>
                 </ul>
               </div>

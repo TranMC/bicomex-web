@@ -81,9 +81,10 @@ export const OrdersPage = () => {
     
     // Lọc theo từ khóa tìm kiếm
     if (searchTerm) {
+      const searchTermLower = searchTerm.toLowerCase();
       result = result.filter(order => 
-        order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        order.id.toLowerCase().includes(searchTermLower) ||
+        order.items.some(item => item.name.toLowerCase().includes(searchTermLower))
       );
     }
     
@@ -209,6 +210,7 @@ export const OrdersPage = () => {
                     placeholder="Tìm đơn theo mã hoặc tên" 
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    aria-label="Tìm kiếm đơn hàng"
                   />
                 </div>
               </div>

@@ -211,13 +211,14 @@ export const Header = () => {
         <div className="topbar">
           <div className="topbar-container">
             <div className="contact-info">
-              <div className="contact-item">
+              <div className="contact-item contact-phone">
                 <FaPhone className="contact-icon" />
-                <span>Hotline: 19006750</span>
+                <span>Hotline: </span>
+                <a href="tel:19006750" className="hai01">19006750</a>
               </div>
               <div className="contact-item contact-address">
                 <FaMapMarkerAlt className="contact-icon" />
-                <span>Địa chỉ: Tầng 6 Ladeco, 266 Đội Cấn, Hà Nội</span>
+                <span className="dia-chi">Địa chỉ: Tầng 6 Ladeco, 266 Đội Cấn, Ba Đình, Hà Nội</span>
               </div>
             </div>            
             <div className="user-actions">
