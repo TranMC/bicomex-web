@@ -34,7 +34,7 @@
   transition: all 0.3s ease;
 }
 
-.contact-icon {
+.header-contact-icon {
   width: 32px;
   height: 32px;
   display: flex;
@@ -54,7 +54,7 @@
   color: #ffffff;
 }
 
-.contact-phone:hover .contact-icon {
+.contact-phone:hover .header-contact-icon {
   background-color: rgba(255, 255, 255, 0.3);
   transform: scale(1.1);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
@@ -96,13 +96,13 @@
   max-width: 280px;
 }
 
-.contact-address:hover .contact-icon {
+.contact-address:hover .header-contact-icon {
   background-color: rgba(255, 255, 255, 0.3);
   transform: scale(1.1);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-.contact-address .contact-icon {
+.contact-address .header-contact-icon {
   flex-shrink: 0;
 }
 
@@ -155,7 +155,7 @@
     margin: 0 auto;
   }
   
-  .contact-icon {
+  .header-contact-icon {
     width: 28px;
     height: 28px;
     font-size: 0.8rem;
@@ -367,7 +367,7 @@
 }
 
 .logo-image {
-  height: 4rem;
+  height: 30px;
 }
 
 .search-container {

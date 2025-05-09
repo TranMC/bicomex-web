@@ -1,23 +1,27 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { FaStar, FaFilter, FaSort, FaList, FaThLarge } from 'react-icons/fa';
+import { useState, useEffect, useCallback } from 'react';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { FaStar, FaFilter, FaSort, FaList, FaThLarge, FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import useCart from '../hooks/useCart';
 import useToast from '../hooks/useToast';
-import { getProductsByCategory } from '../data/products';
+import { getProductsByCategory, products } from '../data/products';
 import { getCategoryNameBySlug } from '../data/categories';
 import { getBrandNames } from '../data/brands';
 import '../styles/pages/ProductPage.css';
 
 export const ProductPage = () => {
   const { category } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [displayProducts, setDisplayProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   const [filters, setFilters] = useState({
     priceRange: [0, 5000000],
     sortBy: 'newest',
-    brands: []
+    brands: [],
+    searchQuery: ''
   });
   const { addToCart } = useCart();
   const toast = useToast();
@@ -27,16 +31,30 @@ export const ProductPage = () => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
   };
 
+  // Xử lý query parameters
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const q = searchParams.get('q');
+    
+    if (q) {
+      setFilters(prev => ({
+        ...prev,
+        searchQuery: q
+      }));
+    }
+  }, [location.search]);
+
   // Load products based on category
   useEffect(() => {
     setLoading(true);
     // Simulate API call with setTimeout
     const timer = setTimeout(() => {
       // Lấy sản phẩm từ dữ liệu
-      const filteredProducts = getProductsByCategory(category);
-      setDisplayProducts(filteredProducts);
+      const productsData = category ? getProductsByCategory(category) : products;
+      setDisplayProducts(productsData);
+      setFilteredProducts(productsData);
       setLoading(false);
-    }, 1000);
+    }, 500);
 
     // Cleanup function to cancel the timer when component unmounts or before effect runs again
     return () => {
@@ -44,12 +62,103 @@ export const ProductPage = () => {
     };
   }, [category]);
 
-  // Handle filter change
+  // Áp dụng bộ lọc
+  const applyFilters = useCallback(() => {
+    setLoading(true);
+    
+    let result = [...displayProducts];
+    
+    // Lọc theo khoảng giá
+    result = result.filter(product => {
+      const price = product.salePrice || product.price;
+      return price >= filters.priceRange[0] && price <= filters.priceRange[1];
+    });
+    
+    // Lọc theo thương hiệu
+    if (filters.brands.length > 0) {
+      result = result.filter(product => 
+        filters.brands.includes(product.brand)
+      );
+    }
+    
+    // Lọc theo từ khóa tìm kiếm
+    if (filters.searchQuery) {
+      const query = filters.searchQuery.toLowerCase();
+      result = result.filter(product => 
+        product.name.toLowerCase().includes(query) || 
+        product.shortDescription?.toLowerCase().includes(query) ||
+        product.brand.toLowerCase().includes(query)
+      );
+    }
+    
+    // Sắp xếp sản phẩm
+    switch (filters.sortBy) {
+      case 'price-asc':
+        result.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price));
+        break;
+      case 'price-desc':
+        result.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price));
+        break;
+      case 'popular':
+        result.sort((a, b) => b.ratingCount - a.ratingCount);
+        break;
+      case 'rating':
+        result.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'newest':
+      default:
+        // Giả sử sản phẩm có id cao hơn là mới hơn
+        result.sort((a, b) => b.id - a.id);
+        break;
+    }
+    
+    setTimeout(() => {
+      setFilteredProducts(result);
+      setLoading(false);
+    }, 300);
+  }, [displayProducts, filters]);
+
+  // Áp dụng bộ lọc khi filters thay đổi
+  useEffect(() => {
+    applyFilters();
+  }, [filters, applyFilters]);
+
+  // Xử lý thay đổi bộ lọc
   const handleFilterChange = (type, value) => {
     setFilters(prev => ({
       ...prev,
       [type]: value
     }));
+  };
+
+  // Xử lý tìm kiếm
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setFilters(prev => ({
+      ...prev,
+      searchQuery: e.target.elements.search.value
+    }));
+    
+    // Cập nhật URL với query tìm kiếm
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('q', e.target.elements.search.value);
+    navigate({
+      pathname: location.pathname,
+      search: searchParams.toString()
+    });
+  };
+
+  // Xử lý đặt lại bộ lọc
+  const resetFilters = () => {
+    setFilters({
+      priceRange: [0, 5000000],
+      sortBy: 'newest',
+      brands: [],
+      searchQuery: ''
+    });
+    
+    // Xóa query tìm kiếm khỏi URL
+    navigate(location.pathname);
   };
 
   // Available brands for filter
@@ -78,6 +187,37 @@ export const ProductPage = () => {
         </div>
 
         <h1 className="text-3xl font-bold mb-8">{category ? getCategoryNameBySlug(category) : 'Tất cả sản phẩm'}</h1>
+        
+        {/* Thanh tìm kiếm */}
+        <div className="search-bar mb-6 p-4 bg-white rounded-lg shadow-md">
+          <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2">
+            <div className="flex-grow relative">
+              <input 
+                type="text"
+                name="search"
+                placeholder="Tìm kiếm sản phẩm..."
+                className="w-full border rounded-lg py-2 px-3 pr-10"
+                defaultValue={filters.searchQuery}
+              />
+              <FaSearch className="absolute right-3 top-3 text-gray-400" />
+            </div>
+            <button 
+              type="submit"
+              className="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700"
+            >
+              Tìm kiếm
+            </button>
+            {filters.searchQuery && (
+              <button 
+                type="button" 
+                onClick={resetFilters}
+                className="bg-gray-200 text-gray-700 rounded-lg px-4 py-2 hover:bg-gray-300"
+              >
+                Xóa bộ lọc
+              </button>
+            )}
+          </form>
+        </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters sidebar */}
@@ -103,6 +243,32 @@ export const ProductPage = () => {
                 <div className="flex justify-between text-sm">
                   <span>0đ</span>
                   <span>{formatPrice(filters.priceRange[1])}</span>
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <button 
+                    className={`px-2 py-1 text-xs border rounded ${filters.priceRange[1] === 500000 ? 'bg-blue-100 border-blue-500' : 'border-gray-300'}`}
+                    onClick={() => handleFilterChange('priceRange', [0, 500000])}
+                  >
+                    Dưới 500.000đ
+                  </button>
+                  <button 
+                    className={`px-2 py-1 text-xs border rounded ${filters.priceRange[1] === 1000000 ? 'bg-blue-100 border-blue-500' : 'border-gray-300'}`}
+                    onClick={() => handleFilterChange('priceRange', [0, 1000000])}
+                  >
+                    Dưới 1.000.000đ
+                  </button>
+                  <button 
+                    className={`px-2 py-1 text-xs border rounded ${filters.priceRange[1] === 2000000 ? 'bg-blue-100 border-blue-500' : 'border-gray-300'}`}
+                    onClick={() => handleFilterChange('priceRange', [0, 2000000])}
+                  >
+                    Dưới 2.000.000đ
+                  </button>
+                  <button 
+                    className={`px-2 py-1 text-xs border rounded ${filters.priceRange[1] === 5000000 ? 'bg-blue-100 border-blue-500' : 'border-gray-300'}`}
+                    onClick={() => handleFilterChange('priceRange', [0, 5000000])}
+                  >
+                    Tất cả giá
+                  </button>
                 </div>
               </div>
               
@@ -131,8 +297,18 @@ export const ProductPage = () => {
                 </div>
               </div>
               
-              <button className="w-full bg-blue-600 text-white py-2 rounded font-medium hover:bg-blue-700">
+              <button 
+                className="w-full bg-blue-600 text-white py-2 rounded font-medium hover:bg-blue-700"
+                onClick={() => applyFilters()}
+              >
                 Áp dụng
+              </button>
+              
+              <button 
+                className="w-full mt-2 bg-gray-200 text-gray-700 py-2 rounded font-medium hover:bg-gray-300"
+                onClick={resetFilters}
+              >
+                Đặt lại
               </button>
             </div>
           </div>
@@ -153,6 +329,7 @@ export const ProductPage = () => {
                   <option value="price-asc">Giá: Thấp đến cao</option>
                   <option value="price-desc">Giá: Cao đến thấp</option>
                   <option value="popular">Phổ biến nhất</option>
+                  <option value="rating">Đánh giá cao nhất</option>
                 </select>
               </div>
               
@@ -177,22 +354,29 @@ export const ProductPage = () => {
               <div className="flex justify-center items-center h-64">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
               </div>
-            ) : displayProducts.length === 0 ? (
+            ) : filteredProducts.length === 0 ? (
               <div className="bg-white rounded-lg shadow-md p-8 text-center">
                 <h3 className="text-xl font-medium mb-4">Không tìm thấy sản phẩm nào</h3>
                 <p className="text-gray-600 mb-6">Không có sản phẩm nào phù hợp với tiêu chí tìm kiếm của bạn.</p>
-                <Link 
-                  to="/san-pham" 
+                <button 
+                  onClick={resetFilters}
                   className="inline-block bg-blue-600 text-white px-4 py-2 rounded font-medium hover:bg-blue-700"
                 >
-                  Xem tất cả sản phẩm
-                </Link>
+                  Xóa bộ lọc
+                </button>
               </div>
             ) : (
               <>
+                {/* Hiển thị kết quả tìm kiếm */}
+                {filters.searchQuery && (
+                  <div className="mb-4 p-4 bg-gray-100 rounded-lg">
+                    <p>Kết quả tìm kiếm cho: <strong>"{filters.searchQuery}"</strong> - {filteredProducts.length} sản phẩm</p>
+                  </div>
+                )}
+                
                 {viewMode === 'grid' ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {displayProducts.map((product) => (
+                    {filteredProducts.map((product) => (
                       <div key={product.id} className="product-card bg-white rounded-lg shadow-md overflow-hidden">
                         <div className="relative">
                           <Link to={`/san-pham/${product.slug}`} className="block">
@@ -247,7 +431,7 @@ export const ProductPage = () => {
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    {displayProducts.map((product) => (
+                    {filteredProducts.map((product) => (
                       <div key={product.id} className="product-card-list bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row">
                         <div className="relative md:w-1/3">
                           <Link to={`/san-pham/${product.slug}`} className="block">

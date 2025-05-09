@@ -270,12 +270,12 @@
   gap: 1.25rem;
 }
 
-.contact-item {
+.footer-contact-item {
   display: flex;
   align-items: center;
 }
 
-.contact-icon-wrapper {
+.footer-contact-icon-wrapper {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -289,24 +289,24 @@
   transition: transform 0.3s, background-color 0.3s;
 }
 
-.contact-icon-location {
+.footer-contact-icon-location {
   background-color: #3177f9;
 }
 
-.contact-icon-phone {
+.footer-contact-icon-phone {
   background-color: #0ea5e9;
 }
 
-.contact-icon-email {
+.footer-contact-icon-email {
   background-color: #6366f1;
 }
 
-.contact-icon-wrapper:hover {
+.footer-contact-icon-wrapper:hover {
   transform: scale(1.05);
   background-color: #1d4ed8;
 }
 
-.contact-icon {
+.footer-contact-icon {
   font-size: 1rem;
   color: white;
 }

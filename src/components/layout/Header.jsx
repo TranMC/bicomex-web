@@ -84,8 +84,26 @@ export const Header = () => {
   const handleSearch = useCallback((e) => {
     e.preventDefault();
     if (!searchTerm.trim()) return;
-    navigate(`/san-pham?q=${encodeURIComponent(searchTerm)}`);
-  }, [searchTerm, navigate]);
+    
+    // Lấy danh mục đã chọn từ dropdown
+    const categorySelect = e.target.querySelector('.category-select');
+    const selectedCategory = categorySelect?.value;
+    
+    // Nếu chọn một danh mục cụ thể (không phải Tất cả sản phẩm)
+    const categoryParam = selectedCategory && selectedCategory !== 'Tất cả sản phẩm' 
+      ? categories.find(cat => cat.name === selectedCategory)?.slug
+      : '';
+    
+    // Tạo URL tìm kiếm
+    let searchUrl = '/san-pham';
+    if (categoryParam) {
+      searchUrl += `/${categoryParam}`;
+    }
+    searchUrl += `?q=${encodeURIComponent(searchTerm)}`;
+    
+    // Chuyển hướng đến trang sản phẩm với query tìm kiếm
+    navigate(searchUrl);
+  }, [searchTerm, navigate, categories]);
 
   const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);
@@ -175,6 +193,9 @@ export const Header = () => {
             <ul className="ct-mobile">
               <li className="level0 level-top parent">
                 <Link to="/" onClick={closeMobileMenu}>Trang chủ</Link>
+              </li>
+              <li className="level0 level-top parent">
+                <Link to="/san-pham" onClick={closeMobileMenu}>Tất cả sản phẩm</Link>
               </li>
               <li className="level0 level-top parent">
                 <Link to="/khuyen-mai-hot" onClick={closeMobileMenu}>Khuyến mãi hot</Link>
@@ -288,10 +309,10 @@ export const Header = () => {
               <form onSubmit={handleSearch} className="search-form">
                 <div className="search-input-group">
                   <div className="search-select-container">
-                    <select className="category-select">
+                    <select className="category-select" aria-label="Chọn danh mục">
                       <option>Tất cả sản phẩm</option>
                       {categories.map(category => (
-                        <option key={category.id}>{category.name}</option>
+                        <option key={category.id} value={category.name}>{category.name}</option>
                       ))}
                     </select>
                   </div>
@@ -302,11 +323,15 @@ export const Header = () => {
                     className="search-input"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    aria-label="Tìm kiếm sản phẩm"
+                    autoComplete="off"
                   />
                   
                   <button 
                     type="submit"
                     className="search-button"
+                    aria-label="Tìm kiếm"
+                    title="Tìm kiếm"
                   >
                     <FaSearch />
                   </button>
@@ -347,6 +372,15 @@ export const Header = () => {
               {showCategories && (
                 <div className="categories-dropdown">
                   <ul className="categories-list">
+                    <li className="category-item">
+                      <Link 
+                        to="/san-pham"
+                        className="category-link"
+                        onClick={closeMobileMenu}
+                      >
+                        <span>Tất cả sản phẩm</span>
+                      </Link>
+                    </li>
                     {categories.map(category => (
                       <li key={category.id} className="category-item">
                         <Link 
