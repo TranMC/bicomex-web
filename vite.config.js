@@ -3,26 +3,24 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+  base: '/bicomex-web/',
   plugins: [react(), tailwindcss],
   css: {
     postcss: './postcss.config.js',
   },
   server: {
-    cors: true, // Enable CORS for all requests
+    cors: true, 
     hmr: {
-      // Prevent excessive HMR reconnections
       protocol: 'ws',
       host: 'localhost',
       clientPort: 5173
     },
   },
-  // Prevent memory leaks with optimized dependencies
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
   },
-  // Optimize build settings
   build: {
-    sourcemap: false, // Disable sourcemaps in production
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {
@@ -31,10 +29,9 @@ export default defineConfig({
       },
     },
   },
-  // Configure asset handling to prevent CORB issues
   resolve: {
     alias: {
-      '@': '/src', // Makes imports cleaner
+      '@': '/src',
     },
   },
 })

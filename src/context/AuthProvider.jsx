@@ -80,14 +80,10 @@ export const AuthProvider = ({ children }) => {
   // Hàm đăng xuất
   const handleLogout = () => {
     try {
-      // Gọi hàm logout từ useAuthStorage
       const success = auth.logout();
       
       if (success) {
         toast.info('Đã đăng xuất!');
-        
-        // Đảm bảo trang được cập nhật sau khi đăng xuất
-        // Sử dụng 500ms để đảm bảo thông báo được hiển thị trước khi chuyển hướng
         setTimeout(() => {
           window.location.href = '/';
         }, 500);

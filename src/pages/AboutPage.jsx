@@ -20,8 +20,7 @@ export const AboutPage = () => {
               Bicomex được thành lập vào năm 2010, là nhà phân phối vật liệu xây dựng uy tín hàng đầu tại Việt Nam. 
               Với hơn 13 năm kinh nghiệm, chúng tôi tự hào là đối tác tin cậy của hàng nghìn công trình xây dựng trên khắp cả nước.
             </p>
-            
-            <div className="about-vision-mission">
+              <div className="about-vision-mission">
               <div className="vision-mission-item">
                 <h3>Tầm nhìn</h3>
                 <p>Trở thành nhà phân phối vật liệu xây dựng hàng đầu tại Việt Nam, mang đến giải pháp toàn diện, chất lượng cao và đáng tin cậy cho mọi công trình.</p>
@@ -31,11 +30,10 @@ export const AboutPage = () => {
                 <h3>Sứ mệnh</h3>
                 <p>Cung cấp sản phẩm chất lượng cao với giá thành hợp lý, đáp ứng mọi nhu cầu xây dựng và trang trí, góp phần kiến tạo không gian sống hoàn hảo cho người Việt.</p>
               </div>
-            </div>
-          </div>
+            </div>          </div>
           
           <div className="about-image">
-            <img src="/src/assets/images/about-company.jpg" alt="Bicomex trụ sở" onError={(e) => e.target.src = "https://placehold.co/500x300?text=Bicomex+Headquarter"} />
+            <img src="/bicomex-web/src/assets/images/about-company.jpg" alt="Bicomex trụ sở" onError={(e) => e.target.src = "https://placehold.co/500x300?text=Bicomex+Headquarter"} />
           </div>
         </div>
         
