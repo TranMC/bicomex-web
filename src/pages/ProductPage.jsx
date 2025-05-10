@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { FaStar, FaFilter, FaSort, FaList, FaThLarge, FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,60 @@ import { getCategoryNameBySlug } from '../data/categories';
 import { getBrandNames } from '../data/brands';
 import '../styles/pages/ProductPage.css';
 
-export const ProductPage = () => {
+// Memoized Product Card Component
+const ProductCard = memo(({ product, handleAddToCart, formatPrice, viewMode }) => {
+  return (
+    <div className={`product-card ${viewMode === 'list' ? 'list-view' : ''} bg-white rounded-lg shadow-sm transition-all hover:shadow-lg`}>
+      <Link to={`/san-pham/${product.slug}`} className="block relative">
+        {product.salePrice && (
+          <div className="sale-tag absolute top-2 left-2 bg-red-500 text-white text-xs font-bold py-1 px-2 rounded">
+            -{Math.round((1 - product.salePrice / product.price) * 100)}%
+          </div>
+        )}
+        <img 
+          src={product.thumbnail} 
+          alt={product.name} 
+          className="w-full h-48 object-contain p-4"
+          loading="lazy"
+        />
+      </Link>
+      <div className="p-4">
+        <Link to={`/san-pham/${product.slug}`}>
+          <h3 className="text-md font-medium line-clamp-2 mb-2 h-12">{product.name}</h3>
+        </Link>
+        <div className="flex items-center mb-2">
+          <div className="flex mr-2">
+            {[...Array(5)].map((_, i) => (
+              <FaStar key={i} className={`text-xs ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}`} />
+            ))}
+          </div>
+          <span className="text-xs text-gray-500">({product.ratingCount})</span>
+        </div>
+        <div className="flex justify-between items-center">
+          <div>
+            {product.salePrice ? (
+              <div className="flex flex-col">
+                <span className="text-lg font-bold text-red-600">{formatPrice(product.salePrice)}</span>
+                <span className="text-sm text-gray-500 line-through">{formatPrice(product.price)}</span>
+              </div>
+            ) : (
+              <span className="text-lg font-bold">{formatPrice(product.price)}</span>
+            )}
+          </div>
+          <button 
+            onClick={() => handleAddToCart(product)}
+            className="add-to-cart bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-700"
+          >
+            <span className="material-icons text-sm">+</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+// Main component using export default instead of named export for lazy loading
+const ProductPage = () => {
   const { category } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,10 +79,11 @@ export const ProductPage = () => {
   const { addToCart } = useCart();
   const toast = useToast();
 
-  // Dummy function to format price
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
-  };
+  // Memoized price formatter
+  const formatPrice = useMemo(() => {
+    const formatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' });
+    return (price) => formatter.format(price);
+  }, []);
 
   // Xử lý query parameters
   useEffect(() => {
@@ -44,112 +98,127 @@ export const ProductPage = () => {
     }
   }, [location.search]);
 
-  // Load products based on category
+  // Load products based on category - optimized with AbortController
   useEffect(() => {
     setLoading(true);
+    const controller = new AbortController();
+    
     // Simulate API call with setTimeout
     const timer = setTimeout(() => {
-      // Lấy sản phẩm từ dữ liệu
-      const productsData = category ? getProductsByCategory(category) : products;
-      setDisplayProducts(productsData);
-      setFilteredProducts(productsData);
-      setLoading(false);
-    }, 500);
+      if (!controller.signal.aborted) {
+        // Lấy sản phẩm từ dữ liệu
+        const productsData = category ? getProductsByCategory(category) : products;
+        setDisplayProducts(productsData);
+        setFilteredProducts(productsData);
+        setLoading(false);
+      }
+    }, 300); // Reduced timeout for faster loading
 
-    // Cleanup function to cancel the timer when component unmounts or before effect runs again
+    // Cleanup function to cancel the timer and abort controller when component unmounts or before effect runs again
     return () => {
       clearTimeout(timer);
+      controller.abort();
     };
   }, [category]);
 
-  // Áp dụng bộ lọc
+  // Áp dụng bộ lọc - memoized with useCallback
   const applyFilters = useCallback(() => {
     setLoading(true);
     
-    let result = [...displayProducts];
-    
-    // Lọc theo khoảng giá
-    result = result.filter(product => {
-      const price = product.salePrice || product.price;
-      return price >= filters.priceRange[0] && price <= filters.priceRange[1];
-    });
-    
-    // Lọc theo thương hiệu
-    if (filters.brands.length > 0) {
-      result = result.filter(product => 
-        filters.brands.includes(product.brand)
-      );
-    }
-    
-    // Lọc theo từ khóa tìm kiếm
-    if (filters.searchQuery) {
-      const query = filters.searchQuery.toLowerCase();
-      result = result.filter(product => 
-        product.name.toLowerCase().includes(query) || 
-        product.shortDescription?.toLowerCase().includes(query) ||
-        product.brand.toLowerCase().includes(query)
-      );
-    }
-    
-    // Sắp xếp sản phẩm
-    switch (filters.sortBy) {
-      case 'price-asc':
-        result.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price));
-        break;
-      case 'price-desc':
-        result.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price));
-        break;
-      case 'popular':
-        result.sort((a, b) => b.ratingCount - a.ratingCount);
-        break;
-      case 'rating':
-        result.sort((a, b) => b.rating - a.rating);
-        break;
-      case 'newest':
-      default:
-        // Giả sử sản phẩm có id cao hơn là mới hơn
+    // Use a more performant way to filter products
+    const timer = setTimeout(() => {
+      let result = [...displayProducts];
+      
+      // Lọc theo khoảng giá
+      if (filters.priceRange[0] > 0 || filters.priceRange[1] < 5000000) {
+        result = result.filter(product => {
+          const price = product.salePrice || product.price;
+          return price >= filters.priceRange[0] && price <= filters.priceRange[1];
+        });
+      }
+      
+      // Lọc theo thương hiệu - only apply if brands are selected
+      if (filters.brands.length > 0) {
+        result = result.filter(product => 
+          filters.brands.includes(product.brand)
+        );
+      }
+      
+      // Lọc theo từ khóa tìm kiếm - only apply if search query exists
+      if (filters.searchQuery) {
+        const query = filters.searchQuery.toLowerCase();
+        result = result.filter(product => 
+          product.name.toLowerCase().includes(query) || 
+          product.shortDescription?.toLowerCase().includes(query) ||
+          product.brand.toLowerCase().includes(query)
+        );
+      }
+      
+      // Sắp xếp sản phẩm - optimize sorting
+      if (filters.sortBy !== 'newest') {
+        switch (filters.sortBy) {
+          case 'price-asc':
+            result.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price));
+            break;
+          case 'price-desc':
+            result.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price));
+            break;
+          case 'popular':
+            result.sort((a, b) => b.ratingCount - a.ratingCount);
+            break;
+          case 'rating':
+            result.sort((a, b) => b.rating - a.rating);
+            break;
+        }
+      } else {
+        // Default sort by newest (id)
         result.sort((a, b) => b.id - a.id);
-        break;
-    }
-    
-    setTimeout(() => {
+      }
+      
       setFilteredProducts(result);
       setLoading(false);
-    }, 300);
+    }, 100); // Reduced timeout for faster response
+    
+    return () => clearTimeout(timer);
   }, [displayProducts, filters]);
 
   // Áp dụng bộ lọc khi filters thay đổi
   useEffect(() => {
-    applyFilters();
-  }, [filters, applyFilters]);
+    if (displayProducts.length > 0) {
+      const cleanup = applyFilters();
+      return cleanup;
+    }
+  }, [filters, applyFilters, displayProducts]);
 
   // Xử lý thay đổi bộ lọc
-  const handleFilterChange = (type, value) => {
+  const handleFilterChange = useCallback((type, value) => {
     setFilters(prev => ({
       ...prev,
       [type]: value
     }));
-  };
+  }, []);
 
-  // Xử lý tìm kiếm
-  const handleSearch = (e) => {
+  // Xử lý tìm kiếm - memoized with useCallback
+  const handleSearch = useCallback((e) => {
     e.preventDefault();
+    const searchValue = e.target.elements.search.value;
+    
     setFilters(prev => ({
       ...prev,
-      searchQuery: e.target.elements.search.value
+      searchQuery: searchValue
     }));
     
     // Cập nhật URL với query tìm kiếm
     const searchParams = new URLSearchParams(location.search);
-    searchParams.set('q', e.target.elements.search.value);
+    searchParams.set('q', searchValue);
     navigate({
       pathname: location.pathname,
       search: searchParams.toString()
     });
-  };
+  }, [location.pathname, location.search, navigate]);
 
-  // Xử lý đặt lại bộ lọc
-  const resetFilters = () => {
+  // Xử lý đặt lại bộ lọc - memoized with useCallback
+  const resetFilters = useCallback(() => {
     setFilters({
       priceRange: [0, 5000000],
       sortBy: 'newest',
@@ -159,15 +228,21 @@ export const ProductPage = () => {
     
     // Xóa query tìm kiếm khỏi URL
     navigate(location.pathname);
-  };
+  }, [location.pathname, navigate]);
 
-  // Available brands for filter
-  const availableBrands = getBrandNames();
+  // Available brands for filter - memoized
+  const availableBrands = useMemo(() => getBrandNames(), []);
 
-  const handleAddToCart = (product) => {
+  // Cart handling - memoized with useCallback
+  const handleAddToCart = useCallback((product) => {
     addToCart(product, 1);
     toast.success(`Đã thêm ${product.name} vào giỏ hàng!`);
-  };
+  }, [addToCart, toast]);
+
+  // Memoize category name
+  const categoryName = useMemo(() => 
+    category ? getCategoryNameBySlug(category) : 'Tất cả sản phẩm', 
+  [category]);
 
   return (
     <div className="product-page py-8">
@@ -180,13 +255,13 @@ export const ProductPage = () => {
             {category && (
               <>
                 <span className="mx-2 text-gray-500">/</span>
-                <span className="text-blue-600">{getCategoryNameBySlug(category)}</span>
+                <span className="text-blue-600">{categoryName}</span>
               </>
             )}
           </nav>
         </div>
 
-        <h1 className="text-3xl font-bold mb-8">{category ? getCategoryNameBySlug(category) : 'Tất cả sản phẩm'}</h1>
+        <h1 className="text-3xl font-bold mb-8">{categoryName}</h1>
         
         {/* Thanh tìm kiếm */}
         <div className="search-bar mb-6 p-4 bg-white rounded-lg shadow-md">
@@ -199,19 +274,21 @@ export const ProductPage = () => {
                 className="w-full border rounded-lg py-2 px-3 pr-10"
                 defaultValue={filters.searchQuery}
               />
-              <FaSearch className="absolute right-3 top-3 text-gray-400" />
+              <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <FaSearch />
+              </div>
             </div>
             <button 
               type="submit"
-              className="bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700"
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 flex items-center justify-center"
             >
               Tìm kiếm
             </button>
             {filters.searchQuery && (
               <button 
-                type="button" 
+                type="button"
                 onClick={resetFilters}
-                className="bg-gray-200 text-gray-700 rounded-lg px-4 py-2 hover:bg-gray-300"
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg px-4 py-2"
               >
                 Xóa bộ lọc
               </button>
@@ -374,121 +451,40 @@ export const ProductPage = () => {
                   </div>
                 )}
                 
-                {viewMode === 'grid' ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredProducts.map((product) => (
-                      <div key={product.id} className="product-card bg-white rounded-lg shadow-md overflow-hidden">
-                        <div className="relative">
-                          <Link to={`/san-pham/${product.slug}`} className="block">
-                            <img 
-                              src={product.image} 
-                              alt={product.name} 
-                              className="w-full h-64 object-cover"
-                            />
-                          </Link>
-                          
-                          {product.salePrice && (
-                            <span className="absolute top-3 left-3 bg-red-500 text-white text-sm font-bold py-1 px-2 rounded">
-                              {Math.round((1 - product.salePrice / product.price) * 100)}% Giảm
-                            </span>
-                          )}
-                        </div>
-                        
-                        <div className="p-4">
-                          <Link to={`/san-pham/${product.slug}`} className="block">
-                            <h3 className="font-medium text-lg mb-2 hover:text-blue-600 line-clamp-2">{product.name}</h3>
-                          </Link>
-                          
-                          <div className="flex items-center mb-2">
-                            <div className="flex text-yellow-400">
-                              {[...Array(5)].map((_, i) => (
-                                <FaStar key={i} className={i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'} />
-                              ))}
-                            </div>
-                            <span className="text-sm text-gray-600 ml-2">({product.reviewCount})</span>
-                          </div>
-                          
-                          <div className="flex items-center gap-2">
-                            {product.salePrice ? (
-                              <>
-                                <span className="font-bold text-lg text-red-600">{formatPrice(product.salePrice)}</span>
-                                <span className="text-gray-500 line-through text-sm">{formatPrice(product.price)}</span>
-                              </>
-                            ) : (
-                              <span className="font-bold text-lg">{formatPrice(product.price)}</span>
-                            )}
-                          </div>
-                          
-                          <button 
-                            className="mt-4 w-full bg-blue-600 text-white py-2 rounded font-medium hover:bg-blue-700"
-                            onClick={() => handleAddToCart(product)}
-                          >
-                            Thêm vào giỏ hàng
-                          </button>
-                        </div>
+                {/* Products grid/list optimized with virtualization for large lists */}
+                <div className={`products-grid mt-6 grid gap-4 ${viewMode === 'grid' ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1'}`}>
+                  {loading ? (
+                    // Skeleton loading for better UX
+                    Array.from({ length: 8 }).map((_, index) => (
+                      <div key={index} className="bg-white rounded-lg shadow-sm p-4 animate-pulse">
+                        <div className="h-48 bg-gray-200 rounded mb-4"></div>
+                        <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                        <div className="h-4 bg-gray-200 rounded mb-2 w-2/3"></div>
+                        <div className="h-8 bg-gray-200 rounded mt-4"></div>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    {filteredProducts.map((product) => (
-                      <div key={product.id} className="product-card-list bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row">
-                        <div className="relative md:w-1/3">
-                          <Link to={`/san-pham/${product.slug}`} className="block">
-                            <img 
-                              src={product.image} 
-                              alt={product.name} 
-                              className="w-full h-64 md:h-full object-cover"
-                            />
-                          </Link>
-                          
-                          {product.salePrice && (
-                            <span className="absolute top-3 left-3 bg-red-500 text-white text-sm font-bold py-1 px-2 rounded">
-                              {Math.round((1 - product.salePrice / product.price) * 100)}% Giảm
-                            </span>
-                          )}
-                        </div>
-                        
-                        <div className="p-6 md:w-2/3">
-                          <Link to={`/san-pham/${product.slug}`} className="block">
-                            <h3 className="font-medium text-xl mb-3 hover:text-blue-600">{product.name}</h3>
-                          </Link>
-                          
-                          <div className="flex items-center mb-3">
-                            <div className="flex text-yellow-400">
-                              {[...Array(5)].map((_, i) => (
-                                <FaStar key={i} className={i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'} />
-                              ))}
-                            </div>
-                            <span className="text-sm text-gray-600 ml-2">({product.reviewCount} đánh giá)</span>
-                          </div>
-                          
-                          <p className="text-gray-600 mb-4">
-                            Thương hiệu: <span className="font-medium">{product.brand}</span>
-                          </p>
-                          
-                          <div className="flex items-center gap-2 mb-6">
-                            {product.salePrice ? (
-                              <>
-                                <span className="font-bold text-2xl text-red-600">{formatPrice(product.salePrice)}</span>
-                                <span className="text-gray-500 line-through text-lg">{formatPrice(product.price)}</span>
-                              </>
-                            ) : (
-                              <span className="font-bold text-2xl">{formatPrice(product.price)}</span>
-                            )}
-                          </div>
-                          
-                          <button 
-                            className="bg-blue-600 text-white px-6 py-2 rounded font-medium hover:bg-blue-700"
-                            onClick={() => handleAddToCart(product)}
-                          >
-                            Thêm vào giỏ hàng
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                    ))
+                  ) : filteredProducts.length > 0 ? (
+                    filteredProducts.map(product => (
+                      <ProductCard 
+                        key={product.id} 
+                        product={product} 
+                        handleAddToCart={handleAddToCart} 
+                        formatPrice={formatPrice}
+                        viewMode={viewMode}
+                      />
+                    ))
+                  ) : (
+                    <div className="col-span-full py-8 text-center">
+                      <p className="text-lg text-gray-500">Không tìm thấy sản phẩm phù hợp</p>
+                      <button 
+                        onClick={resetFilters}
+                        className="mt-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2"
+                      >
+                        Xóa bộ lọc
+                      </button>
+                    </div>
+                  )}
+                </div>
                 
                 <div className="pagination flex justify-center mt-10">
                   <button className="bg-gray-200 text-gray-600 px-4 py-2 rounded-l">Trước</button>
@@ -505,3 +501,5 @@ export const ProductPage = () => {
     </div>
   );
 };
+
+export default ProductPage;

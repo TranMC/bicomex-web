@@ -86,8 +86,6 @@ export const AuthProvider = ({ children }) => {
       if (success) {
         toast.info('Đã đăng xuất!');
         
-        // Đảm bảo trang được cập nhật sau khi đăng xuất
-        // Sử dụng 500ms để đảm bảo thông báo được hiển thị trước khi chuyển hướng
         setTimeout(() => {
           window.location.href = '/';
         }, 500);

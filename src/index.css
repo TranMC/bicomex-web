@@ -2,18 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f7fa;
-  color: #333333;
+:root {
+  --primary: #3e81ec;
+  --primary-hover: #1ecca9;
+  --text: #333333;
+  --bg: #f5f7fa;
 }
 
-/* Fix Swiper elements to behave like background only */
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* Optimized Swiper styles */
 .swiper,
 .swiper-container,
 .swiper-initialized,
@@ -23,6 +28,7 @@ body {
   z-index: 0 !important;
   pointer-events: none !important;
   overflow: hidden !important;
+  contain: layout paint style;
 }
 
 /* Allow clicking on content inside swiper */
@@ -35,60 +41,86 @@ body {
   pointer-events: auto !important;
 }
 
-/* Fix navigation buttons */
-.swiper-button-next,
-.swiper-button-prev {
-  display: none !important;
-}
-
-/* Fix pagination */
-.swiper-pagination {
-  display: none !important;
-}
-
+/* Common utility classes */
 .shadow-samm {
-  background: #3e81ec;
+  background: var(--primary);
 }
+
 .hover\:bg-blue-700:hover {
-  background-color: #1ecca9 !important;
+  background-color: var(--primary-hover) !important;
 }
-/* Problematic rule causing color issues - commented out
-.bloccker, .text-xs, .text-gray-500{
-  color: white;
-}
-*/
+
 html {
   scroll-behavior: smooth;
 }
+
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
   border-radius: 40px;
 }
-.py-2\.5{
+
+.py-2\.5 {
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
   border-radius: 100px;
-  
 }
+
 .container {
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
+  contain: layout style;
 }
 
+/* Text truncation utilities with container optimizations */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;  
   overflow: hidden;
+  contain: content;
+  will-change: transform;
 }
+
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
   -webkit-box-orient: vertical;  
   overflow: hidden;
+  contain: content;
+  will-change: transform;
 }
 
+/* Image rendering optimization */
+img {
+  content-visibility: auto;
+}
+
+/* Remove hidden elements from layout flow */
+.hidden, 
+[hidden], 
+.swiper-button-next,
+.swiper-button-prev,
+.swiper-pagination {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Optimize animation frames */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Problematic rule causing color issues - commented out
+.bloccker, .text-xs, .text-gray-500{
+  color: white;
+}
+*/
