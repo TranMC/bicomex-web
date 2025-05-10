@@ -3,7 +3,18 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  plugins: [react(), tailwindcss],
+  plugins: [
+    react({
+      // Vô hiệu hóa fast refresh để tránh lỗi runtime
+      fastRefresh: false,
+      // Tắt babel để tránh xung đột với runtime transform
+      babel: {
+        babelrc: false,
+        configFile: false,
+      }
+    }), 
+    tailwindcss
+  ],
   // base: "/bicomex-web",
   css: {
     postcss: './postcss.config.js',
@@ -51,4 +62,8 @@ export default defineConfig({
       '@': '/src', // Makes imports cleaner
     },
   },
+  // Tắt các tính năng gây lỗi
+  esbuild: {
+    logOverride: { 'this-is-undefined-in-esm': 'silent' }
+  }
 })

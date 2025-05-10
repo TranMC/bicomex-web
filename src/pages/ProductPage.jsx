@@ -106,11 +106,11 @@ const ProductPage = () => {
     // Simulate API call with setTimeout
     const timer = setTimeout(() => {
       if (!controller.signal.aborted) {
-        // Lấy sản phẩm từ dữ liệu
-        const productsData = category ? getProductsByCategory(category) : products;
-        setDisplayProducts(productsData);
-        setFilteredProducts(productsData);
-        setLoading(false);
+      // Lấy sản phẩm từ dữ liệu
+      const productsData = category ? getProductsByCategory(category) : products;
+      setDisplayProducts(productsData);
+      setFilteredProducts(productsData);
+      setLoading(false);
       }
     }, 300); // Reduced timeout for faster loading
 
@@ -127,54 +127,54 @@ const ProductPage = () => {
     
     // Use a more performant way to filter products
     const timer = setTimeout(() => {
-      let result = [...displayProducts];
-      
-      // Lọc theo khoảng giá
+    let result = [...displayProducts];
+    
+    // Lọc theo khoảng giá
       if (filters.priceRange[0] > 0 || filters.priceRange[1] < 5000000) {
-        result = result.filter(product => {
-          const price = product.salePrice || product.price;
-          return price >= filters.priceRange[0] && price <= filters.priceRange[1];
-        });
+    result = result.filter(product => {
+      const price = product.salePrice || product.price;
+      return price >= filters.priceRange[0] && price <= filters.priceRange[1];
+    });
       }
-      
+    
       // Lọc theo thương hiệu - only apply if brands are selected
-      if (filters.brands.length > 0) {
-        result = result.filter(product => 
-          filters.brands.includes(product.brand)
-        );
-      }
-      
+    if (filters.brands.length > 0) {
+      result = result.filter(product => 
+        filters.brands.includes(product.brand)
+      );
+    }
+    
       // Lọc theo từ khóa tìm kiếm - only apply if search query exists
-      if (filters.searchQuery) {
-        const query = filters.searchQuery.toLowerCase();
-        result = result.filter(product => 
-          product.name.toLowerCase().includes(query) || 
-          product.shortDescription?.toLowerCase().includes(query) ||
-          product.brand.toLowerCase().includes(query)
-        );
-      }
-      
+    if (filters.searchQuery) {
+      const query = filters.searchQuery.toLowerCase();
+      result = result.filter(product => 
+        product.name.toLowerCase().includes(query) || 
+        product.shortDescription?.toLowerCase().includes(query) ||
+        product.brand.toLowerCase().includes(query)
+      );
+    }
+    
       // Sắp xếp sản phẩm - optimize sorting
       if (filters.sortBy !== 'newest') {
-        switch (filters.sortBy) {
-          case 'price-asc':
-            result.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price));
-            break;
-          case 'price-desc':
-            result.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price));
-            break;
-          case 'popular':
-            result.sort((a, b) => b.ratingCount - a.ratingCount);
-            break;
-          case 'rating':
-            result.sort((a, b) => b.rating - a.rating);
-            break;
+    switch (filters.sortBy) {
+      case 'price-asc':
+        result.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price));
+        break;
+      case 'price-desc':
+        result.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price));
+        break;
+      case 'popular':
+        result.sort((a, b) => b.ratingCount - a.ratingCount);
+        break;
+      case 'rating':
+        result.sort((a, b) => b.rating - a.rating);
+        break;
         }
       } else {
         // Default sort by newest (id)
         result.sort((a, b) => b.id - a.id);
-      }
-      
+    }
+    
       setFilteredProducts(result);
       setLoading(false);
     }, 100); // Reduced timeout for faster response
@@ -286,7 +286,7 @@ const ProductPage = () => {
             </button>
             {filters.searchQuery && (
               <button 
-                type="button"
+                type="button" 
                 onClick={resetFilters}
                 className="bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg px-4 py-2"
               >
@@ -476,15 +476,15 @@ const ProductPage = () => {
                   ) : (
                     <div className="col-span-full py-8 text-center">
                       <p className="text-lg text-gray-500">Không tìm thấy sản phẩm phù hợp</p>
-                      <button 
+                          <button 
                         onClick={resetFilters}
                         className="mt-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2"
-                      >
+                          >
                         Xóa bộ lọc
-                      </button>
-                    </div>
+                          </button>
+                        </div>
                   )}
-                </div>
+                  </div>
                 
                 <div className="pagination flex justify-center mt-10">
                   <button className="bg-gray-200 text-gray-600 px-4 py-2 rounded-l">Trước</button>

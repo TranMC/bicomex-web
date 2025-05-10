@@ -2,7 +2,8 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 
+// Tạo root container
 const root = createRoot(document.getElementById('root'))
 
-// Lazy load app for faster initial paint
+// Render app
 root.render(<App />)
