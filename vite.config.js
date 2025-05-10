@@ -4,7 +4,6 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss],
-  base: "/bicomex-web",
   css: {
     postcss: './postcss.config.js',
   },
