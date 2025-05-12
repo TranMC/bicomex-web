@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { FaUser, FaAddressCard, FaShoppingBag, FaCog, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaUser, FaAddressCard, FaShoppingBag, FaCog, FaPhone, FaEnvelope, FaMapMarkerAlt, FaAngleRight } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
 import useConfirmDialog from '../hooks/useConfirmDialog';
 import '../styles/pages/ProfilePage.css';
@@ -102,7 +102,7 @@ export const ProfilePage = () => {
               <ul>
                 <li>
                   <Link 
-                    to="/ho-so"
+                    to="/tai-khoan"
                     className={activeTab === 'info' ? 'active' : ''}
                   >
                     <span className="nav-icon"><FaUser /></span>
@@ -145,6 +145,13 @@ export const ProfilePage = () => {
               <h2>
                 {tabs.find(tab => tab.id === activeTab)?.label || 'Thông tin tài khoản'}
               </h2>
+              <div className="breadcrumbs">
+                <Link to="/">Trang chủ</Link>
+                <FaAngleRight className="breadcrumb-separator" />
+                <Link to="/tai-khoan">Tài khoản</Link>
+                <FaAngleRight className="breadcrumb-separator" />
+                <span>Hồ sơ cá nhân</span>
+              </div>
             </div>
             
             <div className="profile-body">

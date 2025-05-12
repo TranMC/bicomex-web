@@ -198,7 +198,7 @@ export const Header = () => {
                 <Link to="/san-pham" onClick={closeMobileMenu}>Tất cả sản phẩm</Link>
               </li>
               <li className="level0 level-top parent">
-                <Link to="/khuyen-mai-hot" onClick={closeMobileMenu}>Khuyến mãi hot</Link>
+                <Link to="/khuyen-mai" onClick={closeMobileMenu}>Khuyến mãi hot</Link>
               </li>
               {categories.map(category => (
                 <li key={category.id} className="level0 level-top parent">
@@ -249,7 +249,7 @@ export const Header = () => {
                     <span>Xin chào, {displayName}<FaAngleDown className="user-dropdown-arrow" /></span>
                   </div>
                   <div className="user-dropdown-content">
-                    <Link to="/ho-so" className="user-dropdown-item" onClick={handleProfileNavigation('/ho-so')}>
+                    <Link to="/tai-khoan" className="user-dropdown-item" onClick={handleProfileNavigation('/tai-khoan')}>
                       <FaUser className="user-dropdown-icon" />
                       <span>Tài khoản của tôi</span>
                     </Link>
@@ -273,9 +273,9 @@ export const Header = () => {
                 </div>
               ) : (
                 <>
-                  <Link to="/register" className="user-link">Đăng ký</Link>
+                  <Link to="/dang-ky" className="user-link">Đăng ký</Link>
                   <span className="divider">|</span>
-                  <Link to="/login" className="user-link">Đăng nhập</Link>
+                  <Link to="/dang-nhap" className="user-link">Đăng nhập</Link>
                 </>
               )}
             </div>
@@ -428,7 +428,7 @@ export const Header = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/khuyen-mai-hot" className="nav-link" onClick={closeMobileMenu}>
+                  <Link to="/khuyen-mai" className="nav-link" onClick={closeMobileMenu}>
                     <span>Khuyến mãi hot</span>
                   </Link>
                 </li>

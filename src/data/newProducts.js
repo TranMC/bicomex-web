@@ -65,7 +65,7 @@ export const newProducts = [
   },  {
     id: 14,
     name: 'Keo chống thấm Weber Seal',
-    image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-dulux-ambiance-5-in-1-sheen.jpg',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrdScqnvbv0zm3Ak5jOhxzqJ0EXv9PNGulGQ&s',
     price: 185000,
     salePrice: null,
     rating: 4.5,

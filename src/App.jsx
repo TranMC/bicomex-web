@@ -8,8 +8,23 @@ import { AuthProvider } from './context/AuthProvider';
 import { ConfirmProvider } from './context/ConfirmContext';
 import './App.css';
 
-// Import trực tiếp trang HomePage để tránh lỗi lazy loading
+// Import các trang
 import { HomePage } from './pages/HomePage';
+import { AboutPage } from './pages/AboutPage';
+import { CartPage } from './pages/CartPage';
+import { CheckoutPage } from './pages/CheckoutPage';
+import { ContactPage } from './pages/ContactPage';
+import LoginPage from './pages/LoginPage';
+import { NewsPage } from './pages/NewsPage';
+import { OrdersPage } from './pages/OrdersPage';
+import { ProductDetailPage } from './pages/ProductDetailPage';
+import ProductPage from './pages/ProductPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { PromotionsPage } from './pages/PromotionsPage';
+import RegisterPage from './pages/RegisterPage';
+import { SettingsPage } from './pages/SettingsPage';
+import { PolicyPage } from './pages/PolicyPage';
+import { AddressesPage } from './pages/AddressesPage';
 
 // ErrorBoundary component cho Suspense
 class ErrorBoundary extends React.Component {
@@ -80,9 +95,37 @@ function App() {
                     </div>
                   ) : (
                     <Routes>
-                      {/* Sử dụng import trực tiếp cho HomePage */}
+                      {/* Trang chính */}
                       <Route path="/" element={<HomePage />} />
-                      {/* Những trang khác có thể thêm sau khi đã fix được lỗi */}
+                      
+                      {/* Trang thông tin */}
+                      <Route path="/gioi-thieu" element={<AboutPage />} />
+                      <Route path="/lien-he" element={<ContactPage />} />
+                      <Route path="/tin-tuc" element={<NewsPage />} />
+                      <Route path="/khuyen-mai" element={<PromotionsPage />} />
+                      
+                      {/* Trang sản phẩm */}
+                      <Route path="/san-pham" element={<ProductPage />} />
+                      <Route path="/san-pham/:id" element={<ProductDetailPage />} />
+                      
+                      {/* Trang người dùng */}
+                      <Route path="/dang-nhap" element={<LoginPage />} />
+                      <Route path="/dang-ky" element={<RegisterPage />} />
+                      <Route path="/tai-khoan" element={<ProfilePage />} />
+                      <Route path="/so-dia-chi" element={<AddressesPage />} />
+                      <Route path="/cai-dat" element={<SettingsPage />} />
+                      <Route path="/don-hang" element={<OrdersPage />} />
+                      
+                      {/* Trang giỏ hàng và thanh toán */}
+                      <Route path="/gio-hang" element={<CartPage />} />
+                      <Route path="/thanh-toan" element={<CheckoutPage />} />
+                      
+                      {/* Trang chính sách */}
+                      <Route path="/chinh-sach/thanh-toan" element={<PolicyPage type="payment" />} />
+                      <Route path="/chinh-sach/van-chuyen" element={<PolicyPage type="shipping" />} />
+                      <Route path="/chinh-sach/bao-hanh" element={<PolicyPage type="warranty" />} />
+                      <Route path="/chinh-sach/doi-tra" element={<PolicyPage type="return" />} />
+                      <Route path="/chinh-sach/bao-mat" element={<PolicyPage type="privacy" />} />
                     </Routes>
                   )}
                 </main>
