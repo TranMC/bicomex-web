@@ -145,6 +145,13 @@ export const ProfilePage = () => {
               <h2>
                 {tabs.find(tab => tab.id === activeTab)?.label || 'Thông tin tài khoản'}
               </h2>
+              <div className="breadcrumbs">
+                <Link to="/">Trang chủ</Link>
+                <FaAngleRight className="breadcrumb-separator" />
+                <Link to="/tai-khoan">Tài khoản</Link>
+                <FaAngleRight className="breadcrumb-separator" />
+                <span>Hồ sơ cá nhân</span>
+              </div>
             </div>
             
             <div className="profile-body">
@@ -266,13 +273,6 @@ export const ProfilePage = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="breadcrumbs">
-        <Link to="/">Trang chủ</Link>
-        <FaAngleRight className="breadcrumb-separator" />
-        <Link to="/tai-khoan">Tài khoản</Link>
-        <FaAngleRight className="breadcrumb-separator" />
-        <span>Hồ sơ cá nhân</span>
       </div>
     </div>
   );
