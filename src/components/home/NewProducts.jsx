@@ -65,7 +65,8 @@ export const NewProducts = () => {
   };
   return (
     <section className="section-new-products">
-      <div className="new-products-container">        <div className="section-title-container">
+      <div className="new-products-container">        
+        <div className="section-title-container">
           <div className="section-title-wrapper">
             <div className="title-line left"></div>
             <h2 className="section-title">SẢN PHẨM MỚI VỀ</h2>

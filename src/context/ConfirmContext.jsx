@@ -1,9 +1,6 @@
-import { createContext } from 'react';
 import useConfirm from '../hooks/useConfirm';
 import ConfirmDialog from '../components/ui/ConfirmDialog';
-
-// Tạo context để quản lý các dialog xác nhận
-export const ConfirmContext = createContext(null);
+import { ConfirmContext } from './ConfirmContextInstance';
 
 export const ConfirmProvider = ({ children }) => {
   const {

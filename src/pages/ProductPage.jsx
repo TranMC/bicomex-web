@@ -311,7 +311,7 @@ const ProductPage = () => {
                     type="range" 
                     min="0" 
                     max="5000000" 
-                    step="100000" 
+                    step="1000" 
                     value={filters.priceRange[1]} 
                     onChange={(e) => handleFilterChange('priceRange', [0, parseInt(e.target.value)])}
                     className="w-full"

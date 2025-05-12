@@ -6,7 +6,6 @@ import { CartProvider } from './context/CartProvider';
 import { ToastProvider } from './context/ToastProvider';
 import { AuthProvider } from './context/AuthProvider';
 import { ConfirmProvider } from './context/ConfirmContext';
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import './App.css';
 
 // Import các trang
@@ -131,7 +130,6 @@ function App() {
                   )}
                 </main>
                 <Footer />
-                <SpeedInsights />
               </div>
             </ConfirmProvider>
           </CartProvider>

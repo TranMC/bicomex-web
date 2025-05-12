@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ConfirmContext } from '../context/ConfirmContext';
+import { ConfirmContext } from '../context/ConfirmContextInstance';
 
 /**
  * Custom hook để sử dụng các dialog xác nhận
