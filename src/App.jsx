@@ -23,6 +23,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { PromotionsPage } from './pages/PromotionsPage';
 import RegisterPage from './pages/RegisterPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { PolicyPage } from './pages/PolicyPage';
 
 // ErrorBoundary component cho Suspense
 class ErrorBoundary extends React.Component {
@@ -93,21 +94,36 @@ function App() {
                     </div>
                   ) : (
                     <Routes>
-                      {/* Sử dụng import trực tiếp cho HomePage */}
+                      {/* Trang chính */}
                       <Route path="/" element={<HomePage />} />
-                      <Route path="/about" element={<AboutPage />} />
-                      <Route path="/cart" element={<CartPage />} />
-                      <Route path="/checkout" element={<CheckoutPage />} />
-                      <Route path="/contact" element={<ContactPage />} />
-                      <Route path="/login" element={<LoginPage />} />
-                      <Route path="/news" element={<NewsPage />} />
-                      <Route path="/orders" element={<OrdersPage />} />
-                      <Route path="/product/:id" element={<ProductDetailPage />} />
-                      <Route path="/products" element={<ProductPage />} />
-                      <Route path="/profile" element={<ProfilePage />} />
-                      <Route path="/promotions" element={<PromotionsPage />} />
-                      <Route path="/register" element={<RegisterPage />} />
-                      <Route path="/settings" element={<SettingsPage />} />
+                      
+                      {/* Trang thông tin */}
+                      <Route path="/gioi-thieu" element={<AboutPage />} />
+                      <Route path="/lien-he" element={<ContactPage />} />
+                      <Route path="/tin-tuc" element={<NewsPage />} />
+                      <Route path="/khuyen-mai" element={<PromotionsPage />} />
+                      
+                      {/* Trang sản phẩm */}
+                      <Route path="/san-pham" element={<ProductPage />} />
+                      <Route path="/san-pham/:id" element={<ProductDetailPage />} />
+                      
+                      {/* Trang người dùng */}
+                      <Route path="/dang-nhap" element={<LoginPage />} />
+                      <Route path="/dang-ky" element={<RegisterPage />} />
+                      <Route path="/tai-khoan" element={<ProfilePage />} />
+                      <Route path="/cai-dat" element={<SettingsPage />} />
+                      <Route path="/don-hang" element={<OrdersPage />} />
+                      
+                      {/* Trang giỏ hàng và thanh toán */}
+                      <Route path="/gio-hang" element={<CartPage />} />
+                      <Route path="/thanh-toan" element={<CheckoutPage />} />
+                      
+                      {/* Trang chính sách */}
+                      <Route path="/chinh-sach/thanh-toan" element={<PolicyPage type="payment" />} />
+                      <Route path="/chinh-sach/van-chuyen" element={<PolicyPage type="shipping" />} />
+                      <Route path="/chinh-sach/bao-hanh" element={<PolicyPage type="warranty" />} />
+                      <Route path="/chinh-sach/doi-tra" element={<PolicyPage type="return" />} />
+                      <Route path="/chinh-sach/bao-mat" element={<PolicyPage type="privacy" />} />
                     </Routes>
                   )}
                 </main>
