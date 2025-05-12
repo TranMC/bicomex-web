@@ -24,6 +24,7 @@ import { PromotionsPage } from './pages/PromotionsPage';
 import RegisterPage from './pages/RegisterPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { PolicyPage } from './pages/PolicyPage';
+import { AddressesPage } from './pages/AddressesPage';
 
 // ErrorBoundary component cho Suspense
 class ErrorBoundary extends React.Component {
@@ -111,6 +112,7 @@ function App() {
                       <Route path="/dang-nhap" element={<LoginPage />} />
                       <Route path="/dang-ky" element={<RegisterPage />} />
                       <Route path="/tai-khoan" element={<ProfilePage />} />
+                      <Route path="/so-dia-chi" element={<AddressesPage />} />
                       <Route path="/cai-dat" element={<SettingsPage />} />
                       <Route path="/don-hang" element={<OrdersPage />} />
                       
