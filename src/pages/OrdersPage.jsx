@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { FaUser, FaAddressCard, FaShoppingBag, FaCog, FaSearch, FaEye, FaFileInvoice } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
 import '../styles/pages/OrdersPage.css';
@@ -48,6 +48,7 @@ const dummyOrders = [
 
 export const OrdersPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, isAuthenticated } = useAuth();
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
@@ -55,11 +56,12 @@ export const OrdersPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('orders');
 
   useEffect(() => {
     // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate('/dang-nhap');
     } else {
       // Giả lập lấy dữ liệu từ API
       setTimeout(() => {
@@ -69,6 +71,20 @@ export const OrdersPage = () => {
       }, 1000);
     }
   }, [isAuthenticated, navigate]);
+
+  // Xác định tab active từ đường dẫn
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.includes('/don-hang')) {
+      setActiveTab('orders');
+    } else if (path.includes('/cai-dat')) {
+      setActiveTab('settings');
+    } else if (path.includes('/so-dia-chi')) {
+      setActiveTab('addresses');
+    } else if (path.includes('/tai-khoan')) {
+      setActiveTab('info');
+    }
+  }, [location.pathname]);
 
   // Lọc đơn hàng theo trạng thái và từ khóa tìm kiếm
   useEffect(() => {
@@ -128,14 +144,6 @@ export const OrdersPage = () => {
     setSelectedOrder(null);
   };
 
-  // Các menu tab
-  const tabs = [
-    { id: 'info', label: 'Thông tin tài khoản', icon: <FaUser /> },
-    { id: 'addresses', label: 'Sổ địa chỉ', icon: <FaAddressCard /> },
-    { id: 'orders', label: 'Đơn hàng của tôi', icon: <FaShoppingBag /> },
-    { id: 'settings', label: 'Cài đặt tài khoản', icon: <FaCog /> },
-  ];
-
   return (
     <div className="orders-page">
       <div className="container">
@@ -161,8 +169,8 @@ export const OrdersPage = () => {
               <ul>
                 <li>
                   <Link 
-                    to="/ho-so"
-                    className={false ? 'active' : ''}
+                    to="/tai-khoan"
+                    className={activeTab === 'info' ? 'active' : ''}
                   >
                     <span className="nav-icon"><FaUser /></span>
                     <span className="nav-label">Thông tin tài khoản</span>
@@ -171,7 +179,7 @@ export const OrdersPage = () => {
                 <li>
                   <Link 
                     to="/so-dia-chi"
-                    className={false ? 'active' : ''}
+                    className={activeTab === 'addresses' ? 'active' : ''}
                   >
                     <span className="nav-icon"><FaAddressCard /></span>
                     <span className="nav-label">Sổ địa chỉ</span>
@@ -180,7 +188,7 @@ export const OrdersPage = () => {
                 <li>
                   <Link 
                     to="/don-hang"
-                    className="active"
+                    className={activeTab === 'orders' ? 'active' : ''}
                   >
                     <span className="nav-icon"><FaShoppingBag /></span>
                     <span className="nav-label">Đơn hàng của tôi</span>
@@ -189,7 +197,7 @@ export const OrdersPage = () => {
                 <li>
                   <Link 
                     to="/cai-dat"
-                    className={false ? 'active' : ''}
+                    className={activeTab === 'settings' ? 'active' : ''}
                   >
                     <span className="nav-icon"><FaCog /></span>
                     <span className="nav-label">Cài đặt tài khoản</span>

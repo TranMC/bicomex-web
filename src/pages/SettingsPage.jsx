@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { FaUser, FaAddressCard, FaShoppingBag, FaCog, FaLock, FaBell, FaTrash } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
 import useConfirmDialog from '../hooks/useConfirmDialog';
@@ -7,9 +7,11 @@ import '../styles/pages/SettingsPage.css';
 
 export const SettingsPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, isAuthenticated, updateUserSettings, logout } = useAuth();
   const { alert, confirm } = useConfirmDialog();
   const [activeSection, setActiveSection] = useState('password');
+  const [activeTab, setActiveTab] = useState('settings');
   const [formData, setFormData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -27,9 +29,23 @@ export const SettingsPage = () => {
   useEffect(() => {
     // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate('/dang-nhap');
     }
   }, [isAuthenticated, navigate]);
+
+  // Xác định tab active từ đường dẫn
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.includes('/don-hang')) {
+      setActiveTab('orders');
+    } else if (path.includes('/cai-dat')) {
+      setActiveTab('settings');
+    } else if (path.includes('/so-dia-chi')) {
+      setActiveTab('addresses');
+    } else if (path.includes('/tai-khoan')) {
+      setActiveTab('info');
+    }
+  }, [location.pathname]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -125,14 +141,6 @@ export const SettingsPage = () => {
     });
   };
 
-  // Các menu tab
-  const tabs = [
-    { id: 'info', label: 'Thông tin tài khoản', icon: <FaUser /> },
-    { id: 'addresses', label: 'Sổ địa chỉ', icon: <FaAddressCard /> },
-    { id: 'orders', label: 'Đơn hàng của tôi', icon: <FaShoppingBag /> },
-    { id: 'settings', label: 'Cài đặt tài khoản', icon: <FaCog /> },
-  ];
-
   return (
     <div className="settings-page">
       <div className="container">
@@ -158,8 +166,8 @@ export const SettingsPage = () => {
               <ul>
                 <li>
                   <Link 
-                    to="/ho-so"
-                    className={false ? 'active' : ''}
+                    to="/tai-khoan"
+                    className={activeTab === 'info' ? 'active' : ''}
                   >
                     <span className="nav-icon"><FaUser /></span>
                     <span className="nav-label">Thông tin tài khoản</span>
@@ -168,7 +176,7 @@ export const SettingsPage = () => {
                 <li>
                   <Link 
                     to="/so-dia-chi"
-                    className={false ? 'active' : ''}
+                    className={activeTab === 'addresses' ? 'active' : ''}
                   >
                     <span className="nav-icon"><FaAddressCard /></span>
                     <span className="nav-label">Sổ địa chỉ</span>
@@ -177,7 +185,7 @@ export const SettingsPage = () => {
                 <li>
                   <Link 
                     to="/don-hang"
-                    className={false ? 'active' : ''}
+                    className={activeTab === 'orders' ? 'active' : ''}
                   >
                     <span className="nav-icon"><FaShoppingBag /></span>
                     <span className="nav-label">Đơn hàng của tôi</span>
@@ -186,7 +194,7 @@ export const SettingsPage = () => {
                 <li>
                   <Link 
                     to="/cai-dat"
-                    className="active"
+                    className={activeTab === 'settings' ? 'active' : ''}
                   >
                     <span className="nav-icon"><FaCog /></span>
                     <span className="nav-label">Cài đặt tài khoản</span>

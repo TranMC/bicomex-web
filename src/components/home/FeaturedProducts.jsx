@@ -113,7 +113,7 @@ export const FeaturedProducts = () => {
   // Handle image error
   const handleImageError = (e) => {
     e.target.onerror = null;
-    e.target.src = getSafeImageUrl("https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-nuoc-jotun-majestic-dep-hoan-hao-2-1.jpg?v=1553090388617");
+    e.target.src = getSafeImageUrl("https://bizweb.dktcdn.net/thumb/medium/100/330/753/products/jotun-true-beauty-sheen-5l.jpg?v=1537515328247");
   };
 
   // Xác định loại nút mua hàng dựa vào index
