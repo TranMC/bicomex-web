@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
@@ -52,12 +53,6 @@ const LoadingFallback = () => (
 
 function App() {
   const [isErrored, setIsErrored] = useState(false);
-
-  // Xử lý lỗi
-  const handleError = (error) => {
-    console.error("App error:", error);
-    setIsErrored(true);
-  };
 
   // Reset lỗi
   const resetError = () => {

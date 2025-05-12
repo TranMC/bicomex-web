@@ -98,7 +98,7 @@ export const products = [
   {
     id: 7,
     name: 'Sơn nước JOTUN Majestic',
-    image: 'https://bizweb.dktcdn.net/thumb/compact/100/330/753/products/jotun-true-beauty-sheen-5l.jpg',
+    image: '//bizweb.dktcdn.net/thumb/medium/100/330/753/products/jotun-true-beauty-sheen-5l.jpg?v=1537515328247',
     price: 1250000,
     salePrice: 1200000,
     rating: 4.9,
