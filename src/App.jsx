@@ -8,8 +8,21 @@ import { AuthProvider } from './context/AuthProvider';
 import { ConfirmProvider } from './context/ConfirmContext';
 import './App.css';
 
-// Import trực tiếp trang HomePage để tránh lỗi lazy loading
+// Import các trang
 import { HomePage } from './pages/HomePage';
+import { AboutPage } from './pages/AboutPage';
+import { CartPage } from './pages/CartPage';
+import { CheckoutPage } from './pages/CheckoutPage';
+import { ContactPage } from './pages/ContactPage';
+import LoginPage from './pages/LoginPage';
+import { NewsPage } from './pages/NewsPage';
+import { OrdersPage } from './pages/OrdersPage';
+import { ProductDetailPage } from './pages/ProductDetailPage';
+import ProductPage from './pages/ProductPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { PromotionsPage } from './pages/PromotionsPage';
+import RegisterPage from './pages/RegisterPage';
+import { SettingsPage } from './pages/SettingsPage';
 
 // ErrorBoundary component cho Suspense
 class ErrorBoundary extends React.Component {
@@ -82,7 +95,19 @@ function App() {
                     <Routes>
                       {/* Sử dụng import trực tiếp cho HomePage */}
                       <Route path="/" element={<HomePage />} />
-                      {/* Những trang khác có thể thêm sau khi đã fix được lỗi */}
+                      <Route path="/about" element={<AboutPage />} />
+                      <Route path="/cart" element={<CartPage />} />
+                      <Route path="/checkout" element={<CheckoutPage />} />
+                      <Route path="/contact" element={<ContactPage />} />
+                      <Route path="/login" element={<LoginPage />} />
+                      <Route path="/news" element={<NewsPage />} />
+                      <Route path="/orders" element={<OrdersPage />} />
+                      <Route path="/product/:id" element={<ProductDetailPage />} />
+                      <Route path="/products" element={<ProductPage />} />
+                      <Route path="/profile" element={<ProfilePage />} />
+                      <Route path="/promotions" element={<PromotionsPage />} />
+                      <Route path="/register" element={<RegisterPage />} />
+                      <Route path="/settings" element={<SettingsPage />} />
                     </Routes>
                   )}
                 </main>
