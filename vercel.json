@@ -4,5 +4,8 @@
   "outputDirectory": "dist",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  ],
+  "speed-insights": {
+    "enabled": true
+  }
 }
