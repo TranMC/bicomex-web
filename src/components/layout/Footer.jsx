@@ -36,10 +36,9 @@ export const Footer = () => {
               <h3 className="footer-title">
                 Về BICOMEX
               </h3>
-              <div className="footer-content">
-                <div className="logo-footer">
+              <div className="footer-content">                <div className="logo-footer">
                   <img 
-                    src="/src/assets/images/logo_footer.png" 
+                    src="/logo_footer.png" 
                     alt="Bicomex" 
                     className="logo-image"
                     onError={(e) => {

@@ -283,17 +283,16 @@ export const Header = () => {
         </div>
 
         <div className="mid-header header-bg-primary">
-          <div className="mid-header-container">
-            <div className="logo-container">
-              <Link to="/">
-                <img 
-                  src="/src/assets/images/logo.png" 
+          <div className="mid-header-container">            <div className="logo-container">
+              <Link to="/">                <img 
+                  src="/logo.png" 
                   alt="Bicomex" 
                   className="logo-image"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "/src/assets/images/logo_footer.png";
-                    if (e.target.src === "/src/assets/images/logo_footer.png") {
+                    e.target.src = "/logo_footer.png";
+                    // Sử dụng endsWith để kiểm tra thay vì so sánh chuỗi chính xác
+                    if (e.target.src.endsWith("/logo_footer.png")) {
                       e.target.onerror = null;
                       e.target.style.display = 'none';
                       const logoText = document.createElement('div');
