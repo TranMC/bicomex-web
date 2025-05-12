@@ -53,7 +53,7 @@ export const newProducts = [
   },  {
     id: 13,
     name: 'Máy khoan Bosch GSB 550',
-    image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/son-nuoc-jotun-majestic-dep-hoan-hao-2-1.jpg',
+    image: 'https://bizweb.dktcdn.net/thumb/medium/100/330/753/products/jotun-true-beauty-sheen-5l.jpg?v=1537515328247',
     price: 1450000,
     salePrice: 1299000,
     rating: 4.7,
