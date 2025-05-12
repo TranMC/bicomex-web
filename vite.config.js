@@ -3,49 +3,25 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  plugins: [
-    react({
-      // Vô hiệu hóa fast refresh để tránh lỗi runtime
-      fastRefresh: false,
-      // Tắt babel để tránh xung đột với runtime transform
-      babel: {
-        babelrc: false,
-        configFile: false,
-      }
-    }), 
-    tailwindcss
-  ],
-  // base: "/bicomex-web",
+  // base: '/bicomex-web',
+  plugins: [react(), tailwindcss],
   css: {
     postcss: './postcss.config.js',
   },
   server: {
-    cors: true, // Enable CORS for all requests
+    cors: true, 
     hmr: {
-      // Prevent excessive HMR reconnections
       protocol: 'ws',
       host: 'localhost',
       clientPort: 5173
     },
   },
-  // Prevent memory leaks with optimized dependencies
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', 'react-icons', 'swiper', '@headlessui/react'],
     exclude: ['gh-pages'], // Exclude packages not needed in client-side rendering
   },
-  // Optimize build settings
   build: {
-    sourcemap: false, // Disable sourcemaps in production
-    target: 'es2015', // Ensure better browser compatibility
-    minify: 'terser', // Use terser for better minification
-    cssMinify: true, // Minify CSS
-    chunkSizeWarningLimit: 1000, // Increase chunk size warning limit
-    terserOptions: {
-      compress: {
-        drop_console: true, // Remove console logs in production
-        drop_debugger: true, // Remove debugger statements
-      }
-    },
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks: {
@@ -56,10 +32,9 @@ export default defineConfig({
       },
     },
   },
-  // Configure asset handling to prevent CORB issues
   resolve: {
     alias: {
-      '@': '/src', // Makes imports cleaner
+      '@': '/src',
     },
   },
   // Tắt các tính năng gây lỗi
