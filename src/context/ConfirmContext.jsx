@@ -1,6 +1,12 @@
+import { createContext } from 'react';
 import useConfirm from '../hooks/useConfirm';
 import ConfirmDialog from '../components/ui/ConfirmDialog';
-import { ConfirmContext } from './ConfirmContextInstance';
+
+// Create the context for confirmation dialogs
+export const ConfirmContext = createContext({
+  confirm: () => Promise.resolve(false),
+  alert: () => Promise.resolve(false)
+});
 
 export const ConfirmProvider = ({ children }) => {
   const {
