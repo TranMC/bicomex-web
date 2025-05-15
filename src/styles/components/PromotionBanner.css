@@ -166,33 +166,34 @@
   opacity: 1;
 }
 
+.action-button {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .buy-button {
   background-color: #1a73e8;
   color: #fff;
-  padding: 8px 20px;
-  border: none;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 8px 15px;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.buy-button:hover {
+  background-color: #0d62cf;
 }
 
 .view-button {
   background-color: #fff;
   color: #333;
-  width: 40px;
+  width: 36px;
   height: 36px;
-  border: none;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.buy-button:hover {
-  background-color: #0d62cf;
 }
 
 .view-button:hover {
@@ -388,10 +389,24 @@
 }
 
 .swiper-promotion .swiper-button-next,
-.swiper-promotion .swiper-button-prev {
+.swiper-promotion .swiper-button-prev,
+.promotion-swiper .swiper-button-next,
+.promotion-swiper .swiper-button-prev {
   color: #2563eb;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
 }
 
-.swiper-promotion .swiper-pagination-bullet-active {
+.swiper-promotion .swiper-button-next:after,
+.swiper-promotion .swiper-button-prev:after,
+.promotion-swiper .swiper-button-next:after,
+.promotion-swiper .swiper-button-prev:after {
+  font-size: 18px;
+}
+
+.swiper-promotion .swiper-pagination-bullet-active,
+.promotion-swiper .swiper-pagination-bullet-active {
   background-color: #2563eb;
 }

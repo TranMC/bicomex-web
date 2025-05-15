@@ -4,10 +4,17 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { FaEye, FaShoppingCart } from 'react-icons/fa';
 import { getSafeImageUrl, preloadImage } from '../../utils/imageUtils';
+import useCart from '../../hooks/useCart';
+import useToast from '../../hooks/useToast';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import '../../styles/components/PromotionBanner.css';
 
 export const PromotionBanner = () => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const { addToCart } = useCart();
+  const toast = useToast();
   
   const promotionProducts = useMemo(() => [
     {
@@ -92,6 +99,14 @@ export const PromotionBanner = () => {
     e.target.src = getSafeImageUrl("https://bizweb.dktcdn.net/thumb/medium/100/330/753/products/jotun-true-beauty-sheen-5l.jpg?v=1537515328247");
   };
 
+  // Xử lý thêm vào giỏ hàng
+  const handleAddToCart = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product, 1);
+    toast.success(`Đã thêm ${product.name} vào giỏ hàng!`);
+  };
+
   return (
     <section className="promotion-section">
       <div className="promotion-container">
@@ -115,8 +130,8 @@ export const PromotionBanner = () => {
             <Swiper
               modules={[Navigation, Pagination, Autoplay]}
               spaceBetween={20}
-              slidesPerView={2}
-              navigation={true}
+              slidesPerView={1}
+              navigation
               pagination={{ clickable: true }}
               autoplay={{ delay: 5000, disableOnInteraction: false }}
               breakpoints={{
@@ -132,8 +147,7 @@ export const PromotionBanner = () => {
                   slidesPerView: 4,
                   spaceBetween: 20
                 }
-              }}
-              className="promotion-swiper"
+              }}              className="promotion-swiper swiper-promotion"
             >
               {promotionProducts.map(product => (
                 <SwiperSlide key={product.id}>
@@ -146,15 +160,22 @@ export const PromotionBanner = () => {
                         className="product-image"
                         onError={handleImageError}
                       />
-                      <div className="product-action-overlay">
-                        <button className="action-button buy-button">Mua ngay</button>
-                        <button className="action-button view-button">
-                          <FaEye />
+                      <div className="product-action-overlay">                        
+                        <button 
+                          className="action-button buy-button"
+                          onClick={(e) => handleAddToCart(e, product)}
+                        >
+                          Mua ngay
                         </button>
+                        <Link to={`/san-pham/${product.slug}`} className="action-button view-button">
+                          <FaEye />
+                        </Link>
                       </div>
                     </div>
                     <div className="product-info">
-                      <h3 className="product-title">{product.name}</h3>
+                      <h3 className="product-title">
+                        <Link to={`/san-pham/${product.slug}`}>{product.name}</Link>
+                      </h3>
                       <div className="product-price-container">
                         <span className="product-price">{formatPrice(product.price)}</span>
                         {product.originalPrice && (
@@ -173,14 +194,6 @@ export const PromotionBanner = () => {
             <p>Đang tải sản phẩm khuyến mãi...</p>
           </div>
         )}
-        
-        <div className="promotion-pagination">
-          <span className="active"></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
       </div>
     </section>
   );

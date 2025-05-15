@@ -1,19 +1,11 @@
-import { createContext } from 'react';
+import { ConfirmContext } from './ConfirmContextInstance';
 import useConfirm from '../hooks/useConfirm';
-import ConfirmDialog from '../components/ui/ConfirmDialog';
+import React from 'react';
 
-// Create the context for confirmation dialogs
-export const ConfirmContext = createContext({
-  confirm: () => Promise.resolve(false),
-  alert: () => Promise.resolve(false)
-});
-
-export const ConfirmProvider = ({ children }) => {
+const ConfirmProvider = ({ children }) => {
   const {
-    dialogState,
     confirm,
-    alert,
-    closeDialog
+    alert
   } = useConfirm();
 
   return (
@@ -24,18 +16,10 @@ export const ConfirmProvider = ({ children }) => {
       }}
     >
       {children}
-      <ConfirmDialog
-        isOpen={dialogState.isOpen}
-        title={dialogState.title}
-        message={dialogState.message}
-        confirmText={dialogState.confirmText}
-        cancelText={dialogState.cancelText}
-        type={dialogState.type}
-        onConfirm={dialogState.onConfirm}
-        onClose={dialogState.onCancel || closeDialog}
-      />
     </ConfirmContext.Provider>
   );
 };
+
+export { ConfirmProvider };
 
 export default ConfirmProvider; 

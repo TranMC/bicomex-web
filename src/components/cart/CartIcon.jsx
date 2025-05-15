@@ -127,13 +127,12 @@ export const CartIcon = () => {
     }
   };
 
-  return (
-    <div
+  return (    <div
       className="cart-icon-container relative" // Changed class name for clarity
       ref={cartIconContainerRef}
       onMouseEnter={handleCartIconMouseEnter}
       onMouseLeave={handleCartIconMouseLeave}
-      style={{ zIndex: 99998 }} 
+      style={{ zIndex: 60 }} // Giảm z-index để không quá cao
     >
       <div
         className="cart-icon flex items-center text-white cursor-pointer"

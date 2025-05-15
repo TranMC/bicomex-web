@@ -114,12 +114,12 @@ export const NewProducts = () => {
                       className="product-image"
                       onError={handleImageError}
                       loading="lazy"
-                    />                    <div className="product-actions">
+                    />                    
+                    <div className="product-actions">
                       <button 
                         className="action-button buy-button" 
                         onClick={(e) => handleAddToCart(e, product)}
                       >
-                        <FaCartPlus className="button-icon" />
                         <span>Mua ngay</span>
                       </button>
                       <Link to={`/san-pham/${product.slug}`} className="action-button view-button">
