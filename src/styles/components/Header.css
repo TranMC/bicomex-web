@@ -520,7 +520,7 @@ select.category-select:focus {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
-  z-index: 990;
+  z-index: 50; /* Giảm z-index xuống để không nổi quá cao */
   position: relative;
 }
 
