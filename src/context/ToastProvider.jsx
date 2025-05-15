@@ -9,13 +9,13 @@ export const ToastProvider = ({ children }) => {
     <ToastContext.Provider value={toast}>
       {children}
       <div className="toast-wrapper">
-        {toasts.map(toast => (
+        {toasts.map(toast2 => (
           <Toast
-            key={toast.id}
-            message={toast.message}
-            type={toast.type}
-            duration={toast.duration}
-            onClose={() => toast.hide(toast.id)}
+            key={toast2.id}
+            message={toast2.message}
+            type={toast2.type}
+            duration={toast2.duration}
+            onClose={() => toast.hide(toast2.id)}
           />
         ))}
       </div>

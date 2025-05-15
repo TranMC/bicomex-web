@@ -10,10 +10,10 @@ export default defineConfig({
   },
   server: {
     cors: true, 
+    port: 5174, // Sử dụng cổng 5174 cố định
     hmr: {
       protocol: 'ws',
       host: 'localhost',
-      clientPort: 5173
     },
   },
   optimizeDeps: {

@@ -1,0 +1,98 @@
+/* CSS tùy chỉnh cho react-confirm-alert */
+.react-confirm-alert-overlay {
+  background: rgba(0, 0, 0, 0.7);
+  animation: react-confirm-alert-fadeIn 0.2s forwards;
+}
+
+.react-confirm-alert-body {
+  width: 100%;
+  max-width: 400px;
+  padding: 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.react-confirm-alert-body h1 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  padding: 1rem;
+  margin: 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.react-confirm-alert-body-info h1 {
+  background-color: rgba(66, 153, 225, 0.1);
+  color: #2b6cb0;
+}
+
+.react-confirm-alert-body-warning h1 {
+  background-color: rgba(237, 137, 54, 0.1);
+  color: #c05621;
+}
+
+.react-confirm-alert-body-error h1 {
+  background-color: rgba(245, 101, 101, 0.1);
+  color: #c53030;
+}
+
+.react-confirm-alert-body-success h1 {
+  background-color: rgba(72, 187, 120, 0.1);
+  color: #2f855a;
+}
+
+.react-confirm-alert-body p {
+  padding: 1.5rem;
+  margin: 0;
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
+.react-confirm-alert-button-group {
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 1rem;
+  background-color: #f7fafc;
+  border-top: 1px solid #e2e8f0;
+  margin: 0;
+}
+
+.react-confirm-alert-button-group button {
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.react-confirm-alert-button-group button:hover {
+  opacity: 0.9;
+}
+
+/* Các lớp tùy chỉnh cho nút */
+.bg-blue-600 {
+  background-color: #3182ce;
+  color: white;
+}
+
+.bg-red-600 {
+  background-color: #e53e3e;
+  color: white;
+}
+
+.bg-yellow-600 {
+  background-color: #d69e2e;
+  color: white;
+}
+
+.bg-green-600 {
+  background-color: #38a169;
+  color: white;
+}
+
+.bg-gray-200 {
+  background-color: #edf2f7;
+  color: #4a5568;
+}
