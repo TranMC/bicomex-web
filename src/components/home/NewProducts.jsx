@@ -119,8 +119,7 @@ export const NewProducts = () => {
                         className="action-button buy-button" 
                         onClick={(e) => handleAddToCart(e, product)}
                       >
-                        <FaCartPlus className="button-icon" />
-                        <span>Mua ngay</span>
+                      <span>Mua ngay</span>
                       </button>
                       <Link to={`/san-pham/${product.slug}`} className="action-button view-button">
                         <FaEye />
