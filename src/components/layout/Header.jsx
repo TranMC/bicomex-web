@@ -239,7 +239,7 @@ export const Header = () => {
               </div>
               <div className="contact-item contact-address">
                 <FaMapMarkerAlt className="contact-icon" />
-                <span className="dia-chi">Địa chỉ: Tầng 6 Ladeco, 266 Đội Cấn, Ba Đình, Hà Nội</span>
+                <span className="dia-chi">Địa chỉ: 154 Nguyễn Chí Thanh, Đống Đa, Hà Nội</span>
               </div>
             </div>            
             <div className="user-actions">

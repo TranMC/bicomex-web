@@ -127,7 +127,7 @@ export const AboutPage = () => {
                 <FaMapMarkerAlt />
               </div>
               <h3>Địa chỉ</h3>
-              <p>Tầng 6 Ladeco, 266 Đội Cấn, Ba Đình, Hà Nội</p>
+              <p>154 Nguyễn Chí Thanh, Đống Đa, Hà Nội</p>
             </div>
             
             <div className="contact-card">

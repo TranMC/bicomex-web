@@ -163,7 +163,7 @@ export const Footer = () => {
                     <div className="contact-icon-wrapper contact-icon-location">
                       <FaMapMarkerAlt className="contact-icon" />
                     </div>
-                    <span className="contact-text">Tầng 6 Ladeco, 266 Đội Cấn, Ba Đình, Hà Nội</span>
+                    <span className="contact-text">154 Nguyễn Chí Thanh, Đống Đa, Hà Nội</span>
                   </li>
                   <li className="contact-item">
                     <div className="contact-icon-wrapper contact-icon-phone">

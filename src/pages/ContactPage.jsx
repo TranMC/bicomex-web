@@ -103,7 +103,7 @@ export const ContactPage = () => {
                 <FaMapMarkerAlt />
               </div>
               <h3>Địa chỉ</h3>
-              <p>Tầng 6 Ladeco, 266 Đội Cấn, Ba Đình, Hà Nội</p>
+              <p>154 Nguyễn Chí Thanh, Đống Đa, Hà Nội</p>
             </div>
             
             <div className="info-card">
@@ -226,7 +226,7 @@ export const ContactPage = () => {
             <h2>Bản đồ</h2>
             <div className="map-wrapper">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.9265586961897!2d105.81688867599509!3d21.035702880615344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab145bf89bd7%3A0xd94a869b494c04b6!2zMjY2IMSQ4buZaSBD4bqlbiwgQmEgxJDDrG5oLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1699887689950!5m2!1svi!2s" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.413843223807!2d105.8021127108013!3d21.016120880549327!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab5e3d417011%3A0x7ca94f4a8033dcd4!2zMTU0IMSQLiBOZ3V54buFbiBDaMOtIFRoYW5oLCBMw6FuZyBUaMaw4bujbmcsIMSQ4buRbmcgxJBhLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1747376632057!5m2!1svi!2s" 
                 width="100%" 
                 height="450" 
                 style={{ border: 0 }}
