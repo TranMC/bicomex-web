@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { useState, useEffect, useMemo } from 'react';
 import { getSafeImageUrl, preloadImage } from '../../utils/imageUtils';
+import LazyImage from '../ui/LazyImage';
 import useCart from '../../hooks/useCart';
 import useToast from '../../hooks/useToast';
 import { newProducts } from '../../data/newProducts';
@@ -51,17 +52,11 @@ export const NewProducts = () => {
     const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + 'đ';
   };
-
   const handleAddToCart = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product, 1);
     toast.success(`Đã thêm ${product.name} vào giỏ hàng!`);
-  };
-  
-  const handleImageError = (e) => {
-    e.target.onerror = null;
-    e.target.src = getSafeImageUrl("https:////bizweb.dktcdn.net/thumb/medium/100/330/753/products/jotun-true-beauty-sheen-5l.jpg?v=1537515328247");
   };
   return (
     <section className="section-new-products">
@@ -108,11 +103,12 @@ export const NewProducts = () => {
                     {product.isNew && <span className="badge-new">Mới</span>}
                     {product.discount > 0 && <span className="badge-sale">-{product.discount}%</span>}
                   </div>                  <div className="product-image-container">
-                    <img 
-                      src={getSafeImageUrl(product.image)} 
+                    <LazyImage 
+                      src={product.image} 
                       alt={product.name} 
                       className="product-image"
-                      onError={handleImageError}
+                      width={300}
+                      height={300}
                       loading="lazy"
                     />                    
                     <div className="product-actions">

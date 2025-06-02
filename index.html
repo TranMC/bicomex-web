@@ -2,12 +2,106 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bicomex - Vật liệu xây dựng</title>
+    
+    <!-- Critical meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="description" content="Bicomex - Nhà cung cấp vật liệu xây dựng hàng đầu Việt Nam. Sơn, gạch, xi măng, vật liệu trang trí với giá tốt nhất." />
+    <meta name="keywords" content="vật liệu xây dựng, sơn, gạch ốp lát, xi măng, bicomex" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Bicomex - Vật liệu xây dựng chất lượng cao" />
+    <meta property="og:description" content="Nhà cung cấp vật liệu xây dựng hàng đầu với đa dạng sản phẩm chất lượng" />
+    <meta property="og:image" content="/logo.png" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bicomex - Vật liệu xây dựng" />
+    <meta name="twitter:description" content="Nhà cung cấp vật liệu xây dựng hàng đầu Việt Nam" />
+      <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- iOS PWA Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Bicomex" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/logo.png" as="image" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- DNS prefetch for external domains -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//bizweb.dktcdn.net" />
+    
+    <!-- Critical CSS inline -->
+    <style>
+      /* Critical CSS for immediate render */
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { 
+        margin: 0; 
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        line-height: 1.6;
+        color: #1e293b;
+        background-color: #f8fafc;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      #root { min-height: 100vh; }
+      .loading-skeleton { 
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+    </style>
+    
+    <title>Bicomex - Vật liệu xây dựng chất lượng cao</title>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Loading skeleton while JS loads -->
+    <noscript>
+      <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h1>Bicomex - Vật liệu xây dựng</h1>
+        <p>Vui lòng bật JavaScript để sử dụng website.</p>
+      </div>
+    </noscript>
+    
+    <div id="root">
+      <!-- Initial loading state -->
+      <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f8fafc;">
+        <div style="text-align: center;">
+          <div style="width: 50px; height: 50px; border: 3px solid #e2e8f0; border-top: 3px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+          <p style="color: #64748b; font-size: 16px; margin: 0;">Đang tải Bicomex...</p>
+        </div>
+      </div>
+      <style>
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      </style>    </div>
+      <!-- Service Worker Registration (Only in production) -->
+    <script>
+      if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
+    
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

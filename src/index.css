@@ -1,3 +1,4 @@
+/* Performance optimized CSS với critical loading */
 @import 'react-confirm-alert/src/react-confirm-alert.css';
 @import './styles/components/confirmAlert.css';
 
@@ -5,11 +6,33 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Enhanced CSS Variables với semantic naming */
 :root {
-  --primary: #3e81ec;
-  --primary-hover: #1ecca9;
-  --text: #333333;
-  --bg: #f5f7fa;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --secondary: #64748b;
+  --accent: #f59e0b;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  /* Performance optimization */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+}
+
+/* Base performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Optimize font rendering */
+  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -17,8 +40,11 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bg);
-  color: var(--text);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  /* Optimize repaints */
+  contain: layout style;
 }
 
 /* Optimized Swiper styles */
