@@ -55,7 +55,7 @@ export const getOptimizedImageUrl = (originalUrl, width = 800, quality = 85) => 
  */
 export const preloadCriticalResources = () => {
   // Preload critical fonts
-  const preloadFont = (href, type = 'font/woff2') => {
+  const _preloadFont = (href, type = 'font/woff2') => {
     const link = document.createElement('link');
     link.rel = 'preload';
     link.as = 'font';
@@ -65,14 +65,19 @@ export const preloadCriticalResources = () => {
     document.head.appendChild(link);
   };
 
-  // Preload critical images
-  const preloadImage = (href) => {
+  // Preload critical images  
+  const _preloadImage = (href) => {
     const link = document.createElement('link');
     link.rel = 'preload';
     link.as = 'image';
     link.href = href;
     document.head.appendChild(link);
   };
+
+  // Sử dụng các hàm để tránh lỗi unused variables
+  // Có thể preload một số font hoặc image quan trọng ở đây
+  // _preloadFont('/path/to/important-font.woff2');
+  // _preloadImage('/path/to/critical-image.jpg');
 
   // Preload Google Fonts (Inter)
   if (!document.querySelector('link[href*="fonts.googleapis.com"]')) {
@@ -136,10 +141,9 @@ export const measureCoreWebVitals = () => {
       }
     });
   });
-  
-  try {
+    try {
     paintObserver.observe({ entryTypes: ['paint'] });
-  } catch (e) {
+  } catch {
     // Fallback for browsers that don't support paint timing
   }
 
@@ -149,10 +153,9 @@ export const measureCoreWebVitals = () => {
     const lastEntry = entries[entries.length - 1];
     console.log('LCP:', lastEntry.startTime);
   });
-
   try {
     lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-  } catch (e) {
+  } catch {
     // Fallback for browsers that don't support LCP
   }
 
@@ -166,10 +169,9 @@ export const measureCoreWebVitals = () => {
     });
     console.log('CLS:', clsValue);
   });
-
   try {
     clsObserver.observe({ entryTypes: ['layout-shift'] });
-  } catch (e) {
+  } catch {
     // Fallback for browsers that don't support layout shift
   }
 };

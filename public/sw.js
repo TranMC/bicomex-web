@@ -170,10 +170,9 @@ async function cacheFirstStrategy(request, cacheName) {
     if (networkResponse.ok) {
       const responseToCache = networkResponse.clone();
       addTimestamp(responseToCache);
-      cache.put(request, responseToCache);
-    }
+      cache.put(request, responseToCache);    }
     return networkResponse;
-  } catch (error) {
+  } catch {
     return cachedResponse || new Response('Offline', { status: 503 });
   }
 }
@@ -186,10 +185,9 @@ async function networkFirstStrategy(request, cacheName) {
       const cache = await caches.open(cacheName);
       const responseToCache = networkResponse.clone();
       addTimestamp(responseToCache);
-      cache.put(request, responseToCache);
-    }
+      cache.put(request, responseToCache);    }
     return networkResponse;
-  } catch (error) {
+  } catch {
     const cache = await caches.open(cacheName);
     const cachedResponse = await cache.match(request);
     return cachedResponse || new Response('Offline', { status: 503 });
@@ -271,7 +269,7 @@ async function handleBackgroundSync() {
 }
 
 // Push notification handling (for future use)
-self.addEventListener('push', (event) => {
+self.addEventListener('push', () => {
   console.log('[SW] Push notification received');
   // Handle push notifications
 });

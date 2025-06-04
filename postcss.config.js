@@ -3,6 +3,7 @@ export default {
     'tailwindcss': {},
     'autoprefixer': {
       flexbox: 'no-2009',
+      grid: 'autoplace',
     },
     'cssnano': {
       preset: ['default', {
@@ -12,7 +13,22 @@ export default {
         normalizeWhitespace: true,
         colormin: true,
         minifyFontValues: true,
-        minifySelectors: true
+        minifySelectors: true,
+        mergeLonghand: true,
+        mergeRules: true,
+        cssDeclarationSorter: true,
+        svgo: {
+          plugins: [
+            {
+              name: 'preset-default',
+              params: {
+                overrides: {
+                  removeViewBox: false,
+                },
+              },
+            },
+          ],
+        },
       }]
     }
   }

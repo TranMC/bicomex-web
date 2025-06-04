@@ -10,10 +10,24 @@ const CoreWebVitalsMonitor = () => {
   const [position, setPosition] = useState({ x: 20, y: 20 });
   const [isDragging, setIsDragging] = useState(false);
 
-  // Chỉ hiển thị trong development mode
-  if (import.meta.env.PROD) {
-    return null;
-  }
+  // Drag functionality
+  const handleMouseMove = React.useCallback((e) => {
+    if (isDragging) {
+      setPosition({
+        x: e.clientX - 150,
+        y: e.clientY - 20
+      });
+    }
+  }, [isDragging]);
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    e.preventDefault();
+  };
+
+  const handleMouseUp = React.useCallback(() => {
+    setIsDragging(false);
+  }, []);
 
   // Toggle visibility
   useEffect(() => {
@@ -27,25 +41,6 @@ const CoreWebVitalsMonitor = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Drag functionality
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    e.preventDefault();
-  };
-
-  const handleMouseMove = (e) => {
-    if (isDragging) {
-      setPosition({
-        x: e.clientX - 150,
-        y: e.clientY - 20
-      });
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
   useEffect(() => {
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove);
@@ -55,7 +50,12 @@ const CoreWebVitalsMonitor = () => {
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging]);
+  }, [isDragging, handleMouseMove, handleMouseUp]);
+
+  // Chỉ hiển thị trong development mode
+  if (import.meta.env.PROD) {
+    return null;
+  }
 
   const getScoreColor = (score, thresholds) => {
     if (score === null) return '#gray';

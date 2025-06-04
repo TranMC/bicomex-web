@@ -47,7 +47,6 @@ const OptimizedImage = ({
 
     return () => observer.disconnect();
   }, [priority]);
-
   // Tạo srcSet với nhiều sizes
   const generateSrcSet = (baseSrc) => {
     if (!baseSrc) return '';
@@ -57,7 +56,7 @@ const OptimizedImage = ({
     const baseName = baseSrc.replace(`.${ext}`, '');
     
     return sizes
-      .map(size => `${baseName}-${size}.${ext} ${size}w`)
+      .map(size => `${baseName}-${size}.${ext}?quality=${quality} ${size}w`)
       .join(', ');
   };
 

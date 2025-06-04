@@ -113,9 +113,8 @@ const usePerformanceMetrics = () => {
   // Function để gửi metrics lên analytics
   const sendMetrics = (customMetrics = {}) => {
     const allMetrics = { ...metrics, ...customMetrics };
-    
-    // Log to console in development
-    if (process.env.NODE_ENV === 'development') {
+      // Log to console in development
+    if (import.meta.env.DEV) {
       console.group('🚀 Performance Metrics');
       console.log('FCP (First Contentful Paint):', allMetrics.fcp?.toFixed(2), 'ms');
       console.log('LCP (Largest Contentful Paint):', allMetrics.lcp?.toFixed(2), 'ms');
@@ -124,13 +123,11 @@ const usePerformanceMetrics = () => {
       console.log('TTFB (Time to First Byte):', allMetrics.ttfb?.toFixed(2), 'ms');
       console.log('Load Time:', allMetrics.loadTime?.toFixed(2), 'ms');
       console.groupEnd();
-    }
-
-    // Gửi lên analytics service (Google Analytics, etc.)
-    if (typeof gtag !== 'undefined') {
+    }    // Gửi lên analytics service (Google Analytics, etc.)
+    if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
       Object.entries(allMetrics).forEach(([key, value]) => {
         if (value !== null) {
-          gtag('event', 'page_performance', {
+          window.gtag('event', 'page_performance', {
             metric_name: key,
             metric_value: Math.round(value),
             custom_parameter: true
