@@ -8,17 +8,24 @@ export const ToastProvider = ({ children }) => {
   return (
     <ToastContext.Provider value={toast}>
       {children}
-      <div className="toast-wrapper">
-        {toasts.map(toast2 => (
-          <Toast
-            key={toast2.id}
-            message={toast2.message}
-            type={toast2.type}
-            duration={toast2.duration}
-            onClose={() => toast.hide(toast2.id)}
-          />
-        ))}
-      </div>
+      {toasts.length > 0 && (
+        <div className="toast-wrapper">
+          {toasts.map((toastItem, index) => (
+            <Toast
+              key={toastItem.id}
+              message={toastItem.message}
+              type={toastItem.type}
+              duration={toastItem.duration}
+              onClose={() => toast.hide(toastItem.id)}
+              style={{
+                zIndex: 9999 - index,
+                transform: `translateY(${index * 8}px) scale(${1 - index * 0.02})`,
+                opacity: Math.max(0.5, 1 - index * 0.1)
+              }}
+            />
+          ))}
+        </div>
+      )}
     </ToastContext.Provider>
   );
 };

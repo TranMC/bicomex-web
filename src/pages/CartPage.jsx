@@ -116,13 +116,17 @@ export const CartPage = () => {
     
     // Simulate API call with timeout
     const timer = setTimeout(() => {
-      if (couponCode.toUpperCase() === 'BICOMEX10') {
+      if (couponCode.toUpperCase() === 'BICOMEX50') {
         const discountAmount = Math.round(cartTotal * 0.5); // 10% discount
         setDiscount(discountAmount);
         toast.success(`Đã áp dụng mã giảm giá: Giảm ${formatPrice(discountAmount)}`);
       } else if (couponCode.toUpperCase() === 'WELCOME50K') {
         setDiscount(500000);
         toast.success('Đã áp dụng mã giảm giá: Giảm 500.000₫');
+      } else if (couponCode.toUpperCase() === 'ඞඞඞ') {
+        const discountAmount = Math.round(cartTotal * 0.95); // 90% discount
+        setDiscount(discountAmount);
+        toast.success(`Đã áp dụng mã giảm giá: Giảm ${formatPrice(discountAmount)}`);
       } else {
         toast.error('Mã giảm giá không hợp lệ hoặc đã hết hạn!');
       }
@@ -372,7 +376,7 @@ export const CartPage = () => {
                   </button>
                 </div>
                 <div className="text-xs text-gray-500 mt-2">
-                  * Nhập mã "BICOMEX10" để được giảm 50%, "WELCOME50K" để giảm 500.000₫
+                  * Nhập mã "BICOMEX50" để được giảm 50%, "WELCOME50K" để giảm 500.000₫, ඞඞඞ để giảm 95%
                 </div>
               </div>
               
@@ -382,7 +386,7 @@ export const CartPage = () => {
               >
                 Tiến hành thanh toán
               </button>
-            </div>
+            </div> 
           </div>
         </div>
       </div>

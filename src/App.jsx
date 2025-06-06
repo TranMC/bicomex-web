@@ -14,6 +14,9 @@ import PWAInstallPrompt from './components/pwa/PWAInstallPrompt';
 import { initializeOptimizations } from './utils/optimizationUtils';
 import './App.css';
 
+// Debug components (only in development)
+const ToastDemo = import.meta.env.DEV ? lazy(() => import('./components/debug/ToastDemo')) : null;
+
 // Import HomePage ngay lập tức (critical page)
 import { HomePage } from './pages/HomePage';
 
@@ -167,8 +170,7 @@ function App() {
                   )}
                 </main>
                 <Footer />              </div>
-              {/* Core Web Vitals Monitor chỉ hiển thị trong development */}
-              {import.meta.env.DEV && <CoreWebVitalsMonitor />}
+              {/* Core Web Vitals Monitor và Toast Demo chỉ hiển thị trong development */}
               {/* PWA Install Prompt chỉ hiển thị trong production */}
               {!import.meta.env.DEV && <PWAInstallPrompt />}
             </ConfirmProvider>
