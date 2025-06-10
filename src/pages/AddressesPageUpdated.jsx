@@ -4,7 +4,7 @@ import { FaPlus, FaEdit, FaTrash, FaStar, FaRegStar, FaTimes, FaSave } from 'rea
 import useAuth from '../hooks/useAuth';
 import useConfirmDialog from '../hooks/useConfirmDialog';
 import AccountLayout from '../components/account/AccountLayout';
-import '../styles/pages/AddressesPage.css';
+import '../styles/pages/AddressesPageUpdated.css';
 
 // Dữ liệu mẫu địa chỉ
 const dummyAddresses = [

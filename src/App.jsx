@@ -33,9 +33,9 @@ const ProductPage = lazy(() => import('./pages/ProductPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePageComplete').then(module => ({ default: module.default })));
 const PromotionsPage = lazy(() => import('./pages/PromotionsPage').then(module => ({ default: module.PromotionsPage })));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
-const SettingsPage = lazy(() => import('./pages/SettingsPage').then(module => ({ default: module.SettingsPage })));
+const SettingsPage = lazy(() => import('./pages/SettingsPageSimple').then(module => ({ default: module.default })));
 const PolicyPage = lazy(() => import('./pages/PolicyPage').then(module => ({ default: module.PolicyPage })));
-const AddressesPage = lazy(() => import('./pages/AddressesPageUpdated').then(module => ({ default: module.AddressesPage })));
+const AddressesPage = lazy(() => import('./pages/AddressesPageSimple').then(module => ({ default: module.default })));
 
 // ErrorBoundary component cho Suspense
 class ErrorBoundary extends React.Component {
