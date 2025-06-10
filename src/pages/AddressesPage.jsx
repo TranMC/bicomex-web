@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { FaUser, FaAddressCard, FaShoppingBag, FaCog, FaPlus, FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaUser, FaAddressCard, FaShoppingBag, FaCog, FaPlus, FaEdit, FaTrashAlt, FaStar, FaMapMarkerAlt, FaPhone, FaSave, FaTimes, FaCheck } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
 import useConfirmDialog from '../hooks/useConfirmDialog';
 import '../styles/pages/AddressesPage.css';
@@ -33,11 +33,23 @@ export const AddressesPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuthenticated } = useAuth();
-  const { confirm } = useConfirmDialog();
+  const { confirm, alert } = useConfirmDialog();
   const [addresses, setAddresses] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [editingAddress, setEditingAddress] = useState(null);
   const [activeTab, setActiveTab] = useState('addresses');
   const [isLoading, setIsLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    address: '',
+    ward: '',
+    district: '',
+    city: '',
+    isDefault: false
+  });
+  const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
@@ -65,7 +77,6 @@ export const AddressesPage = () => {
       setActiveTab('info');
     }
   }, [location.pathname]);
-
   // Xóa địa chỉ
   const handleDeleteAddress = (id) => {
     confirm({
@@ -76,6 +87,11 @@ export const AddressesPage = () => {
     }).then(confirmed => {
       if (confirmed) {
         setAddresses(addresses.filter(address => address.id !== id));
+        alert({
+          title: 'Thành công',
+          message: 'Đã xóa địa chỉ thành công!',
+          type: 'success'
+        });
       }
     });
   };
@@ -86,6 +102,125 @@ export const AddressesPage = () => {
       ...address,
       isDefault: address.id === id
     })));
+    alert({
+      title: 'Thành công',
+      message: 'Đã đặt làm địa chỉ mặc định!',
+      type: 'success'
+    });
+  };
+
+  // Xử lý form input
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+    
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: undefined
+      }));
+    }
+  };
+
+  // Validate form
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Vui lòng nhập họ tên';
+    }
+    
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Vui lòng nhập số điện thoại';
+    } else if (!/^[0-9]{10,11}$/.test(formData.phone)) {
+      newErrors.phone = 'Số điện thoại không hợp lệ';
+    }
+    
+    if (!formData.address.trim()) {
+      newErrors.address = 'Vui lòng nhập địa chỉ';
+    }
+    
+    if (!formData.ward.trim()) {
+      newErrors.ward = 'Vui lòng nhập phường/xã';
+    }
+    
+    if (!formData.district.trim()) {
+      newErrors.district = 'Vui lòng nhập quận/huyện';
+    }
+    
+    if (!formData.city.trim()) {
+      newErrors.city = 'Vui lòng nhập tỉnh/thành phố';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // Submit form
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    setSubmitting(true);
+    
+    setTimeout(() => {
+      if (editingAddress) {
+        // Update existing address
+        setAddresses(addresses.map(addr => 
+          addr.id === editingAddress.id 
+            ? { ...formData, id: editingAddress.id }
+            : addr
+        ));
+        alert({
+          title: 'Thành công',
+          message: 'Đã cập nhật địa chỉ thành công!',
+          type: 'success'
+        });
+      } else {
+        // Add new address
+        const newAddress = {
+          ...formData,
+          id: Date.now()
+        };
+        setAddresses(prev => [...prev, newAddress]);
+        alert({
+          title: 'Thành công',
+          message: 'Đã thêm địa chỉ mới thành công!',
+          type: 'success'
+        });
+      }
+      
+      handleCancelForm();
+      setSubmitting(false);
+    }, 1000);
+  };
+
+  // Handle edit address
+  const handleEditAddress = (address) => {
+    setEditingAddress(address);
+    setFormData(address);
+    setShowAddForm(true);
+  };
+
+  // Cancel form
+  const handleCancelForm = () => {
+    setShowAddForm(false);
+    setEditingAddress(null);
+    setFormData({
+      name: '',
+      phone: '',
+      address: '',
+      ward: '',
+      district: '',
+      city: '',
+      isDefault: false
+    });
+    setErrors({});
   };
 
   return (

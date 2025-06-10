@@ -27,15 +27,15 @@ const CheckoutPage = lazy(() => import('./pages/CheckoutPage').then(module => ({
 const ContactPage = lazy(() => import('./pages/ContactPage').then(module => ({ default: module.ContactPage })));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage').then(module => ({ default: module.NewsPage })));
-const OrdersPage = lazy(() => import('./pages/OrdersPage').then(module => ({ default: module.OrdersPage })));
+const OrdersPage = lazy(() => import('./pages/OrdersPageNew').then(module => ({ default: module.OrdersPage })));
 const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage').then(module => ({ default: module.ProductDetailPage })));
 const ProductPage = lazy(() => import('./pages/ProductPage'));
-const ProfilePage = lazy(() => import('./pages/ProfilePage').then(module => ({ default: module.ProfilePage })));
+const ProfilePage = lazy(() => import('./pages/ProfilePageComplete').then(module => ({ default: module.default })));
 const PromotionsPage = lazy(() => import('./pages/PromotionsPage').then(module => ({ default: module.PromotionsPage })));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage').then(module => ({ default: module.SettingsPage })));
 const PolicyPage = lazy(() => import('./pages/PolicyPage').then(module => ({ default: module.PolicyPage })));
-const AddressesPage = lazy(() => import('./pages/AddressesPage').then(module => ({ default: module.AddressesPage })));
+const AddressesPage = lazy(() => import('./pages/AddressesPageUpdated').then(module => ({ default: module.AddressesPage })));
 
 // ErrorBoundary component cho Suspense
 class ErrorBoundary extends React.Component {

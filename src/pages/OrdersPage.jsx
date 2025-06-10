@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { FaUser, FaAddressCard, FaShoppingBag, FaCog, FaSearch, FaEye, FaFileInvoice } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { FaSearch, FaEye, FaFileInvoice } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth';
+import AccountLayout from '../components/account/AccountLayout';
 import '../styles/pages/OrdersPage.css';
 
 // Dữ liệu mẫu đơn hàng

@@ -6,7 +6,7 @@ import useConfirmDialog from '../hooks/useConfirmDialog';
 import AccountLayout from '../components/account/AccountLayout';
 import '../styles/pages/ProfilePage.css';
 
-export const ProfilePage = () => {
+const ProfilePageComplete = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated, updateUserProfile } = useAuth();
   const { alert } = useConfirmDialog();
@@ -25,13 +25,12 @@ export const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
-    // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
     if (!isAuthenticated) {
       navigate('/dang-nhap');
     } else {
-      // Lấy thông tin người dùng
       setFormData({
         name: user?.name || '',
         email: user?.email || '',
@@ -41,10 +40,10 @@ export const ProfilePage = () => {
         gender: user?.gender || '',
         avatar: user?.avatar || '',
       });
+      setInitialLoading(false);
     }
   }, [isAuthenticated, navigate, user]);
 
-  // Validation functions
   const validateForm = () => {
     const newErrors = {};
     
@@ -58,9 +57,7 @@ export const ProfilePage = () => {
       newErrors.email = 'Email không hợp lệ';
     }
     
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Số điện thoại không được để trống';
-    } else if (!/^[0-9]{10,11}$/.test(formData.phone)) {
+    if (formData.phone && formData.phone.trim() && !/^[0-9]{10,11}$/.test(formData.phone)) {
       newErrors.phone = 'Số điện thoại không hợp lệ';
     }
     
@@ -68,7 +65,6 @@ export const ProfilePage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -76,7 +72,6 @@ export const ProfilePage = () => {
       [name]: value
     }));
     
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -85,25 +80,28 @@ export const ProfilePage = () => {
     }
   };
 
-  // Handle avatar upload
   const handleAvatarUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
-        alert({
-          title: 'Lỗi',
-          message: 'Kích thước file không được vượt quá 5MB',
-          type: 'error'
-        });
+      if (file.size > 5 * 1024 * 1024) {
+        if (alert) {
+          alert({
+            title: 'Lỗi',
+            message: 'Kích thước file không được vượt quá 5MB',
+            type: 'error'
+          });
+        }
         return;
       }
       
       if (!file.type.startsWith('image/')) {
-        alert({
-          title: 'Lỗi',
-          message: 'Vui lòng chọn file ảnh hợp lệ',
-          type: 'error'
-        });
+        if (alert) {
+          alert({
+            title: 'Lỗi',
+            message: 'Vui lòng chọn file ảnh hợp lệ',
+            type: 'error'
+          });
+        }
         return;
       }
       
@@ -118,7 +116,6 @@ export const ProfilePage = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -128,28 +125,32 @@ export const ProfilePage = () => {
     
     setLoading(true);
     try {
-      await updateUserProfile(formData);
+      if (updateUserProfile) {
+        await updateUserProfile(formData);
+      }
       setIsEditing(false);
-      alert({
-        title: 'Thành công',
-        message: 'Thông tin đã được cập nhật thành công!',
-        type: 'success'
-      });
+      if (alert) {
+        alert({
+          title: 'Thành công',
+          message: 'Thông tin đã được cập nhật thành công!',
+          type: 'success'
+        });
+      }
     } catch (err) {
-      alert({
-        title: 'Lỗi',
-        message: 'Có lỗi xảy ra khi cập nhật thông tin. Vui lòng thử lại.',
-        type: 'error'
-      });
+      if (alert) {
+        alert({
+          title: 'Lỗi',
+          message: 'Có lỗi xảy ra khi cập nhật thông tin. Vui lòng thử lại.',
+          type: 'error'
+        });
+      }
       console.error('Profile update error:', err);
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle cancel editing
   const handleCancel = () => {
-    // Reset form data to original values
     setFormData({
       name: user?.name || '',
       email: user?.email || '',
@@ -167,6 +168,21 @@ export const ProfilePage = () => {
     { label: 'Tài khoản', path: '/tai-khoan' },
     { label: 'Thông tin cá nhân' }
   ];
+
+  if (initialLoading) {
+    return (
+      <div style={{ 
+        padding: '40px', 
+        textAlign: 'center',
+        minHeight: '60vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <div>Đang tải...</div>
+      </div>
+    );
+  }
 
   return (
     <AccountLayout title="Thông tin tài khoản" breadcrumbs={breadcrumbs}>
@@ -277,11 +293,7 @@ export const ProfilePage = () => {
                 value={formData.birthday}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className={errors.birthday ? 'error' : ''}
               />
-              {errors.birthday && (
-                <span className="error-message">{errors.birthday}</span>
-              )}
             </div>
 
             <div className="form-group">
@@ -294,16 +306,12 @@ export const ProfilePage = () => {
                 value={formData.gender}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className={errors.gender ? 'error' : ''}
               >
                 <option value="">Chọn giới tính</option>
                 <option value="male">Nam</option>
                 <option value="female">Nữ</option>
                 <option value="other">Khác</option>
               </select>
-              {errors.gender && (
-                <span className="error-message">{errors.gender}</span>
-              )}
             </div>
 
             <div className="form-group full-width">
@@ -316,13 +324,9 @@ export const ProfilePage = () => {
                 value={formData.address}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className={errors.address ? 'error' : ''}
                 placeholder="Nhập địa chỉ"
                 rows="3"
               />
-              {errors.address && (
-                <span className="error-message">{errors.address}</span>
-              )}
             </div>
           </div>
 
@@ -362,4 +366,4 @@ export const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default ProfilePageComplete;

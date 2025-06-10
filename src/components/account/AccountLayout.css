@@ -1,0 +1,116 @@
+/* AccountLayout Component Styles */
+.account-page {
+  padding: 40px 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: calc(100vh - 200px);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.account-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@media (min-width: 768px) {
+  .account-content {
+    flex-direction: row;
+  }
+}
+
+/* Main Content */
+.account-main {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.6s ease-out 0.1s both;
+}
+
+.account-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+}
+
+.account-header {
+  padding: 30px;
+  border-bottom: 2px solid #f7fafc;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.account-header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.breadcrumbs a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbs a:hover {
+  color: white;
+}
+
+.breadcrumb-separator {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 4px;
+}
+
+.account-body {
+  padding: 30px;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .account-page {
+    padding: 20px 0;
+  }
+  
+  .account-header {
+    padding: 20px;
+  }
+  
+  .account-body {
+    padding: 20px;
+  }
+  
+  .breadcrumbs {
+    font-size: 12px;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
