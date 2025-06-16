@@ -11,11 +11,14 @@ import PerformancePanel from './components/debug/PerformancePanel';
 import CoreWebVitalsMonitor from './components/debug/CoreWebVitalsMonitor';
 import ResourceHints from './components/optimization/ResourceHints';
 import PWAInstallPrompt from './components/pwa/PWAInstallPrompt';
+import NotFound from './components/ui/NotFound';
 import { initializeOptimizations } from './utils/optimizationUtils';
+import DebugMenu from './components/debug/DebugMenu';
 import './App.css';
 
 // Debug components (only in development)
 const ToastDemo = import.meta.env.DEV ? lazy(() => import('./components/debug/ToastDemo')) : null;
+const ConfirmDialogDemo = import.meta.env.DEV ? lazy(() => import('./components/debug/ConfirmDialogDemo')) : null;
 
 // Import HomePage ngay lập tức (critical page)
 import { HomePage } from './pages/HomePage';
@@ -41,7 +44,12 @@ const AddressesPage = lazy(() => import('./pages/AddressesPageSimple').then(modu
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = { 
+      hasError: false, 
+      error: null, 
+      errorInfo: null,
+      retryCount: 0 
+    };
   }
 
   static getDerivedStateFromError(error) {
@@ -49,20 +57,48 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
+    this.setState({
+      error,
+      errorInfo
+    });
     console.error("Caught error:", error, errorInfo);
   }
+
+  handleRetry = () => {
+    this.setState(prevState => ({ 
+      hasError: false, 
+      error: null, 
+      errorInfo: null,
+      retryCount: prevState.retryCount + 1
+    }));
+  };
 
   render() {
     if (this.state.hasError) {
       return (
-        <div className="error-container p-4 bg-red-100 text-red-700 rounded-lg">
-          <h2>Đã xảy ra lỗi khi tải trang</h2>
-          <button 
-            onClick={() => this.setState({ hasError: false })}
-            className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-          >
-            Thử lại
-          </button>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+          <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 text-center">
+            <div className="text-6xl text-red-500 mb-4">⚠️</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Oops! Có lỗi xảy ra</h2>
+            <p className="text-gray-600 mb-6">
+              Xin lỗi, đã có lỗi không mong muốn xảy ra. Vui lòng thử lại hoặc quay về trang chủ.
+            </p>
+            <div className="space-y-3">
+              <button 
+                onClick={this.handleRetry}
+                disabled={this.state.retryCount >= 3}
+                className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+              >
+                {this.state.retryCount >= 3 ? 'Đã thử tối đa' : 'Thử lại'}
+              </button>
+              <button 
+                onClick={() => window.location.href = '/'}
+                className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-semibold transition-colors"
+              >
+                Về trang chủ
+              </button>
+            </div>
+          </div>
         </div>
       );
     }
@@ -158,13 +194,21 @@ function App() {
                         {/* Trang giỏ hàng và thanh toán */}
                         <Route path="/gio-hang" element={<CartPage />} />
                         <Route path="/thanh-toan" element={<CheckoutPage />} />
-                        
-                        {/* Trang chính sách */}
+                          {/* Trang chính sách */}
                         <Route path="/chinh-sach/thanh-toan" element={<PolicyPage type="payment" />} />
                         <Route path="/chinh-sach/van-chuyen" element={<PolicyPage type="shipping" />} />
                         <Route path="/chinh-sach/bao-hanh" element={<PolicyPage type="warranty" />} />
-                        <Route path="/chinh-sach/doi-tra" element={<PolicyPage type="return" />} />
-                        <Route path="/chinh-sach/bao-mat" element={<PolicyPage type="privacy" />} />
+                        <Route path="/chinh-sach/doi-tra" element={<PolicyPage type="return" />} />                        <Route path="/chinh-sach/bao-mat" element={<PolicyPage type="privacy" />} />
+                        
+                        {/* Debug routes - chỉ hiển thị trong development */}
+                        {import.meta.env.DEV && (
+                          <>
+                            <Route path="/debug/confirm-dialog" element={<ConfirmDialogDemo />} />
+                          </>
+                        )}
+                        
+                        {/* 404 Page - phải để cuối cùng */}
+                        <Route path="*" element={<NotFound />} />
                       </Routes>
                     </Suspense>
                   )}
@@ -173,6 +217,7 @@ function App() {
               {/* Core Web Vitals Monitor và Toast Demo chỉ hiển thị trong development */}
               {/* PWA Install Prompt chỉ hiển thị trong production */}
               {!import.meta.env.DEV && <PWAInstallPrompt />}
+              {import.meta.env.DEV && <DebugMenu position="bottom-right" />}
             </ConfirmProvider>
           </CartProvider>
         </AuthProvider>

@@ -6,7 +6,7 @@ export const newProducts = [
     id: 9,
     name: 'Cáp điện Cadivi 4x2.5mm²',
     image: 'https://bizweb.dktcdn.net/thumb/large/100/330/753/products/dulux-trade-pure-briiliant-white-gloss-1lt-1-copy.jpg',
-    price: 45000,
+    price: 450000,
     salePrice: null,
     rating: 4.7,
     reviewCount: 32,

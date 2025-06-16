@@ -4,6 +4,7 @@ import { FaStar, FaFilter, FaSort, FaList, FaThLarge, FaSearch } from 'react-ico
 import { Link } from 'react-router-dom';
 import useCart from '../hooks/useCart';
 import useToast from '../hooks/useToast';
+import Breadcrumbs from '../components/common/Breadcrumbs';
 import { getProductsByCategory, products } from '../data/products';
 import { getCategoryNameBySlug } from '../data/categories';
 import { getBrandNames } from '../data/brands';
@@ -246,20 +247,15 @@ const ProductPage = () => {
 
   return (
     <div className="product-page py-8">
-      <div className="container mx-auto px-4">
-        <div className="breadcrumb mb-6">
-          <nav className="flex text-sm">
-            <Link to="/" className="text-gray-500 hover:text-blue-600">Trang chủ</Link>
-            <span className="mx-2 text-gray-500">/</span>
-            <Link to="/san-pham" className="text-gray-500 hover:text-blue-600">Sản phẩm</Link>
-            {category && (
-              <>
-                <span className="mx-2 text-gray-500">/</span>
-                <span className="text-blue-600">{categoryName}</span>
-              </>
-            )}
-          </nav>
-        </div>
+      <div className="container mx-auto px-4">        {/* Breadcrumbs */}
+        <Breadcrumbs 
+          items={category ? [
+            { label: 'Sản phẩm', href: '/san-pham' },
+            { label: categoryName }
+          ] : [
+            { label: 'Sản phẩm' }
+          ]}
+        />
 
         <h1 className="text-3xl font-bold mb-8">{categoryName}</h1>
         

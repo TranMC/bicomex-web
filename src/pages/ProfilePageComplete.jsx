@@ -4,6 +4,7 @@ import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBirthdayCake, FaIdCard, 
 import useAuth from '../hooks/useAuth';
 import useConfirmDialog from '../hooks/useConfirmDialog';
 import AccountLayout from '../components/account/AccountLayout';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 import '../styles/pages/ProfilePage.css';
 
 const ProfilePageComplete = () => {
@@ -43,22 +44,37 @@ const ProfilePageComplete = () => {
       setInitialLoading(false);
     }
   }, [isAuthenticated, navigate, user]);
-
   const validateForm = () => {
     const newErrors = {};
     
+    // Tên
     if (!formData.name.trim()) {
       newErrors.name = 'Tên không được để trống';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Tên phải có ít nhất 2 ký tự';
     }
     
+    // Email
     if (!formData.email.trim()) {
       newErrors.email = 'Email không được để trống';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Email không hợp lệ';
     }
     
-    if (formData.phone && formData.phone.trim() && !/^[0-9]{10,11}$/.test(formData.phone)) {
-      newErrors.phone = 'Số điện thoại không hợp lệ';
+    // Số điện thoại (optional nhưng nếu có thì phải đúng format)
+    if (formData.phone && formData.phone.trim() && !/^[0-9]{10,11}$/.test(formData.phone.replace(/\s/g, ''))) {
+      newErrors.phone = 'Số điện thoại phải có 10-11 chữ số';
+    }
+    
+    // Ngày sinh (optional nhưng nếu có thì phải hợp lệ)
+    if (formData.birthday) {
+      const birthDate = new Date(formData.birthday);
+      const today = new Date();
+      const age = today.getFullYear() - birthDate.getFullYear();
+      
+      if (age < 13 || age > 120) {
+        newErrors.birthday = 'Tuổi phải từ 13 đến 120';
+      }
     }
     
     setErrors(newErrors);
@@ -168,19 +184,15 @@ const ProfilePageComplete = () => {
     { label: 'Tài khoản', path: '/tai-khoan' },
     { label: 'Thông tin cá nhân' }
   ];
-
   if (initialLoading) {
     return (
-      <div style={{ 
-        padding: '40px', 
-        textAlign: 'center',
-        minHeight: '60vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div>Đang tải...</div>
-      </div>
+      <AccountLayout title="Thông tin tài khoản" breadcrumbs={breadcrumbs}>
+        <LoadingSpinner 
+          size="large" 
+          text="Đang tải thông tin tài khoản..." 
+          fullscreen={false}
+        />
+      </AccountLayout>
     );
   }
 

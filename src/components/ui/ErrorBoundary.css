@@ -1,0 +1,246 @@
+/* Error Boundary Styles */
+.error-boundary {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+.error-container {
+  max-width: 600px;
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  text-align: center;
+  animation: slideUp 0.5s ease-out;
+}
+
+.error-icon {
+  font-size: 64px;
+  color: #f56565;
+  margin-bottom: 24px;
+  animation: bounce 2s infinite;
+}
+
+.error-content {
+  margin-bottom: 32px;
+}
+
+.error-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.error-message {
+  font-size: 16px;
+  color: #4a5568;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.error-details {
+  margin-top: 20px;
+  text-align: left;
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.error-details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #4a5568;
+  padding: 8px 0;
+  user-select: none;
+}
+
+.error-details summary:hover {
+  color: #2d3748;
+}
+
+.error-stack {
+  margin-top: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #e53e3e;
+  background: #fed7d7;
+  padding: 12px;
+  border-radius: 4px;
+  border-left: 4px solid #f56565;
+  overflow-x: auto;
+}
+
+.error-stack pre {
+  margin: 8px 0 0 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.error-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  text-decoration: none;
+  min-width: 140px;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.btn-outline:hover {
+  background: #667eea;
+  color: white;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .error-container {
+    padding: 30px 20px;
+  }
+  
+  .error-icon {
+    font-size: 48px;
+  }
+  
+  .error-title {
+    font-size: 24px;
+  }
+  
+  .error-message {
+    font-size: 14px;
+  }
+  
+  .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .error-boundary {
+    padding: 10px;
+  }
+  
+  .error-container {
+    padding: 20px 15px;
+  }
+  
+  .error-icon {
+    font-size: 40px;
+  }
+  
+  .error-title {
+    font-size: 20px;
+  }
+  
+  .error-stack {
+    font-size: 10px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .error-boundary {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  }
+  
+  .error-container {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+  
+  .error-title {
+    color: #e2e8f0;
+  }
+  
+  .error-message {
+    color: #cbd5e0;
+  }
+  
+  .error-details {
+    background: #4a5568;
+    border-color: #718096;
+  }
+  
+  .error-details summary {
+    color: #cbd5e0;
+  }
+  
+  .error-details summary:hover {
+    color: #e2e8f0;
+  }
+}

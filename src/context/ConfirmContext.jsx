@@ -1,12 +1,12 @@
 import { ConfirmContext } from './ConfirmContextInstance';
-import useConfirm from '../hooks/useConfirm';
+import useConfirmEnhanced from '../hooks/useConfirmEnhanced';
 import React from 'react';
 
 const ConfirmProvider = ({ children }) => {
   const {
     confirm,
     alert
-  } = useConfirm();
+  } = useConfirmEnhanced();
 
   return (
     <ConfirmContext.Provider

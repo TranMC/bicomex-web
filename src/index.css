@@ -1,5 +1,7 @@
 /* Performance optimized CSS với critical loading */
+/* Import base confirm alert styles trước khi override */
 @import 'react-confirm-alert/src/react-confirm-alert.css';
+/* Custom confirm dialog styling với glass morphism */
 @import './styles/components/confirmAlert.css';
 
 @tailwind base;

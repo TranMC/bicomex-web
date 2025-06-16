@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { FaStar, FaTruck, FaShieldAlt, FaExchangeAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import useCart from '../hooks/useCart';
 import useToast from '../hooks/useToast';
+import Breadcrumbs from '../components/common/Breadcrumbs';
 import { getProductBySlug, getRelatedProducts } from '../data/products';
 import { getCategoryNameBySlug } from '../data/categories';
 import '../styles/pages/ProductDetailPage.css';
@@ -87,27 +88,17 @@ export const ProductDetailPage = () => {
   }
 
   return (
-    <div className="product-detail-page py-8">
-      <div className="container mx-auto px-4">
-        {}
-        <div className="breadcrumb mb-6">
-          <nav className="flex text-sm">
-            <Link to="/" className="text-gray-500 hover:text-blue-600">Trang chủ</Link>
-            <span className="mx-2 text-gray-500">/</span>
-            <Link to="/san-pham" className="text-gray-500 hover:text-blue-600">Sản phẩm</Link>
-            <span className="mx-2 text-gray-500">/</span>
-            <Link 
-              to={`/san-pham/${product.category}`} 
-              className="text-gray-500 hover:text-blue-600"
-            >
-              {getCategoryName(product.category)}
-            </Link>
-            <span className="mx-2 text-gray-500">/</span>
-            <span className="text-blue-600">{product.name}</span>
-          </nav>
-        </div>
+    <div className="product-detail-page py-8">      <div className="container mx-auto px-4">
+        {/* Breadcrumbs */}
+        <Breadcrumbs 
+          items={[
+            { label: 'Sản phẩm', href: '/san-pham' },
+            { label: getCategoryName(product.category), href: `/san-pham/${product.category}` },
+            { label: product.name }
+          ]}
+        />
 
-        {}
+        {/* Product detail */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-10">
           <div className="flex flex-col md:flex-row">
             {}

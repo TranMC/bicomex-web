@@ -208,8 +208,8 @@ export const AddressesPage = () => {
     });
     setErrors({});
   };
-
   const breadcrumbs = [
+    { label: 'Tài khoản', path: '/tai-khoan' },
     { label: 'Sổ địa chỉ' }
   ];
 

@@ -60,19 +60,16 @@ const AccountLayout = ({
             onAvatarChange={enableAvatarUpload ? handleAvatarClick : null}
           />
           
-          <div className="account-main">
-            <div className="account-header">
+          <div className="account-main">            <div className="account-header">
               <h2>{title}</h2>
               {breadcrumbs.length > 0 && (
                 <div className="breadcrumbs">
                   <Link to="/">Trang chủ</Link>
-                  <FaAngleRight className="breadcrumb-separator" />
-                  <Link to="/tai-khoan">Tài khoản</Link>
                   {breadcrumbs.map((crumb, index) => (
                     <span key={index}>
                       <FaAngleRight className="breadcrumb-separator" />
-                      {crumb.link ? (
-                        <Link to={crumb.link}>{crumb.label}</Link>
+                      {crumb.path ? (
+                        <Link to={crumb.path}>{crumb.label}</Link>
                       ) : (
                         <span>{crumb.label}</span>
                       )}

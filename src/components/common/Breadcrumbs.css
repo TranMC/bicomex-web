@@ -1,0 +1,123 @@
+/* Breadcrumbs Component - Unified Styling */
+.breadcrumbs-nav {
+  margin-bottom: 1rem;
+}
+
+.breadcrumbs-container {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #4b5563;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 16px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.breadcrumb-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #4b5563;
+  transition: all 0.2s ease;
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+.breadcrumb-link:hover {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+.breadcrumb-icon {
+  margin-right: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-separator {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  color: rgba(75, 85, 99, 0.6);
+  font-size: 0.625rem;
+}
+
+.breadcrumb-active {
+  color: #2563eb;
+  font-weight: 500;
+  padding: 2px 6px;
+  background: rgba(37, 99, 235, 0.1);
+  border-radius: 8px;
+}
+
+/* Variant for account pages (inherit from AccountLayout) */
+.breadcrumbs-nav.account {
+  margin-bottom: 0;
+}
+
+.breadcrumbs-nav.account .breadcrumbs-container {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.breadcrumbs-nav.account .breadcrumb-link {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.breadcrumbs-nav.account .breadcrumb-link:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.breadcrumbs-nav.account .breadcrumb-active {
+  color: white;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.breadcrumbs-nav.account .breadcrumb-separator {
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .breadcrumbs-container {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    gap: 2px;
+  }
+  
+  .breadcrumb-link,
+  .breadcrumb-active {
+    padding: 1px 4px;
+  }
+  
+  .breadcrumb-separator {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .breadcrumbs-container {
+    font-size: 0.6875rem;
+    padding: 4px 8px;
+    flex-wrap: wrap;
+  }
+  
+  .breadcrumb-icon {
+    font-size: 0.625rem;
+  }
+}
