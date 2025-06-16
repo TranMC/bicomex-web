@@ -5,6 +5,7 @@ import UserSidebar from './UserSidebar';
 import useAuth from '../../hooks/useAuth';
 import useConfirmDialog from '../../hooks/useConfirmDialog';
 import './AccountLayout.css';
+import Breadcrumbs from '../common/Breadcrumbs';
 
 const AccountLayout = ({ 
   title, 
@@ -63,19 +64,7 @@ const AccountLayout = ({
           <div className="account-main">            <div className="account-header">
               <h2>{title}</h2>
               {breadcrumbs.length > 0 && (
-                <div className="breadcrumbs">
-                  <Link to="/">Trang chủ</Link>
-                  {breadcrumbs.map((crumb, index) => (
-                    <span key={index}>
-                      <FaAngleRight className="breadcrumb-separator" />
-                      {crumb.path ? (
-                        <Link to={crumb.path}>{crumb.label}</Link>
-                      ) : (
-                        <span>{crumb.label}</span>
-                      )}
-                    </span>
-                  ))}
-                </div>
+                <Breadcrumbs items={breadcrumbs.map(crumb => ({ label: crumb.label, href: crumb.path }))} />
               )}
             </div>
             

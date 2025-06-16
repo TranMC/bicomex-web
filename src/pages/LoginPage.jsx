@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { FaEnvelope, FaLock, FaHome, FaAngleRight, FaExclamationTriangle } from 'react-icons/fa';
 import '../styles/pages/LoginPage.css';
+import Breadcrumbs from '../components/common/Breadcrumbs';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -84,16 +85,8 @@ const LoginPage = () => {
 
   return (
     <div className="login-page">
-      {/* Breadcrumb */}
       <div className="login-breadcrumb-container">
-        <div className="breadcrumb">
-          <Link to="/" className="breadcrumb-link">
-            <FaHome className="breadcrumb-icon" />
-            <span>Trang chủ</span>
-          </Link>
-          <FaAngleRight className="breadcrumb-separator" />
-          <span className="breadcrumb-active">Đăng nhập</span>
-        </div>
+        <Breadcrumbs items={[{ label: 'Đăng nhập' }]} />
       </div>
       
       <div className="login-container">

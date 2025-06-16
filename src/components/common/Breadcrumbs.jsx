@@ -2,30 +2,29 @@ import { Link } from 'react-router-dom';
 import { FaHome, FaAngleRight } from 'react-icons/fa';
 import './Breadcrumbs.css';
 
-const Breadcrumbs = ({ items, variant = 'default' }) => {
+const Breadcrumbs = ({ items }) => {
   if (!items || items.length === 0) return null;
 
   return (
-    <nav className={`breadcrumbs-nav ${variant}`}>
-      <div className="breadcrumbs-container">
-        <Link to="/" className="breadcrumb-link">
-          <FaHome className="breadcrumb-icon" />
-          <span>Trang chủ</span>
-        </Link>
-        
-        {items.map((item, index) => (
-          <span key={index} className="breadcrumb-item">
+    <nav className="breadcrumbs-nav">
+      <ol className="breadcrumbs-list">
+        <li>
+          <Link to="/" className="breadcrumb-link">
+            <FaHome className="breadcrumb-icon" />
+            <span>Trang chủ</span>
+          </Link>
+        </li>
+        {items.map((item, idx) => (
+          <li key={idx} className="breadcrumbs-item">
             <FaAngleRight className="breadcrumb-separator" />
-            {item.href ? (
-              <Link to={item.href} className="breadcrumb-link">
-                {item.label}
-              </Link>
+            {item.href && idx !== items.length - 1 ? (
+              <Link to={item.href} className="breadcrumb-link">{item.label}</Link>
             ) : (
               <span className="breadcrumb-active">{item.label}</span>
             )}
-          </span>
+          </li>
         ))}
-      </div>
+      </ol>
     </nav>
   );
 };

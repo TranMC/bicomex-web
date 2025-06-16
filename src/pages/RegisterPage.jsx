@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import { FaUser, FaEnvelope, FaKey, FaPhone, FaLock, FaHome, FaAngleRight, FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa';
 import '../styles/pages/RegisterPage.css';
+import Breadcrumbs from '../components/common/Breadcrumbs';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -150,16 +151,8 @@ const RegisterPage = () => {
 
   return (
     <div className="register-page">
-      {/* Breadcrumb */}
       <div className="register-breadcrumb-container">
-        <div className="breadcrumb">
-          <Link to="/" className="breadcrumb-link">
-            <FaHome className="breadcrumb-icon" />
-            <span>Trang chủ</span>
-          </Link>
-          <FaAngleRight className="breadcrumb-separator" />
-          <span className="breadcrumb-active">Đăng ký tài khoản</span>
-        </div>
+        <Breadcrumbs items={[{ label: 'Đăng ký tài khoản' }]} />
       </div>
       
       <div className="register-container">

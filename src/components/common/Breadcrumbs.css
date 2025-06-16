@@ -1,62 +1,61 @@
 /* Breadcrumbs Component - Unified Styling */
 .breadcrumbs-nav {
-  margin-bottom: 1rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
 }
 
-.breadcrumbs-container {
+.breadcrumbs-list {
   display: flex;
   align-items: center;
-  font-size: 0.875rem;
-  color: #4b5563;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 8px 16px;
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  flex-wrap: wrap;
-  gap: 4px;
+  background: rgba(255,255,255,0.10);
+  border-radius: 16px;
+  padding: 8px 24px;
+  gap: 0;
+  list-style: none;
+  margin: 0;
 }
 
-.breadcrumb-link {
+.breadcrumbs-item {
   display: flex;
   align-items: center;
-  text-decoration: none;
-  color: #4b5563;
-  transition: all 0.2s ease;
-  padding: 2px 6px;
+}
+
+.breadcrumb-link, .breadcrumb-active {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  line-height: 32px;
+  font-size: 1rem;
+  padding: 0 12px;
   border-radius: 8px;
+  font-weight: 500;
+  background: none;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
 }
 
 .breadcrumb-link:hover {
-  color: #2563eb;
-  background: rgba(37, 99, 235, 0.1);
-  transform: translateY(-1px);
-}
-
-.breadcrumb-icon {
-  margin-right: 0.25rem;
-  font-size: 0.75rem;
-}
-
-.breadcrumb-item {
-  display: flex;
-  align-items: center;
-}
-
-.breadcrumb-separator {
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  color: rgba(75, 85, 99, 0.6);
-  font-size: 0.625rem;
+  background: rgba(255,255,255,0.18);
 }
 
 .breadcrumb-active {
-  color: #2563eb;
-  font-weight: 500;
-  padding: 2px 6px;
-  background: rgba(37, 99, 235, 0.1);
-  border-radius: 8px;
+  background: rgba(255,255,255,0.22);
+  font-weight: 600;
+}
+
+.breadcrumb-icon {
+  margin-right: 6px;
+  font-size: 1rem;
+  vertical-align: middle;
+}
+
+.breadcrumb-separator {
+  color: #fff;
+  opacity: 0.4;
+  font-size: 1rem;
+  margin: 0 8px;
+  vertical-align: middle;
 }
 
 /* Variant for account pages (inherit from AccountLayout) */
@@ -93,31 +92,27 @@
 
 /* Responsive */
 @media (max-width: 767px) {
-  .breadcrumbs-container {
-    font-size: 0.75rem;
+  .breadcrumbs-list {
+    font-size: 0.95rem;
     padding: 6px 12px;
-    gap: 2px;
   }
-  
-  .breadcrumb-link,
-  .breadcrumb-active {
-    padding: 1px 4px;
-  }
-  
-  .breadcrumb-separator {
-    margin-left: 0.25rem;
-    margin-right: 0.25rem;
+  .breadcrumb-link, .breadcrumb-active {
+    height: 28px;
+    line-height: 28px;
+    padding: 0 8px;
+    font-size: 0.95rem;
   }
 }
 
 @media (max-width: 480px) {
-  .breadcrumbs-container {
-    font-size: 0.6875rem;
-    padding: 4px 8px;
-    flex-wrap: wrap;
+  .breadcrumbs-list {
+    font-size: 0.85rem;
+    padding: 4px 6px;
   }
-  
-  .breadcrumb-icon {
-    font-size: 0.625rem;
+  .breadcrumb-link, .breadcrumb-active {
+    height: 24px;
+    line-height: 24px;
+    padding: 0 4px;
+    font-size: 0.85rem;
   }
 }
