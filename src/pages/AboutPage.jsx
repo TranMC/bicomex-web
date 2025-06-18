@@ -112,7 +112,7 @@ export const AboutPage = () => {
             <div className="timeline-item">
               <div className="timeline-dot"></div>
               <div className="timeline-content">
-                <h3>2023</h3>
+                <h3>ඞ</h3>
                 <p>Triển khai hệ thống quản lý kho thông minh và ứng dụng công nghệ hiện đại vào quá trình vận hành, nâng cao trải nghiệm khách hàng.</p>
               </div>
             </div>

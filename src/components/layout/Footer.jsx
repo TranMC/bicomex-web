@@ -1,8 +1,67 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube, FaMapMarkerAlt, FaPhone, FaEnvelope, FaUser, FaCreditCard, FaTruck, FaQuestionCircle, FaExchangeAlt } from 'react-icons/fa';
 import '../../styles/components/Footer.css';
+import useNewsletter from '../../hooks/useNewsletter';
+import useToast from '../../hooks/useToast';
+import EmailSentModal from '../ui/EmailSentModal';
 
 export const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [subscribedEmail, setSubscribedEmail] = useState('');
+  const [emailError, setEmailError] = useState(false);  const { subscribeNewsletter, loading } = useNewsletter();
+  const toast = useToast();
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    // Nếu trước đó có lỗi, reset lỗi khi người dùng sửa
+    if (emailError) {
+      setEmailError(false);
+    }
+  };  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error('Vui lòng nhập địa chỉ email');
+      setEmailError(true);
+      return;
+    }
+
+    // Kiểm tra định dạng email đơn giản
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error('Email không hợp lệ. Vui lòng kiểm tra lại.');
+      setEmailError(true);
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const result = await subscribeNewsletter(email);
+      
+      if (result.success) {
+        toast.success(result.message);
+        // Lưu email để hiển thị trong modal
+        setSubscribedEmail(email);
+        // Hiển thị modal
+        setIsModalOpen(true);
+        setEmail(''); // Xóa input sau khi đăng ký thành công
+      } else {
+        toast.error(result.message);
+        if (result.message.includes('Email không hợp lệ')) {
+          setEmailError(true);
+        }
+      }} catch (err) {
+      console.error("Lỗi đăng ký newsletter:", err);
+      toast.error('Có lỗi xảy ra. Vui lòng thử lại sau.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <footer className="footer">
       {/* Newsletter Section */}
@@ -13,14 +72,20 @@ export const Footer = () => {
             <p className="newsletter-description">Đăng ký nhận bản tin của BICOMEX để được cập nhật những ưu đãi mới nhất.</p>
           </div>
           <div className="newsletter-form-container">
-            <form className="newsletter-form">
-              <input 
+            <form className="newsletter-form" onSubmit={handleSubmit}>              <input 
                 type="email" 
                 placeholder="Nhập email của bạn" 
-                className="newsletter-input" 
+                className={`newsletter-input ${emailError ? 'newsletter-input-error' : ''}`}
+                value={email}
+                onChange={handleEmailChange}
+                disabled={loading || isSubmitting}
               />
-              <button className="newsletter-button">
-                Đăng ký
+              <button 
+                type="submit"
+                className={`newsletter-button ${(loading || isSubmitting) ? 'newsletter-button-loading' : ''}`}
+                disabled={loading || isSubmitting}
+              >
+                {(loading || isSubmitting) ? 'Đang xử lý...' : 'Đăng ký'}
               </button>
             </form>
           </div>
@@ -186,8 +251,14 @@ export const Footer = () => {
             <p className="copyright">&copy; {new Date().getFullYear()} BICOMEX. Tất cả quyền được bảo lưu.</p>
             <p className="credits">Thiết kế bởi <a href="#" className="credits-link">Team Lmao</a></p>
           </div>
-        </div>
-      </div>
+        </div>      </div>
+      
+      {/* Modal hiển thị khi gửi email thành công */}
+      <EmailSentModal 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+        email={subscribedEmail}
+      />
     </footer>
   );
 };

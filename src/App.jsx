@@ -6,6 +6,7 @@ import { CartProvider } from './context/CartProvider';
 import { ToastProvider } from './context/ToastProvider';
 import { AuthProvider } from './context/AuthProvider';
 import { ConfirmProvider } from './context/ConfirmContext';
+import { NewsletterProvider } from './context/NewsletterProvider';
 import usePerformanceMetrics from './hooks/usePerformanceMetrics';
 import PerformancePanel from './components/debug/PerformancePanel';
 import CoreWebVitalsMonitor from './components/debug/CoreWebVitalsMonitor';
@@ -153,21 +154,21 @@ function App() {
       <ToastProvider>
         <AuthProvider>
           <CartProvider>
-            <ConfirmProvider>
-              <div className="app">
-                <Header />
-                <main className="main-content">
-                  {isErrored ? (
-                    <div className="error-container p-4 bg-red-100 text-red-700 rounded-lg">
-                      <h2>Đã xảy ra lỗi khi tải trang</h2>
-                      <button 
-                        onClick={resetError}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                      >
-                        Thử lại
-                      </button>
-                    </div>
-                  ) : (
+            <ConfirmProvider>              <NewsletterProvider>
+                <div className="app">
+                  <Header />
+                  <main className="main-content">
+                    {isErrored ? (
+                      <div className="error-container p-4 bg-red-100 text-red-700 rounded-lg">
+                        <h2>Đã xảy ra lỗi khi tải trang</h2>
+                        <button 
+                          onClick={resetError}
+                          className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+                        >
+                          Thử lại
+                        </button>
+                      </div>
+                    ) : (
                     <Suspense fallback={<LoadingFallback />}>
                       <Routes>
                         {/* Trang chính */}
@@ -212,12 +213,13 @@ function App() {
                       </Routes>
                     </Suspense>
                   )}
-                </main>
-                <Footer />              </div>
-              {/* Core Web Vitals Monitor và Toast Demo chỉ hiển thị trong development */}
-              {/* PWA Install Prompt chỉ hiển thị trong production */}
-              {!import.meta.env.DEV && <PWAInstallPrompt />}
-              {import.meta.env.DEV && <DebugMenu position="bottom-right" />}
+                </main>                  <Footer />
+                </div>
+                {/* Core Web Vitals Monitor và Toast Demo chỉ hiển thị trong development */}
+                {/* PWA Install Prompt chỉ hiển thị trong production */}
+                {!import.meta.env.DEV && <PWAInstallPrompt />}
+                {import.meta.env.DEV && <DebugMenu position="bottom-right" />}
+              </NewsletterProvider>
             </ConfirmProvider>
           </CartProvider>
         </AuthProvider>

@@ -1,29 +1,28 @@
-import React, { useRef, useCallback,  } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 import FocusTrap from 'focus-trap-react';
 
-/**
- * CustomFocusTrap - Component để quản lý trap focus bên trong modal
- */
-// const CustomFocusTrap = ({ children, isActive }) => {
-//   return (
-//     <FocusTrap
-//       focusTrapOptions={{
-//         escapeDeactivates: true, 
-//         clickOutsideDeactivates: true,
-//         initialFocus: 'button[autoFocus]'
-//       }}
-//       active={isActive}
-//     >
-//       {children}
-//     </FocusTrap>
-//   );
-// };
+// Định nghĩa lại CustomFocusTrap với các options được cải thiện
+const CustomFocusTrap = ({ children, isActive }) => {
+  return (
+    <FocusTrap
+      focusTrapOptions={{
+        escapeDeactivates: true,
+        clickOutsideDeactivates: true,
+        initialFocus: 'button[autoFocus]',
+        fallbackFocus: '.react-confirm-alert-button-group button',
+        returnFocusOnDeactivate: true,
+        preventScroll: true,
+        // Luôn đảm bảo có focus element
+        allowOutsideClick: true
+      }}
+      active={isActive}
+    >
+      {children}
+    </FocusTrap>
+  );
+};
 
-/**
- * Custom hook để quản lý dialog xác nhận với accessibility cải tiến
- * @returns {Object} Các phương thức để hiển thị và quản lý dialog xác nhận
- */
 const useConfirmEnhanced = () => {  
   const modalRef = useRef(null);
   
@@ -34,7 +33,6 @@ const useConfirmEnhanced = () => {
         message: options.message || '',        customUI: ({ onClose, title, message }) => {
           const type = options.type || 'info';
           
-          // Auto-focus vào container để có thể đóng bằng ESC
           const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
               onClose();
@@ -42,7 +40,6 @@ const useConfirmEnhanced = () => {
             }
           };
           
-          // Hiệu ứng glowing khi user hover
           const handleMouseEnter = (e) => {
             if (e.currentTarget.classList.contains('bg-blue-600')) {
               e.currentTarget.style.boxShadow = 
@@ -79,6 +76,9 @@ const useConfirmEnhanced = () => {
                 aria-describedby="dialog-description"
                 style={{ outline: 'none' }}
               >
+                {/* Nút vô hình đầu tiên để focus-trap có thể bắt đầu */}
+                <div tabIndex="0" className="focus-trap-safety-button" aria-hidden="true" data-focus-guard="true" />
+                
                 {options.showCloseButton !== false && (
                   <button
                     className="react-confirm-alert-close-button"
@@ -87,6 +87,7 @@ const useConfirmEnhanced = () => {
                       resolve(false);
                     }}
                     aria-label="Đóng dialog"
+                    tabIndex={0}
                   >
                     ✕
                   </button>
@@ -108,6 +109,7 @@ const useConfirmEnhanced = () => {
                     autoFocus
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
+                    tabIndex={0}
                   >
                     {options.confirmText || 'Đồng ý'}
                   </button>
@@ -119,10 +121,19 @@ const useConfirmEnhanced = () => {
                     }}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
+                    tabIndex={0}
                   >
                     {options.cancelText || 'Hủy'}
                   </button>
+                  {/* Nút vô hình làm fallback */}
+                  <button
+                    className="focus-trap-safety-button"
+                    tabIndex={0}
+                    aria-hidden="true"
+                  >Fallback</button>
                 </div>
+                {/* Nút vô hình cuối cùng để focus-trap có thể kết thúc vòng lặp */}
+                <div tabIndex="0" className="focus-trap-safety-button" aria-hidden="true" data-focus-guard="true" />
               </div>
             </CustomFocusTrap>
           );
@@ -184,6 +195,9 @@ const useConfirmEnhanced = () => {
                 aria-describedby="alert-dialog-description"
                 style={{ outline: 'none' }}
               >
+                {/* Nút vô hình đầu tiên để focus-trap có thể bắt đầu */}
+                <div tabIndex="0" className="focus-trap-safety-button" aria-hidden="true" data-focus-guard="true" />
+                
                 <h1 id="alert-dialog-title">{title}</h1>
                 <p id="alert-dialog-description">{message}</p>
                 <div className="react-confirm-alert-button-group">
@@ -201,10 +215,19 @@ const useConfirmEnhanced = () => {
                     autoFocus
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
+                    tabIndex={0}
                   >
                     {options.confirmText || 'Đóng'}
                   </button>
+                  {/* Nút vô hình làm fallback */}
+                  <button
+                    className="focus-trap-safety-button"
+                    tabIndex={0}
+                    aria-hidden="true"
+                  >Fallback</button>
                 </div>
+                {/* Nút vô hình cuối cùng để focus-trap có thể kết thúc vòng lặp */}
+                <div tabIndex="0" className="focus-trap-safety-button" aria-hidden="true" data-focus-guard="true" />
               </div>
             </CustomFocusTrap>
           );
