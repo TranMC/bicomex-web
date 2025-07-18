@@ -1,14 +1,11 @@
-/* Performance optimized CSS với critical loading */
-/* Import base confirm alert styles trước khi override */
 @import 'react-confirm-alert/src/react-confirm-alert.css';
-/* Custom confirm dialog styling với glass morphism */
 @import './styles/components/confirmAlert.css';
+@import './styles/components/noScroll.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Enhanced CSS Variables với semantic naming */
 :root {
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
@@ -21,19 +18,16 @@
   --border-color: #e2e8f0;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  /* Performance optimization */
   --transition-fast: 0.15s ease;
   --transition-normal: 0.3s ease;
 }
 
-/* Base performance optimizations */
 * {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
-  /* Optimize font rendering */
   text-rendering: optimizeLegibility;
 }
 
@@ -45,11 +39,9 @@ body {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
   line-height: 1.6;
-  /* Optimize repaints */
   contain: layout style;
 }
 
-/* Optimized Swiper styles */
 .swiper,
 .swiper-container,
 .swiper-initialized,
@@ -62,7 +54,6 @@ body {
   contain: layout paint style;
 }
 
-/* Allow clicking on content inside swiper */
 .swiper-slide a,
 .swiper-slide button,
 .swiper-slide .product-box-h,
@@ -72,7 +63,6 @@ body {
   pointer-events: auto !important;
 }
 
-/* Common utility classes */
 .shadow-samm {
   background: var(--primary);
 }
@@ -104,7 +94,7 @@ html {
   contain: layout style;
 }
 
-/* Text truncation utilities with container optimizations */
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -125,12 +115,10 @@ html {
   will-change: transform;
 }
 
-/* Image rendering optimization */
 img {
   content-visibility: auto;
 }
 
-/* Remove hidden elements from layout flow */
 .hidden, 
 [hidden], 
 .swiper-button-next,
@@ -140,7 +128,7 @@ img {
   visibility: hidden !important;
 }
 
-/* Optimize animation frames */
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -150,8 +138,3 @@ img {
   }
 }
 
-/* Problematic rule causing color issues - commented out
-.bloccker, .text-xs, .text-gray-500{
-  color: white;
-}
-*/

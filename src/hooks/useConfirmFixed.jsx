@@ -2,20 +2,40 @@ import React, { useRef, useCallback } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
 import CustomFocusTrap from '../components/ui/CustomFocusTrap';
 
-const useConfirmEnhanced = () => {  
+const useConfirmFixed = () => {
   const modalRef = useRef(null);
-    const confirm = useCallback((options) => {
-    const scrollY = window.scrollY;
-    
+  
+  const ensurePositionInViewport = useCallback(() => {
+    setTimeout(() => {
+      const overlayElement = document.querySelector('.react-confirm-alert-overlay');
+      const bodyElement = document.querySelector('.react-confirm-alert-body');
+      
+      if (overlayElement && bodyElement) {
+        overlayElement.style.position = 'fixed';
+        overlayElement.style.top = '0';
+        overlayElement.style.left = '0';
+        overlayElement.style.right = '0';
+        overlayElement.style.bottom = '0';
+        overlayElement.style.display = 'flex';
+        overlayElement.style.alignItems = 'center';
+        overlayElement.style.justifyContent = 'center';
+        overlayElement.style.overflow = 'hidden';
+        bodyElement.style.margin = '0';
+        bodyElement.style.transform = 'none';
+        bodyElement.style.position = 'relative';
+      }
+    }, 10);
+  }, []);
+  
+  const confirm = useCallback((options) => {
     return new Promise((resolve) => {
       confirmAlert({
         title: options.title || 'Xác nhận',
         message: options.message || '',
-        willUnmount: () => {
-          window.scrollTo(0, scrollY);
-        },
         customUI: ({ onClose, title, message }) => {
           const type = options.type || 'info';
+          
+          ensurePositionInViewport();
           
           const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
@@ -60,7 +80,6 @@ const useConfirmEnhanced = () => {
                 aria-describedby="dialog-description"
                 style={{ outline: 'none' }}
               >
-                {}
                 <div tabIndex="0" className="focus-trap-safety-button" aria-hidden="true" data-focus-guard="true" />
                 
                 {options.showCloseButton !== false && (
@@ -75,8 +94,9 @@ const useConfirmEnhanced = () => {
                   >
                     ✕
                   </button>
-                )
-                }<h1 id="dialog-title">{title}</h1>
+                )}
+                
+                <h1 id="dialog-title">{title}</h1>
                 <p id="dialog-description">{message}</p>
                 <div className="react-confirm-alert-button-group">
                   <button
@@ -109,14 +129,12 @@ const useConfirmEnhanced = () => {
                   >
                     {options.cancelText || 'Hủy'}
                   </button>
-                  {}
                   <button
                     className="focus-trap-safety-button"
                     tabIndex={0}
                     aria-hidden="true"
                   >Fallback</button>
                 </div>
-                {}
                 <div tabIndex="0" className="focus-trap-safety-button" aria-hidden="true" data-focus-guard="true" />
               </div>
             </CustomFocusTrap>
@@ -127,19 +145,17 @@ const useConfirmEnhanced = () => {
         overlayClassName: 'react-confirm-alert-overlay'
       });
     });
-  }, []);
-    const alert = useCallback((options) => {
-    const scrollY = window.scrollY;
-    
+  }, [ensurePositionInViewport]);
+  
+  const alert = useCallback((options) => {
     return new Promise((resolve) => {
       confirmAlert({
         title: options.title || 'Thông báo',
         message: options.message || '',
-        willUnmount: () => {
-          window.scrollTo(0, scrollY);
-        },
         customUI: ({ onClose, title, message }) => {
           const type = options.type || 'info';
+          
+          ensurePositionInViewport();
           
           const handleKeyDown = (e) => {
             if (e.key === 'Escape' || e.key === 'Enter') {
@@ -181,7 +197,6 @@ const useConfirmEnhanced = () => {
                 aria-describedby="alert-dialog-description"
                 style={{ outline: 'none' }}
               >
-                {}
                 <div tabIndex="0" className="focus-trap-safety-button" aria-hidden="true" data-focus-guard="true" />
                 
                 <h1 id="alert-dialog-title">{title}</h1>
@@ -205,14 +220,12 @@ const useConfirmEnhanced = () => {
                   >
                     {options.confirmText || 'Đóng'}
                   </button>
-                  {}
                   <button
                     className="focus-trap-safety-button"
                     tabIndex={0}
                     aria-hidden="true"
                   >Fallback</button>
                 </div>
-                {}
                 <div tabIndex="0" className="focus-trap-safety-button" aria-hidden="true" data-focus-guard="true" />
               </div>
             </CustomFocusTrap>
@@ -223,7 +236,7 @@ const useConfirmEnhanced = () => {
         overlayClassName: 'react-confirm-alert-overlay'
       });
     });
-  }, []);
+  }, [ensurePositionInViewport]);
 
   return {
     confirm,
@@ -231,4 +244,4 @@ const useConfirmEnhanced = () => {
   };
 };
 
-export default useConfirmEnhanced;
+export default useConfirmFixed;

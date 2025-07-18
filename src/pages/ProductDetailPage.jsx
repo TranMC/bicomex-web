@@ -105,13 +105,13 @@ export const ProductDetailPage = () => {
             <div className="md:w-1/2 p-6">
               <div className="product-image mb-4">
                 <img 
-                  src={product.images[0]} 
+                  src={(product.images && product.images[0]) || product.image || ''} 
                   alt={product.name} 
                   className="w-full h-auto object-cover rounded-lg"
                 />
               </div>
               <div className="product-thumbnails flex gap-2">
-                {product.images.map((img, index) => (
+                {product.images && product.images.length > 0 && product.images.map((img, index) => (
                   <div 
                     key={index} 
                     className="w-20 h-20 border rounded cursor-pointer hover:border-blue-500"
@@ -136,7 +136,7 @@ export const ProductDetailPage = () => {
                     <FaStar key={i} className={i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'} />
                   ))}
                 </div>
-                <span className="text-sm text-gray-600 ml-2">({product.reviewCount} đánh giá)</span>
+                <span className="text-sm text-gray-600 ml-2">({product.reviewCount || product.ratingCount || 0} đánh giá)</span>
               </div>
               
               <div className="mb-4">
@@ -144,7 +144,7 @@ export const ProductDetailPage = () => {
                   Thương hiệu: <span className="font-medium">{product.brand}</span>
                 </p>
                 <p className="text-gray-600">
-                  Tình trạng: <span className="font-medium text-green-600">Còn hàng ({product.stock} sản phẩm)</span>
+                  Tình trạng: <span className="font-medium text-green-600">Còn hàng ({product.stock || product.isInStock ? (product.stock || 'Nhiều') : 'Hết hàng'})</span>
                 </p>
               </div>
               
@@ -168,7 +168,7 @@ export const ProductDetailPage = () => {
               </div>
               
               <div className="mb-6">
-                <p className="text-gray-700 mb-3">{product.description.substring(0, 150)}...</p>
+                <p className="text-gray-700 mb-3">{(product.description || '').substring(0, 150)}...</p>
               </div>
               
               <div className="quantity-section flex items-center mb-6">
@@ -273,10 +273,10 @@ export const ProductDetailPage = () => {
           <div className="bg-white rounded-lg shadow-md p-6">
             {activeTab === 'description' && (
               <div className="description">
-                <p className="text-gray-700 mb-4">{product.description}</p>
+                <p className="text-gray-700 mb-4">{product.description || 'Đang cập nhật mô tả sản phẩm.'}</p>
                 <h3 className="text-lg font-medium mb-3">Tính năng nổi bật</h3>
                 <ul className="list-disc pl-5 mb-4">
-                  {product.features.map((feature, index) => (
+                  {(product.features || []).map((feature, index) => (
                     <li key={index} className="mb-2 text-gray-700">{feature}</li>
                   ))}
                 </ul>
@@ -289,7 +289,7 @@ export const ProductDetailPage = () => {
                 <div className="border rounded-lg overflow-hidden">
                   <table className="w-full">
                     <tbody>
-                      {Object.entries(product.specifications).map(([key, value], index) => (
+                      {product.specifications && Object.entries(product.specifications).map(([key, value], index) => (
                         <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
                           <td className="px-4 py-3 border-r font-medium">{key}</td>
                           <td className="px-4 py-3">{value}</td>

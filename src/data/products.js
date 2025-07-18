@@ -407,7 +407,11 @@ export const products = [
     shortDescription: 'Máy phát điện công suất lớn, hoạt động ổn định, tiết kiệm nhiên liệu',
     isHot: true,
   },
-];
+].map(product => ({
+  ...product,
+  images: product.images || [product.image],
+  description: product.description || product.shortDescription || 'Đang cập nhật mô tả sản phẩm.',
+}));
 
 // Lấy danh sách sản phẩm theo danh mục
 export const getProductsByCategory = (categorySlug) => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import '../styles/pages/PolicyPage.css';
 
 export const PolicyPage = ({ type }) => {
   const [title, setTitle] = useState('');
@@ -43,10 +44,10 @@ export const PolicyPage = ({ type }) => {
         setContent([]);
     }
     
-    // Cập nhật title và meta description trực tiếp
+
     document.title = `${pageTitle} | BICOMEX`;
     
-    // Cập nhật meta description (nếu cần)
+
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute('content', `Thông tin về ${pageTitle.toLowerCase()} của BICOMEX`);
@@ -58,7 +59,6 @@ export const PolicyPage = ({ type }) => {
     }
     
     return () => {
-      // Cleanup khi component unmount (tùy chọn)
       document.title = 'BICOMEX';
     };
   }, [type]);
@@ -101,7 +101,6 @@ export const PolicyPage = ({ type }) => {
   );
 };
 
-// Nội dung chính sách thanh toán
 const paymentPolicyContent = [
   {
     title: 'Phương thức thanh toán',
@@ -135,7 +134,6 @@ const paymentPolicyContent = [
   }
 ];
 
-// Nội dung chính sách vận chuyển
 const shippingPolicyContent = [
   {
     title: 'Phạm vi giao hàng',
@@ -172,7 +170,6 @@ const shippingPolicyContent = [
   }
 ];
 
-// Nội dung chính sách bảo hành
 const warrantyPolicyContent = [
   {
     title: 'Thời hạn bảo hành',
@@ -215,7 +212,6 @@ const warrantyPolicyContent = [
   }
 ];
 
-// Nội dung chính sách đổi trả
 const returnPolicyContent = [
   {
     title: 'Điều kiện đổi trả',
@@ -256,7 +252,6 @@ const returnPolicyContent = [
   }
 ];
 
-// Nội dung chính sách bảo mật
 const privacyPolicyContent = [
   {
     title: 'Thông tin thu thập',

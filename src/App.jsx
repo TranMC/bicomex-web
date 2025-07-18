@@ -182,7 +182,7 @@ function App() {
                         
                         {/* Trang sản phẩm */}
                         <Route path="/san-pham" element={<ProductPage />} />
-                        <Route path="/san-pham/:id" element={<ProductDetailPage />} />
+                        <Route path="/san-pham/:slug" element={<ProductDetailPage />} />
                         
                         {/* Trang người dùng */}
                         <Route path="/dang-nhap" element={<LoginPage />} />
